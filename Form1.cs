@@ -28,8 +28,7 @@ namespace WindowsApplication1
 		[AccessedThroughProperty("PictureBox1")]
 		private PictureBox _PictureBox1;
 
-		[AccessedThroughProperty("MonthCalendar1")]
-		private MonthCalendar _MonthCalendar1;
+		public MonthCalendar MonthCalendar1;
 
 		[AccessedThroughProperty("Label32")]
 		private Label _Label32;
@@ -6405,21 +6404,6 @@ namespace WindowsApplication1
 			}
 		}
 
-		internal virtual MonthCalendar MonthCalendar1
-		{
-			[DebuggerNonUserCode]
-			get
-			{
-				return this._MonthCalendar1;
-			}
-			[DebuggerNonUserCode]
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			set
-			{
-				this._MonthCalendar1 = value;
-			}
-		}
-
 		internal virtual Panel Panel1
 		{
 			[DebuggerNonUserCode]
@@ -9295,7 +9279,7 @@ namespace WindowsApplication1
 			DataGridViewCellStyle font = new DataGridViewCellStyle();
 			DataGridViewCellStyle controlText = new DataGridViewCellStyle();
 			DataGridViewCellStyle indigo = new DataGridViewCellStyle();
-			this.MonthCalendar1 = new MonthCalendar();
+
 			this.Label32 = new Label();
 			this.SplitContainer1 = new SplitContainer();
 			this.lbl_attyState = new Label();
@@ -9724,26 +9708,7 @@ namespace WindowsApplication1
 			((ISupportInitialize)this.PictureBox2).BeginInit();
 			((ISupportInitialize)this.pboxOpenCredCard).BeginInit();
 			this.SuspendLayout();
-			this.MonthCalendar1.BackColor = Color.Thistle;
-			MonthCalendar monthCalendar1 = this.MonthCalendar1;
-			System.Drawing.Size size = new System.Drawing.Size(2, 1);
-			monthCalendar1.CalendarDimensions = size;
-			this.MonthCalendar1.CausesValidation = false;
-			this.MonthCalendar1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-			this.MonthCalendar1.ForeColor = Color.Indigo;
-			MonthCalendar monthCalendar = this.MonthCalendar1;
-			Point point = new Point(10, 10);
-			monthCalendar.Location = point;
-			MonthCalendar monthCalendar11 = this.MonthCalendar1;
-			System.Windows.Forms.Padding padding = new System.Windows.Forms.Padding(7);
-			monthCalendar11.Margin = padding;
-			this.MonthCalendar1.Name = "MonthCalendar1";
-			this.MonthCalendar1.ShowTodayCircle = false;
-			this.MonthCalendar1.TabIndex = 0;
-			this.MonthCalendar1.TabStop = false;
-			this.MonthCalendar1.TitleBackColor = Color.Indigo;
-			this.MonthCalendar1.TitleForeColor = Color.GhostWhite;
-			this.MonthCalendar1.TrailingForeColor = Color.Thistle;
+
 			this.Label32.AutoSize = true;
 			this.Label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
 			this.Label32.ForeColor = Color.Black;
@@ -12388,7 +12353,7 @@ namespace WindowsApplication1
 			this.DataGridView1.TabIndex = 72;
 			this.TabPg3Cal.AutoScroll = true;
 			this.TabPg3Cal.BackColor = Color.GhostWhite;
-			this.TabPg3Cal.Controls.Add(this.MonthCalendar1);
+
 			TabPage tabPg3Cal = this.TabPg3Cal;
 			point = new Point(4, 22);
 			tabPg3Cal.Location = point;
