@@ -72,21 +72,11 @@
 		private System.Windows.Forms.Label lblSOL_Tax_RedemPer;
 		private System.Windows.Forms.Label lblSOL_Creditor_Claims;
 		private System.Windows.Forms.Label Label_credclaim;
-
-		[AccessedThroughProperty("lblSOL_TERule")]
-		private Label _lblSOL_TERule;
-
-		[AccessedThroughProperty("Label_teRule")]
-		private Label _Label_teRule;
-
-		[AccessedThroughProperty("lblSOL_AftAcq")]
-		private Label _lblSOL_AftAcq;
-
-		[AccessedThroughProperty("Label_aftacq")]
-		private Label _Label_aftacq;
-
-		[AccessedThroughProperty("TabPg7Taxes")]
-		private TabPage _TabPg7Taxes;
+		private System.Windows.Forms.Label lblSOL_TERule;
+		private System.Windows.Forms.Label Label_teRule;
+		private System.Windows.Forms.Label lblSOL_AftAcq;
+		private System.Windows.Forms.Label Label_aftacq;
+		private System.Windows.Forms.TabPage TabPg7Taxes;
 
 		[AccessedThroughProperty("TabPg8UWMan")]
 		private TabPage _TabPg8UWMan;
