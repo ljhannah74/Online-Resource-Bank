@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "0e159336-bf3d-4460-9977-adf371f03d1b": {
+      "ProjectGuid": "0e159336-bf3d-4460-9977-adf371f03d1b",
+      "DisplayName": "web_links_ORB",
+      "ColorIndex": 0
+    },
+    "4e204bd8-0dad-4d5c-830f-ab00281b6e98": {
+      "ProjectGuid": "4e204bd8-0dad-4d5c-830f-ab00281b6e98",
+      "DisplayName": "ORB_DLL",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

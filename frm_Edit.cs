@@ -1,4 +1,4 @@
-using Excel;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualBasic.CompilerServices;
 using ORB_DLL.Orb;
 using System;
@@ -14,8 +14,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using WindowsApplication1.My;
-using WindowsApplication1.My.Resources;
 
 namespace WindowsApplication1
 {
@@ -4364,16 +4362,17 @@ namespace WindowsApplication1
 		private void Button_ExitApp_Click(object sender, EventArgs e)
 		{
 			this.Close();
-			MyProject.Forms.Form1.Close();
+			System.Windows.Forms.Application.OpenForms["Form1"].Close();
 		}
 
 		private void Button_EXITupdates_Click(object sender, EventArgs e)
 		{
-			MyProject.Forms.Form1.Panel2.Visible = false;
-			MyProject.Forms.Form1.TabControl1.Visible = true;
-			MyProject.Forms.Form1.SplitContainer1.Visible = true;
-			MyProject.Forms.Form1.SplitContainer1.Panel1Collapsed = false;
-			MyProject.Forms.Form1.SplitContainer1.Height = 363;
+			Form1 thisForm = ((Form1)System.Windows.Forms.Application.OpenForms["Form1"]);
+			thisForm.Panel2.Visible = false;
+			thisForm.TabControl1.Visible = true;
+			thisForm.SplitContainer1.Visible = true;
+			thisForm.SplitContainer1.Panel1Collapsed = false;
+			thisForm.SplitContainer1.Height = 363;
 		}
 
 		private void Button_NEW_Click(object sender, EventArgs e)
@@ -4413,7 +4412,7 @@ namespace WindowsApplication1
 		private void Button_SAVE_Click(object sender, EventArgs e)
 		{
 			int i;
-			Excel.Application applicationClass = new ApplicationClass()
+			Microsoft.Office.Interop.Excel.Application applicationClass = new Microsoft.Office.Interop.Excel.ApplicationClass()
 			{
 				Visible = false
 			};
@@ -4433,7 +4432,7 @@ namespace WindowsApplication1
 			string[,] strArrays = new string[8, 71];
 			for (i = 1; i <= 70; i = checked(i + 1))
 			{
-				strArrays[0, i] = worksheet1[string.Concat("A", Conversions.ToString(i)), Missing.Value].Value.ToString();
+				strArrays[0, i] = worksheet1.Range[string.Concat("A", Conversions.ToString(i)), Missing.Value].Value.ToString();
 			}
 			i = 1;
 			if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.TabControl1.SelectedTab.Name.ToString(), "TabPage06", false) == 0)
@@ -4441,16 +4440,16 @@ namespace WindowsApplication1
 				strArrays[1, 0] = "orb";
 				while (i <= 64)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
 					{
-						strArrays[1, i] = worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[1, i] = worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
 				i = 1;
 				while (count <= (long)worksheets.Rows.Count)
 				{
-					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
+					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets.Range[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
 					{
 						str = count;
 						count = checked(count + (long)worksheets.Rows.Count);
@@ -4460,48 +4459,48 @@ namespace WindowsApplication1
 				count = (long)2;
 				if (!this.ckbxSubscripNeeded.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("sub_need", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("sub_need", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("sub_need", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("sub_need", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbxWeAreSubscribed.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("we_subscribe", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("we_subscribe", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("we_subscribe", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("we_subscribe", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
-				worksheets[string.Concat(this.ColHeads("sub_term", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripTerm.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("subFee", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripFeeAmt.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("sub_term", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripTerm.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("subFee", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripFeeAmt.Text.ToString();
 				if (!this.ckbxUseDatatree.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("dtree_desk", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("dtree_desk", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("dtree_desk", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("dtree_desk", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbxUseTapestry.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("tap", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("tap", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("tap", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("tap", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbxUseRedVision.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("rv", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("rv", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("rv", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("rv", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				string.Concat(this.ColHeads("comments", "orb", strArrays), Conversions.ToString(str));
-				worksheets[string.Concat(this.ColHeads("comments", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Comments.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("comments", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Comments.Text.ToString();
 				Marshal.FinalReleaseComObject(worksheets);
 			}
 			else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.TabControl1.SelectedTab.Name.ToString(), "TabPage05", false) == 0)
@@ -4509,16 +4508,16 @@ namespace WindowsApplication1
 				strArrays[1, 0] = "orb";
 				while (i <= 64)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
 					{
-						strArrays[1, i] = worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[1, i] = worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
 				i = 1;
 				while (count <= (long)worksheets.Rows.Count)
 				{
-					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
+					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets.Range[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
 					{
 						str = count;
 						count = checked(count + (long)worksheets.Rows.Count);
@@ -4528,27 +4527,27 @@ namespace WindowsApplication1
 				count = (long)2;
 				if (!this.ckbxProdIns.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("ins", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("ins", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("ins", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("ins", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbxProdPropReports.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("props", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("props", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("props", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("props", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbxProdDocRet.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("copy", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
+					worksheets.Range[string.Concat(this.ColHeads("copy", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("copy", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
+					worksheets.Range[string.Concat(this.ColHeads("copy", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Yes";
 				}
 				Marshal.FinalReleaseComObject(worksheets);
 			}
@@ -4557,16 +4556,16 @@ namespace WindowsApplication1
 				strArrays[1, 0] = "orb";
 				while (i <= 64)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), null, false) != 0)
 					{
-						strArrays[1, i] = worksheets[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[1, i] = worksheets.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
 				i = 1;
 				while (count <= (long)worksheets.Rows.Count)
 				{
-					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
+					if (Conversions.ToBoolean(Microsoft.VisualBasic.CompilerServices.Operators.AndObject(Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false), Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(this.cboxCounty_EditORB.SelectedItem, worksheets.Range[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value, false))))
 					{
 						str = count;
 						count = checked(count + (long)worksheets.Rows.Count);
@@ -4576,55 +4575,55 @@ namespace WindowsApplication1
 				count = (long)2;
 				if (!this.ckbxLoginRequired.Checked)
 				{
-					worksheets[string.Concat(this.ColHeads("login_req", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "N";
+					worksheets.Range[string.Concat(this.ColHeads("login_req", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "N";
 				}
 				else
 				{
-					worksheets[string.Concat(this.ColHeads("login_req", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Y";
+					worksheets.Range[string.Concat(this.ColHeads("login_req", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = "Y";
 				}
-				worksheets[string.Concat(this.ColHeads("land_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("county_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("county_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("index_date", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexDate.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("img_date", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandImageDate.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("copy_source", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CopySource.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("copy_pmt_method", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Copy_Pmt_Method.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("copyFeeAmt", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtCopyFeeAmount.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("index_pmt_method", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Index_Pmt_Method.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("subscrFeeAmt", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripFeeAmt.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("subscr_term", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripTerm.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("assessor_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("assessor_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("assessor_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("delinq_tax_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_DelinqTaxURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax2_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Tax2URL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax2_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxLocalUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("tax2_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxLocalPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("ucc_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_UCC_url.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("muniCourt_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("muni_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("muni_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("prothon_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("pro_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("pro_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("sheriff_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SheriffURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("court_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtIndexURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("court_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("court_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("foreclosure_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ForeclosureURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("probate_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbateURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("probate_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbateUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("probate_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbatePwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("map_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MapURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("plat_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_PlatsURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("county_homepage", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CountyHomeURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("other_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURL.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("other_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURLUsername.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("other_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURLPwd.Text.ToString();
-				worksheets[string.Concat(this.ColHeads("index_source", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexSource.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("land_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("county_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("county_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("index_date", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexDate.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("img_date", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandImageDate.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("copy_source", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CopySource.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("copy_pmt_method", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Copy_Pmt_Method.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("copyFeeAmt", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtCopyFeeAmount.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("index_pmt_method", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Index_Pmt_Method.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("subscrFeeAmt", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripFeeAmt.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("subscr_term", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SubscripTerm.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("assessor_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("assessor_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("assessor_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_AssessorPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxCountyPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("delinq_tax_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_DelinqTaxURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax2_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_Tax2URL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax2_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxLocalUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("tax2_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_TaxLocalPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("ucc_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_UCC_url.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("muniCourt_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("muni_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("muni_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MuniCtPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("prothon_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("pro_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("pro_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProthonPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("sheriff_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_SheriffURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("court_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtIndexURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("court_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("court_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CivCtPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("foreclosure_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ForeclosureURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("probate_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbateURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("probate_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbateUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("probate_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_ProbatePwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("map_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_MapURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("plat_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_PlatsURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("county_homepage", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_CountyHomeURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("other_url", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURL.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("other_user", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURLUsername.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("other_pwd", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_OtherURLPwd.Text.ToString();
+				worksheets.Range[string.Concat(this.ColHeads("index_source", "orb", strArrays), Conversions.ToString(str)), Missing.Value].Value = this.txtInput_LandIndexSource.Text.ToString();
 				Marshal.FinalReleaseComObject(worksheets);
 			}
 			else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.TabControl1.SelectedTab.Name.ToString(), "TabPage03", false) == 0)
@@ -4632,9 +4631,9 @@ namespace WindowsApplication1
 				strArrays[2, 0] = "taxes";
 				while (i <= 21)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheet[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheet.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
 					{
-						strArrays[2, i] = worksheet[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[2, i] = worksheet.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
@@ -4643,9 +4642,9 @@ namespace WindowsApplication1
 				this.cboxCounty_EditORB.Text = this.txtInput_NewTaxCounty.Text.ToUpper();
 				this.cboxTaxAuth_EditORB.Text = this.txtInput_TaxAuthName.Text.ToUpper();
 				this.cboxTaxAuthType_EditORB.Text = this.txtInput_TaxAuthType.Text.ToUpper();
-				while (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value)), "", false) != 0)
+				while (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value)), "", false) != 0)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxState_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxCounty_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxTaxAuth_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet[string.Concat("C", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxTaxAuthType_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet[string.Concat("D", Conversions.ToString(count)), Missing.Value].Value)), false) == 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxState_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxCounty_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet.Range[string.Concat("B", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxTaxAuth_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet.Range[string.Concat("C", Conversions.ToString(count)), Missing.Value].Value)), false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cboxTaxAuthType_EditORB.Text, Convert.ToString(RuntimeHelpers.GetObjectValue(worksheet.Range[string.Concat("D", Conversions.ToString(count)), Missing.Value].Value)), false) == 0)
 					{
 						upper = count;
 					}
@@ -4656,27 +4655,27 @@ namespace WindowsApplication1
 					upper = count;
 				}
 				count = (long)2;
-				worksheet[string.Concat(this.ColHeads("st", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_NewTaxState.Text.ToString().ToUpper();
-				worksheet[string.Concat(this.ColHeads("county", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_NewTaxCounty.Text.ToString().ToUpper();
-				worksheet[string.Concat(this.ColHeads("tax_auth", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxAuthName.Text.ToString().ToUpper();
-				worksheet[string.Concat(this.ColHeads("tax_auth_type", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxAuthType.Text.ToString().ToUpper();
-				worksheet[string.Concat(this.ColHeads("dt_verified", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txt_TaxDateVerified.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("locTx_url", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_LocalTaxURL.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("phone", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeePhone.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("fax", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeFax.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("cert_req", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.chkbxTaxCertRequired.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("cert_fee", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxCertFee.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("cycle", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.cboxInput_TaxBillingCycle.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("due_dates", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxDueDates.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("hours", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxOfficeHours.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("notes", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxComments.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("tat", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxCertTAT.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("payee", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeName.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("street1", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeStr1.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("street2", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeStr2.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("city", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeCity.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("tx_st", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeState.Text.ToString();
-				worksheet[string.Concat(this.ColHeads("zip", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeZip.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("st", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_NewTaxState.Text.ToString().ToUpper();
+				worksheet.Range[string.Concat(this.ColHeads("county", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_NewTaxCounty.Text.ToString().ToUpper();
+				worksheet.Range[string.Concat(this.ColHeads("tax_auth", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxAuthName.Text.ToString().ToUpper();
+				worksheet.Range[string.Concat(this.ColHeads("tax_auth_type", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxAuthType.Text.ToString().ToUpper();
+				worksheet.Range[string.Concat(this.ColHeads("dt_verified", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txt_TaxDateVerified.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("locTx_url", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_LocalTaxURL.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("phone", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeePhone.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("fax", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeFax.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("cert_req", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.chkbxTaxCertRequired.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("cert_fee", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxCertFee.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("cycle", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.cboxInput_TaxBillingCycle.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("due_dates", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxDueDates.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("hours", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxOfficeHours.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("notes", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxComments.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("tat", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxCertTAT.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("payee", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeName.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("street1", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeStr1.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("street2", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeStr2.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("city", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeCity.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("tx_st", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeState.Text.ToString();
+				worksheet.Range[string.Concat(this.ColHeads("zip", "taxes", strArrays), Conversions.ToString(upper)), Missing.Value].Value = this.txtInput_TaxPayeeZip.Text.ToString();
 				Marshal.FinalReleaseComObject(worksheet);
 			}
 			else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.TabControl1.SelectedTab.Name.ToString(), "TabPage07", false) == 0)
@@ -4684,16 +4683,16 @@ namespace WindowsApplication1
 				strArrays[4, 0] = "statutes";
 				while (i <= 27)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets1[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets1.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
 					{
-						strArrays[4, i] = worksheets1[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[4, i] = worksheets1.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
 				i = 1;
 				while (count <= (long)worksheets1.Rows.Count)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets1[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false))
+					if (Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets1.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false))
 					{
 						num = count;
 						count = checked(count + (long)worksheets1.Rows.Count);
@@ -4701,28 +4700,28 @@ namespace WindowsApplication1
 					count = checked(count + (long)1);
 				}
 				count = (long)2;
-				worksheets1[string.Concat(this.ColHeads("mtg1RD", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MtgRD.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("mtg1AM", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MtgAM.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("helAM", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HelocAM.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("helRD", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HelocRD.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("mech_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MechLiens.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("NOC", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Notice.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("LP", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_LisPendens.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("HOA", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HOALien.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("hosp_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HospLien.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("claim_of_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_ClaimOfLien.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("jgmt", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Jgmt.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("supt_obl", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_SupportObl.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("state_jgmt", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_StateJgmt.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("aft_acq_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_AfterAcquired.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("TE_rule", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_TE_Rule.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("cred_claims", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_CreditorClaims.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("pers_tx_liens", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_PersonalTax.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("forecl_redem_per", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_ForeclosureRedem.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("tax_redem_per", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_TaxTakingRedem.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("vesting", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Vesting.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("spousal", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_SpousalState.Text.ToString();
-				worksheets1[string.Concat(this.ColHeads("notes", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtSOL_notes.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("mtg1RD", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MtgRD.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("mtg1AM", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MtgAM.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("helAM", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HelocAM.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("helRD", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HelocRD.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("mech_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_MechLiens.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("NOC", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Notice.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("LP", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_LisPendens.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("HOA", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HOALien.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("hosp_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_HospLien.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("claim_of_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_ClaimOfLien.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("jgmt", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Jgmt.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("supt_obl", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_SupportObl.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("state_jgmt", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_StateJgmt.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("aft_acq_lien", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_AfterAcquired.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("TE_rule", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_TE_Rule.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("cred_claims", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_CreditorClaims.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("pers_tx_liens", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_PersonalTax.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("forecl_redem_per", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_ForeclosureRedem.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("tax_redem_per", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_TaxTakingRedem.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("vesting", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_Vesting.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("spousal", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtInput_SOL_SpousalState.Text.ToString();
+				worksheets1.Range[string.Concat(this.ColHeads("notes", "statutes", strArrays), Conversions.ToString(num)), Missing.Value].Value = this.txtSOL_notes.Text.ToString();
 				Marshal.FinalReleaseComObject(worksheets1);
 			}
 			else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.TabControl1.SelectedTab.Name.ToString(), "TabPage1", false) == 0)
@@ -4730,16 +4729,16 @@ namespace WindowsApplication1
 				strArrays[7, 0] = "misc";
 				while (i <= 17)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets2[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
+					if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(worksheets2.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString(), "", false) != 0)
 					{
-						strArrays[7, i] = worksheets2[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
+						strArrays[7, i] = worksheets2.Range[string.Concat(strArrays[0, i], Conversions.ToString(1)), Missing.Value].Value.ToString();
 					}
 					i = checked(i + 1);
 				}
 				i = 1;
 				while (count <= (long)worksheets2.Rows.Count)
 				{
-					if (Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets2[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false))
+					if (Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(this.cboxState_EditORB.SelectedItem, worksheets2.Range[string.Concat("A", Conversions.ToString(count)), Missing.Value].Value, false))
 					{
 						str1 = count;
 						count = checked(count + (long)worksheets2.Rows.Count);
@@ -4747,47 +4746,47 @@ namespace WindowsApplication1
 					count = checked(count + (long)1);
 				}
 				count = (long)2;
-				worksheets2[string.Concat(this.ColHeads("sec_state_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_Sec_of_State_url.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("dept_ins_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_DOIurl.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("atty_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_AttyNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("homestead_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_HomesteadNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("deed_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_DeedNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("policy_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_PolicyNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("foreclosure_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_ForeclosureNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("probate_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_ProbateNotes.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("notary_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_NotaryURL.Text.ToString();
-				worksheets2[string.Concat(this.ColHeads("deed_prep", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.cbox_DeedPrep.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("sec_state_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_Sec_of_State_url.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("dept_ins_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_DOIurl.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("atty_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_AttyNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("homestead_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_HomesteadNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("deed_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_DeedNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("policy_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_PolicyNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("foreclosure_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_ForeclosureNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("probate_notes", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_ProbateNotes.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("notary_url", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.txtInput_NotaryURL.Text.ToString();
+				worksheets2.Range[string.Concat(this.ColHeads("deed_prep", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = this.cbox_DeedPrep.Text.ToString();
 				if (!this.ckbx_Homestead.Checked)
 				{
-					worksheets2[string.Concat(this.ColHeads("homestead", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
+					worksheets2.Range[string.Concat(this.ColHeads("homestead", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets2[string.Concat(this.ColHeads("homestead", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
+					worksheets2.Range[string.Concat(this.ColHeads("homestead", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbx_AttyTitleSearch.Checked)
 				{
-					worksheets2[string.Concat(this.ColHeads("atty_search", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
+					worksheets2.Range[string.Concat(this.ColHeads("atty_search", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets2[string.Concat(this.ColHeads("atty_search", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
+					worksheets2.Range[string.Concat(this.ColHeads("atty_search", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbx_AttyCloser.Checked)
 				{
-					worksheets2[string.Concat(this.ColHeads("atty_close", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
+					worksheets2.Range[string.Concat(this.ColHeads("atty_close", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets2[string.Concat(this.ColHeads("atty_close", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
+					worksheets2.Range[string.Concat(this.ColHeads("atty_close", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
 				}
 				if (!this.ckbx_BeingClause.Checked)
 				{
-					worksheets2[string.Concat(this.ColHeads("being_clause", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
+					worksheets2.Range[string.Concat(this.ColHeads("being_clause", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "No";
 				}
 				else
 				{
-					worksheets2[string.Concat(this.ColHeads("being_clause", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
+					worksheets2.Range[string.Concat(this.ColHeads("being_clause", "misc", strArrays), Conversions.ToString(str1)), Missing.Value].Value = "Yes";
 				}
 				Marshal.FinalReleaseComObject(worksheets);
 			}
@@ -4946,6 +4945,7 @@ namespace WindowsApplication1
 							}
 						Label4:
 							this.ckbxWeAreSubscribed.Checked = true;
+						Label3:
 							if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.orb_obj.F2tap, "Yes", false) == 0)
 							{
 								this.ckbxUseTapestry.Checked = true;

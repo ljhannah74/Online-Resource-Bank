@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace WindowsApplication1.My.Resources
+namespace WindowsApplication1
 {
 	[CompilerGenerated]
 	[DebuggerNonUserCode]
@@ -25,7 +25,7 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.My.Resources.Resources.ResourceManager.GetObject("clipboard", WindowsApplication1.My.Resources.Resources.resourceCulture));
+				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.Resources.ResourceManager.GetObject("clipboard", WindowsApplication1.Resources.resourceCulture));
 				return (Bitmap)objectValue;
 			}
 		}
@@ -35,11 +35,11 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				return WindowsApplication1.My.Resources.Resources.resourceCulture;
+				return WindowsApplication1.Resources.resourceCulture;
 			}
 			set
 			{
-				WindowsApplication1.My.Resources.Resources.resourceCulture = value;
+				WindowsApplication1.Resources.resourceCulture = value;
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.My.Resources.Resources.ResourceManager.GetObject("doc-icon", WindowsApplication1.My.Resources.Resources.resourceCulture));
+				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.Resources.ResourceManager.GetObject("doc-icon", WindowsApplication1.Resources.resourceCulture));
 				return (Bitmap)objectValue;
 			}
 		}
@@ -56,7 +56,7 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.My.Resources.Resources.ResourceManager.GetObject("ims-ORB logo", WindowsApplication1.My.Resources.Resources.resourceCulture));
+				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.Resources.ResourceManager.GetObject("ims-ORB logo", WindowsApplication1.Resources.resourceCulture));
 				return (Bitmap)objectValue;
 			}
 		}
@@ -66,11 +66,11 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				if (object.ReferenceEquals(WindowsApplication1.My.Resources.Resources.resourceMan, null))
+				if (object.ReferenceEquals(WindowsApplication1.Resources.resourceMan, null))
 				{
-					WindowsApplication1.My.Resources.Resources.resourceMan = new System.Resources.ResourceManager("WindowsApplication1.Resources", typeof(WindowsApplication1.My.Resources.Resources).Assembly);
+					WindowsApplication1.Resources.resourceMan = new System.Resources.ResourceManager("WindowsApplication1.Resources", typeof(WindowsApplication1.Resources).Assembly);
 				}
-				return WindowsApplication1.My.Resources.Resources.resourceMan;
+				return WindowsApplication1.Resources.resourceMan;
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.My.Resources.Resources.ResourceManager.GetObject("word_logo", WindowsApplication1.My.Resources.Resources.resourceCulture));
+				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.Resources.ResourceManager.GetObject("word_logo", WindowsApplication1.Resources.resourceCulture));
 				return (Bitmap)objectValue;
 			}
 		}
@@ -87,7 +87,7 @@ namespace WindowsApplication1.My.Resources
 		{
 			get
 			{
-				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.My.Resources.Resources.ResourceManager.GetObject("xls-icon", WindowsApplication1.My.Resources.Resources.resourceCulture));
+				object objectValue = RuntimeHelpers.GetObjectValue(WindowsApplication1.Resources.ResourceManager.GetObject("xls-icon", WindowsApplication1.Resources.resourceCulture));
 				return (Bitmap)objectValue;
 			}
 		}
