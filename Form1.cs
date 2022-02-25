@@ -1512,8 +1512,8 @@ namespace WindowsApplication1
         [DebuggerStepThrough]
         private void InitializeComponent()
         {
-					this.pbxExport.Click += new EventHandler(form1.pbxExport_Click);
-		this.TabControl1.MouseClick += new MouseEventHandler(form1.TabPage1_Click);
+			this.pbxExport.Click += new EventHandler(form1.pbxExport_Click);
+			this.TabControl1.MouseClick += new MouseEventHandler(form1.TabPage1_Click);
             this.components = new System.ComponentModel.Container();
             ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(WindowsApplication1.Form1));
             DataGridViewCellStyle dataGridViewCellStyle = new DataGridViewCellStyle();
@@ -2066,64 +2066,61 @@ namespace WindowsApplication1
             this.ButtonExit.TabIndex = 84;
             this.ButtonExit.Text = "EXIT";
             this.ButtonExit.UseVisualStyleBackColor = false;
-
+			//
+			// Label36
+			//
             this.Label36.AutoSize = true;
             this.Label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label label36 = this.Label36;
-            point = new Point(305, 18);
-            label36.Location = point;
+            this.Label36.Location = new Point(305, 18);
             this.Label36.Name = "Label36";
-            Label label361 = this.Label36;
-            size = new System.Drawing.Size(54, 16);
-            label361.Size = size;
+            this.Label36.Size = new System.Drawing.Size(54, 16);
             this.Label36.TabIndex = 93;
             this.Label36.Text = "tax type";
+			//
+			// ComboBoxTaxType
+			//
             this.ComboBoxTaxType.DropDownHeight = 50;
             this.ComboBoxTaxType.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ComboBoxTaxType.ForeColor = Color.Indigo;
             this.ComboBoxTaxType.FormattingEnabled = true;
             this.ComboBoxTaxType.IntegralHeight = false;
             this.ComboBoxTaxType.ItemHeight = 12;
-            ComboBox comboBoxTaxType = this.ComboBoxTaxType;
-            point = new Point(305, 37);
-            comboBoxTaxType.Location = point;
+            this.ComboBoxTaxType.Location = new Point(305, 37);
             this.ComboBoxTaxType.MaxDropDownItems = 10;
             this.ComboBoxTaxType.Name = "ComboBoxTaxType";
-            ComboBox comboBox = this.ComboBoxTaxType;
-            size = new System.Drawing.Size(120, 20);
-            comboBox.Size = size;
+            this.ComboBoxTaxType.Size =new System.Drawing.Size(120, 20);
             this.ComboBoxTaxType.TabIndex = 92;
+			//
+			// GroupBox6
+			//
             this.GroupBox6.BackColor = Color.FromArgb(220, 185, 255);
             this.GroupBox6.Controls.Add(this.cbxAddtlLinks);
             this.GroupBox6.FlatStyle = FlatStyle.Flat;
             this.GroupBox6.Font = new System.Drawing.Font("Segoe UI", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            GroupBox groupBox6 = this.GroupBox6;
-            point = new Point(660, 25);
-            groupBox6.Location = point;
+            this.GroupBox6.Location = new Point(660, 25);
             this.GroupBox6.Name = "GroupBox6";
-            GroupBox groupBox = this.GroupBox6;
-            size = new System.Drawing.Size(145, 38);
-            groupBox.Size = size;
+            this.GroupBox6.Size = new System.Drawing.Size(145, 38);
             this.GroupBox6.TabIndex = 90;
             this.GroupBox6.TabStop = false;
             this.GroupBox6.Text = "Additional Links";
+			//
+			// cbxAddtlLinks
+			//
             this.cbxAddtlLinks.DropDownHeight = 150;
             this.cbxAddtlLinks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.cbxAddtlLinks.ForeColor = Color.Indigo;
             this.cbxAddtlLinks.FormattingEnabled = true;
             this.cbxAddtlLinks.IntegralHeight = false;
             this.cbxAddtlLinks.ItemHeight = 12;
-            ComboBox.ObjectCollection items = this.cbxAddtlLinks.Items;
             object[] objArray = new object[] { "CPL-Ticor", "CPL-Stewart", "Ernst Publishing", "FDIC.gov", "IRS.gov", "Justia (Courts)", "MERS-Releases", "NetrOnline", "Old Republic", "PACER", "Real Quest", "Stewart New York", "Stewart Title Guaranty", "Stewart VirtUW", "Ticor NTI Web", "US Courts Map", "USPS.com", "ZipCode Lookup" };
-            items.AddRange(objArray);
-            ComboBox comboBox1 = this.cbxAddtlLinks;
-            point = new Point(6, 13);
-            comboBox1.Location = point;
+            this.cbxAddtlLinks.Items.AddRange(objArray);
+            this.cbxAddtlLinks.Location = new Point(6, 13);
             this.cbxAddtlLinks.Name = "cbxAddtlLinks";
-            ComboBox comboBox2 = this.cbxAddtlLinks;
-            size = new System.Drawing.Size(133, 20);
-            comboBox2.Size = size;
+            this.cbxAddtlLinks.Size = new System.Drawing.Size(133, 20)
             this.cbxAddtlLinks.TabIndex = 69;
+			//
+			// Button_EditORB
+			//
             this.Button_EditORB.BackColor = Color.FromArgb(220, 185, 255);
             this.Button_EditORB.Cursor = Cursors.Hand;
             this.Button_EditORB.FlatAppearance.BorderColor = Color.Purple;
@@ -2132,17 +2129,16 @@ namespace WindowsApplication1
             this.Button_EditORB.FlatStyle = FlatStyle.Flat;
             this.Button_EditORB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             this.Button_EditORB.ForeColor = Color.Indigo;
-            Button buttonEditORB = this.Button_EditORB;
-            point = new Point(585, 25);
-            buttonEditORB.Location = point;
+            this.Button_EditORB.Location  = new Point(585, 25);
             this.Button_EditORB.Name = "Button_EditORB";
-            Button buttonEditORB1 = this.Button_EditORB;
-            size = new System.Drawing.Size(72, 35);
-            buttonEditORB1.Size = size;
+            this.Button_EditORB.Size = new System.Drawing.Size(72, 35);
             this.Button_EditORB.TabIndex = 91;
             this.Button_EditORB.Text = "EDIT";
             this.Button_EditORB.UseVisualStyleBackColor = false;
             this.Button_EditORB.Click += new EventHandler(form1.Button_EditORB_Click);
+			//
+			// Button_Search
+			//
             this.Button_Search.BackColor = Color.FromArgb(220, 185, 255);
             this.Button_Search.Cursor = Cursors.Hand;
             this.Button_Search.FlatAppearance.BorderColor = Color.Purple;
@@ -2151,35 +2147,32 @@ namespace WindowsApplication1
             this.Button_Search.FlatStyle = FlatStyle.Flat;
             this.Button_Search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             this.Button_Search.ForeColor = Color.Indigo;
-            Button buttonSearch = this.Button_Search;
-            point = new Point(433, 25);
-            buttonSearch.Location = point;
+            this.Button_Search.Location = new Point(433, 25);
             this.Button_Search.Name = "Button_Search";
-            Button buttonSearch1 = this.Button_Search;
-            size = new System.Drawing.Size(72, 35);
-            buttonSearch1.Size = size;
+            this.Button_Search.Size = new System.Drawing.Size(72, 35);
             this.Button_Search.TabIndex = 87;
             this.Button_Search.Text = "SEARCH";
             this.Button_Search.UseVisualStyleBackColor = false;
+			//
+			// ComboBoxState
+			//
             this.ComboBoxState.DropDownHeight = 100;
             this.ComboBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ComboBoxState.ForeColor = Color.Indigo;
             this.ComboBoxState.FormattingEnabled = true;
             this.ComboBoxState.IntegralHeight = false;
             this.ComboBoxState.ItemHeight = 12;
-            ComboBox.ObjectCollection objectCollections = this.ComboBoxState.Items;
             objArray = new object[] { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
-            objectCollections.AddRange(objArray);
-            ComboBox comboBoxState = this.ComboBoxState;
-            point = new Point(3, 37);
-            comboBoxState.Location = point;
+            this.ComboBoxState.Items.AddRange(objArray);
+            this.ComboBoxState.Location = new Point(3, 37);
             this.ComboBoxState.MaxDropDownItems = 10;
             this.ComboBoxState.Name = "ComboBoxState";
-            ComboBox comboBoxState1 = this.ComboBoxState;
-            size = new System.Drawing.Size(44, 20);
-            comboBoxState1.Size = size;
+            this.ComboBoxState.Size = new System.Drawing.Size(44, 20);
             this.ComboBoxState.Sorted = true;
             this.ComboBoxState.TabIndex = 82;
+			//
+			// ComboBoxCounty
+			//
             this.ComboBoxCounty.DropDownHeight = 50;
             this.ComboBoxCounty.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ComboBoxCounty.ForeColor = Color.Indigo;
