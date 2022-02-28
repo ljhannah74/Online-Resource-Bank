@@ -8046,22 +8046,6 @@ namespace WindowsApplication1
 			}
 		}
 
-		[DebuggerNonUserCode]
-		protected override void Dispose(bool disposing)
-		{
-			try
-			{
-				if (disposing && this.components != null)
-				{
-					this.components.Dispose();
-				}
-			}
-			finally
-			{
-				base.Dispose(disposing);
-			}
-		}
-
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			this.TopMost = true;
@@ -12458,6 +12442,7 @@ namespace WindowsApplication1
 			this.linkLocTax3.Text = "Tax Web3";
 			this.linkLocTax3.VisitedLinkColor = Color.DarkSlateBlue;
 			this.pbxExport.Image = WindowsApplication1.My.Resources.Resources.doc_icon;
+			this.pbxExport.Click = new EventHandler(form1.pbxExport_Click);
 			PictureBox pictureBox10 = this.pbxExport;
 			point = new Point(542, 22);
 			pictureBox10.Location = point;
