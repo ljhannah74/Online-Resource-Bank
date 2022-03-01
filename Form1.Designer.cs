@@ -1,4 +1,5 @@
-﻿namespace WindowsApplication1
+﻿
+namespace WindowsApplication1
 {
 	partial class Form1
 	{       
@@ -25,9 +26,14 @@
 		private System.Windows.Forms.Label Label32;
 		private System.Windows.Forms.PictureBox pboxOpenRunSheet;
 		private System.Windows.Forms.ToolTip ToolTip1;
-		private System.Windows.Forms.SplitContainer SplitContainer1;
+		public System.Windows.Forms.SplitContainer SplitContainer1;
 		private System.Windows.Forms.GroupBox GroupBox7;
 		private System.Windows.Forms.GroupBox GroupBox4;
+		public System.Windows.Forms.Panel Panel2;
+		private System.Windows.Forms.ComboBox cbxAddtlLinks;
+		private System.Windows.Forms.Panel Panel1;
+		private System.Windows.Forms.GroupBox GroupBox6;
+		private System.Windows.Forms.GroupBox GroupBox10;
 		private System.Windows.Forms.Label LabelUseIns;
 		private System.Windows.Forms.Label LabelUseProps;
 		private System.Windows.Forms.Label LabelUseCopy;
@@ -55,7 +61,7 @@
 		private System.Windows.Forms.Label Label29;
 		private System.Windows.Forms.Label LabelCopy_source;
 		private System.Windows.Forms.Label lblOpenRunSheet;
-		private System.Windows.Forms.TabControl TabControl1;
+		public System.Windows.Forms.TabControl TabControl1;
 		private System.Windows.Forms.TabPage TabPg1Docs;
 		private System.Windows.Forms.TabPage TabPg2PhBk;
 		private System.Windows.Forms.TabPage TabPg3Cal;
@@ -281,7 +287,7 @@
 		private System.Windows.Forms.Label Label112;
 
 		
-		private System.Windows.Forms.GroupBox _GroupBox5;
+		private System.Windows.Forms.GroupBox GroupBox5;
 
 		
 		private System.Windows.Forms.Button ButtonResetDocs;
@@ -302,7 +308,7 @@
 		private System.Windows.Forms.Label lbl_NotFound;
 
 		
-		private System.Windows.Forms.GroupBox _GroupBox8;
+		private System.Windows.Forms.GroupBox GroupBox8;
 
 		
 		private System.Windows.Forms.TextBox TextBox4;
@@ -441,10 +447,6 @@
 
 		
 		private System.Windows.Forms.Label Label16;
-
-		
-		private System.Windows.Forms.GroupBox _GroupBox10;
-
 		
 		private System.Windows.Forms.Label Label19;
 
@@ -499,11 +501,6 @@
 		
 		private System.Windows.Forms.Label Label25;
 
-		
-		private System.Windows.Forms.Panel _Panel2;
-
-		
-		private System.Windows.Forms.Panel _Panel1;
 
 		
 		private System.Windows.Forms.Button ButtonExit;
@@ -514,11 +511,6 @@
 		
 		private System.Windows.Forms.ComboBox ComboBoxTaxType;
 
-		
-		private System.Windows.Forms.GroupBox _GroupBox6;
-
-		
-		private System.Windows.Forms.ComboBox _cbxAddtlLinks;
 
 		
 		private System.Windows.Forms.Button Button_EditORB;
@@ -875,7 +867,7 @@
 		private System.Windows.Forms.Label lbl_vstats_Jan;
 
 		
-		private System.Windows.Forms.GroupBox _GroupBox1;
+		private System.Windows.Forms.GroupBox GroupBox1;
 
 		
 		private System.Windows.Forms.Label lbl_vstats_YTD;

@@ -1424,23 +1424,6 @@ namespace WindowsApplication1
                 Process.Start(string.Concat(strArrays));
             }
         }
-
-        [DebuggerNonUserCode]
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                if (disposing && this.components != null)
-                {
-                    this.components.Dispose();
-                }
-            }
-            finally
-            {
-                base.Dispose(disposing);
-            }
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
@@ -2116,7 +2099,7 @@ namespace WindowsApplication1
             this.cbxAddtlLinks.Items.AddRange(objArray);
             this.cbxAddtlLinks.Location = new Point(6, 13);
             this.cbxAddtlLinks.Name = "cbxAddtlLinks";
-            this.cbxAddtlLinks.Size = new System.Drawing.Size(133, 20)
+            this.cbxAddtlLinks.Size = new System.Drawing.Size(133, 20);
             this.cbxAddtlLinks.TabIndex = 69;
 			//
 			// Button_EditORB
