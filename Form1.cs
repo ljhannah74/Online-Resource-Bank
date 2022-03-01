@@ -2162,63 +2162,58 @@ namespace WindowsApplication1
             this.ComboBoxCounty.FormattingEnabled = true;
             this.ComboBoxCounty.IntegralHeight = false;
             this.ComboBoxCounty.ItemHeight = 12;
-            ComboBox comboBoxCounty = this.ComboBoxCounty;
-            point = new Point(53, 37);
-            comboBoxCounty.Location = point;
+            this.ComboBoxCounty.Location = new Point(53, 37);
             this.ComboBoxCounty.MaxDropDownItems = 10;
             this.ComboBoxCounty.Name = "ComboBoxCounty";
-            ComboBox comboBoxCounty1 = this.ComboBoxCounty;
-            size = new System.Drawing.Size(120, 20);
-            comboBoxCounty1.Size = size;
+            this.ComboBoxCounty.Size = new System.Drawing.Size(120, 20);
             this.ComboBoxCounty.TabIndex = 83;
+            //
+            // Label2
+            //
             this.Label2.AutoSize = true;
             this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label label2 = this.Label2;
-            point = new Point(53, 18);
-            label2.Location = point;
+            this.Label2.Location = new Point(53, 18);
             this.Label2.Name = "Label2";
-            Label label21 = this.Label2;
-            size = new System.Drawing.Size(47, 16);
-            label21.Size = size;
+            this.Label2.Size = new System.Drawing.Size(47, 16);
             this.Label2.TabIndex = 86;
             this.Label2.Text = "county";
+            //
+            // Label1
+            //
             this.Label1.AutoSize = true;
             this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label label1 = this.Label1;
-            point = new Point(3, 18);
-            label1.Location = point;
+            this.Label1.Location = new Point(3, 18);
             this.Label1.Name = "Label1";
-            Label label11 = this.Label1;
-            size = new System.Drawing.Size(37, 16);
-            label11.Size = size;
+            this.Label1.Size = new System.Drawing.Size(37, 16);
             this.Label1.TabIndex = 84;
             this.Label1.Text = "state";
+            //
+            // Label3
+            //
             this.Label3.AutoSize = true;
             this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label label3 = this.Label3;
-            point = new Point(179, 18);
-            label3.Location = point;
+            this.Label3.Location = new Point(179, 18);
             this.Label3.Name = "Label3";
-            Label label31 = this.Label3;
-            size = new System.Drawing.Size(78, 16);
-            label31.Size = size;
+            this.Label3.Size = new System.Drawing.Size(78, 16);
             this.Label3.TabIndex = 89;
             this.Label3.Text = "tax authority";
+            //
+            // ComboBoxTaxAuth
+            //
             this.ComboBoxTaxAuth.DropDownHeight = 50;
             this.ComboBoxTaxAuth.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ComboBoxTaxAuth.ForeColor = Color.Indigo;
             this.ComboBoxTaxAuth.FormattingEnabled = true;
             this.ComboBoxTaxAuth.IntegralHeight = false;
             this.ComboBoxTaxAuth.ItemHeight = 12;
-            ComboBox comboBoxTaxAuth = this.ComboBoxTaxAuth;
-            point = new Point(179, 37);
-            comboBoxTaxAuth.Location = point;
+            this.ComboBoxTaxAuth.Location = new Point(179, 37);
             this.ComboBoxTaxAuth.MaxDropDownItems = 10;
             this.ComboBoxTaxAuth.Name = "ComboBoxTaxAuth";
-            ComboBox comboBoxTaxAuth1 = this.ComboBoxTaxAuth;
-            size = new System.Drawing.Size(120, 20);
-            comboBoxTaxAuth1.Size = size;
+            this.ComboBoxTaxAuth.Size = new System.Drawing.Size(120, 20);
             this.ComboBoxTaxAuth.TabIndex = 85;
+            //
+            // ButtonReset
+            //
             this.ButtonReset.BackColor = Color.FromArgb(220, 185, 255);
             this.ButtonReset.Cursor = Cursors.Hand;
             this.ButtonReset.FlatAppearance.BorderColor = Color.Purple;
@@ -2227,16 +2222,15 @@ namespace WindowsApplication1
             this.ButtonReset.FlatStyle = FlatStyle.Flat;
             this.ButtonReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
             this.ButtonReset.ForeColor = Color.Indigo;
-            Button buttonReset = this.ButtonReset;
-            point = new Point(509, 25);
-            buttonReset.Location = point;
+            this.ButtonReset.Location = new Point(509, 25);
             this.ButtonReset.Name = "ButtonReset";
-            Button buttonReset1 = this.ButtonReset;
-            size = new System.Drawing.Size(72, 35);
-            buttonReset1.Size = size;
+            this.ButtonReset.Size = new System.Drawing.Size(72, 35);
             this.ButtonReset.TabIndex = 88;
             this.ButtonReset.Text = "RESET";
             this.ButtonReset.UseVisualStyleBackColor = false;
+            // 
+            // GroupBox10
+            //
             this.GroupBox10.BackColor = Color.GhostWhite;
             this.GroupBox10.Controls.Add(this.lbl_SubTerm);
             this.GroupBox10.Controls.Add(this.Label135);
@@ -2252,160 +2246,147 @@ namespace WindowsApplication1
             this.GroupBox10.Controls.Add(this.LabelSubNeeded);
             this.GroupBox10.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
             this.GroupBox10.ForeColor = Color.FromArgb(64, 64, 64);
-            GroupBox groupBox10 = this.GroupBox10;
-            point = new Point(666, 88);
-            groupBox10.Location = point;
+            this.GroupBox10.Location = new Point(666, 88);
             this.GroupBox10.Name = "GroupBox10";
-            GroupBox groupBox101 = this.GroupBox10;
-            size = new System.Drawing.Size(152, 149);
-            groupBox101.Size = size;
+            this.GroupBox10.Size = new System.Drawing.Size(152, 149);
             this.GroupBox10.TabIndex = 189;
             this.GroupBox10.TabStop = false;
             this.GroupBox10.Text = "INDEX SUBSCRIP'S";
+            //
+            // lbl_SubTerm
+            //
             this.lbl_SubTerm.AutoSize = true;
             this.lbl_SubTerm.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.lbl_SubTerm.ForeColor = Color.Black;
-            Label lblSubTerm = this.lbl_SubTerm;
-            point = new Point(86, 72);
-            lblSubTerm.Location = point;
+            this.lbl_SubTerm.Location = new Point(86, 72);
             this.lbl_SubTerm.Name = "lbl_SubTerm";
-            Label lblSubTerm1 = this.lbl_SubTerm;
-            size = new System.Drawing.Size(9, 12);
-            lblSubTerm1.Size = size;
+            this.lbl_SubTerm.Size = new System.Drawing.Size(9, 12);
             this.lbl_SubTerm.TabIndex = 74;
             this.lbl_SubTerm.Text = "*";
+            //
+            // Label135
+            //
             this.Label135.AutoSize = true;
             this.Label135.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label135.ForeColor = Color.DarkSlateBlue;
-            Label label135 = this.Label135;
-            point = new Point(6, 72);
-            label135.Location = point;
+            this.Label135.Location = new Point(6, 72);
             this.Label135.Name = "Label135";
-            Label label1351 = this.Label135;
-            size = new System.Drawing.Size(74, 12);
-            label1351.Size = size;
+            this.Label135.Size = new System.Drawing.Size(74, 12);
             this.Label135.TabIndex = 72;
             this.Label135.Text = "Subscrip. Term: ";
+            //
+            // lbl_IndexFeeAmt
+            //
             this.lbl_IndexFeeAmt.AutoSize = true;
             this.lbl_IndexFeeAmt.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.lbl_IndexFeeAmt.ForeColor = Color.Black;
-            Label lblIndexFeeAmt = this.lbl_IndexFeeAmt;
-            point = new Point(73, 89);
-            lblIndexFeeAmt.Location = point;
+            this.lbl_IndexFeeAmt.Location = new Point(73, 89);
             this.lbl_IndexFeeAmt.Name = "lbl_IndexFeeAmt";
-            Label lblIndexFeeAmt1 = this.lbl_IndexFeeAmt;
-            size = new System.Drawing.Size(9, 12);
-            lblIndexFeeAmt1.Size = size;
+            this.lbl_IndexFeeAmt.Size = new System.Drawing.Size(9, 12);
             this.lbl_IndexFeeAmt.TabIndex = 71;
             this.lbl_IndexFeeAmt.Text = "*";
+            //
+            // Label19
+            //
             this.Label19.AutoSize = true;
             this.Label19.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label19.ForeColor = Color.DarkSlateBlue;
-            Label label19 = this.Label19;
-            point = new Point(6, 54);
-            label19.Location = point;
+            this.Label19.Location = new Point(6, 54);
             this.Label19.Name = "Label19";
-            Label label191 = this.Label19;
-            size = new System.Drawing.Size(81, 12);
-            label191.Size = size;
+            this.Label19.Size = new System.Drawing.Size(81, 12);
             this.Label19.TabIndex = 68;
             this.Label19.Text = "Do we subscribe?";
+            //
+            // Label13
+            //
             this.Label13.AutoSize = true;
             this.Label13.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label13.ForeColor = Color.DarkSlateBlue;
-            Label label13 = this.Label13;
-            point = new Point(6, 89);
-            label13.Location = point;
+            this.Label13.Location = new Point(6, 89);
             this.Label13.Name = "Label13";
-            Label label131 = this.Label13;
-            size = new System.Drawing.Size(67, 12);
-            label131.Size = size;
+            this.Label13.Size = new System.Drawing.Size(67, 12);
             this.Label13.TabIndex = 70;
             this.Label13.Text = "Subscrip. Fee: ";
+            //
+            // lbl_WeSubscribe
+            //
             this.lbl_WeSubscribe.AutoSize = true;
             this.lbl_WeSubscribe.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.lbl_WeSubscribe.ForeColor = Color.Black;
-            Label lblWeSubscribe = this.lbl_WeSubscribe;
-            point = new Point(93, 54);
-            lblWeSubscribe.Location = point;
+            this.lbl_WeSubscribe.Location = new Point(93, 54);
             this.lbl_WeSubscribe.Name = "lbl_WeSubscribe";
-            Label lblWeSubscribe1 = this.lbl_WeSubscribe;
-            size = new System.Drawing.Size(9, 12);
-            lblWeSubscribe1.Size = size;
+            this.lbl_WeSubscribe.Size = new System.Drawing.Size(9, 12);
             this.lbl_WeSubscribe.TabIndex = 69;
             this.lbl_WeSubscribe.Text = "*";
+            //
+            // lbl_IndexPmtMethod
+            //
             this.lbl_IndexPmtMethod.AutoSize = true;
             this.lbl_IndexPmtMethod.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.lbl_IndexPmtMethod.ForeColor = Color.Black;
-            Label lblIndexPmtMethod = this.lbl_IndexPmtMethod;
-            point = new Point(74, 107);
-            lblIndexPmtMethod.Location = point;
+            this.lbl_IndexPmtMethod.Location = new Point(74, 107);
             this.lbl_IndexPmtMethod.Name = "lbl_IndexPmtMethod";
-            Label lblIndexPmtMethod1 = this.lbl_IndexPmtMethod;
-            size = new System.Drawing.Size(9, 12);
-            lblIndexPmtMethod1.Size = size;
+            this.lbl_IndexPmtMethod.Size = new System.Drawing.Size(9, 12);
             this.lbl_IndexPmtMethod.TabIndex = 67;
             this.lbl_IndexPmtMethod.Text = "*";
+            //
+            // Label11
+            //
             this.Label11.AutoSize = true;
             this.Label11.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label11.ForeColor = Color.DarkSlateBlue;
-            Label label111 = this.Label11;
-            point = new Point(6, 36);
-            label111.Location = point;
+            this.Label11.Location = new Point(6, 36);
             this.Label11.Name = "Label11";
-            Label label112 = this.Label11;
-            size = new System.Drawing.Size(67, 12);
-            label112.Size = size;
+            this.Label11.Size = new System.Drawing.Size(67, 12);
             this.Label11.TabIndex = 66;
             this.Label11.Text = "Free Subscrip?";
+            //
+            // Label128
+            //
             this.Label128.AutoSize = true;
             this.Label128.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label128.ForeColor = Color.DarkSlateBlue;
-            Label label128 = this.Label128;
-            point = new Point(6, 107);
-            label128.Location = point;
+            this.Label128.Location = new Point(6, 107);
             this.Label128.Name = "Label128";
-            Label label1281 = this.Label128;
-            size = new System.Drawing.Size(66, 12);
-            label1281.Size = size;
+            this.Label128.Size = new System.Drawing.Size(66, 12);
             this.Label128.TabIndex = 66;
             this.Label128.Text = "Pmt Method: ";
+            //
+            // lbl_Free
+            //
             this.lbl_Free.AutoSize = true;
             this.lbl_Free.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.lbl_Free.ForeColor = Color.Black;
-            Label lblFree = this.lbl_Free;
-            point = new Point(86, 36);
-            lblFree.Location = point;
+            this.lbl_Free.Location = new Point(86, 36);
             this.lbl_Free.Name = "lbl_Free";
-            Label lblFree1 = this.lbl_Free;
-            size = new System.Drawing.Size(9, 12);
-            lblFree1.Size = size;
+            this.lbl_Free.Size = new System.Drawing.Size(9, 12);
             this.lbl_Free.TabIndex = 67;
             this.lbl_Free.Text = "*";
+            //
+            // Label30
+            //
             this.Label30.AutoSize = true;
             this.Label30.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label30.ForeColor = Color.DarkSlateBlue;
-            Label label30 = this.Label30;
-            point = new Point(6, 20);
-            label30.Location = point;
+            this.Label30.Location = new Point(6, 20);
             this.Label30.Name = "Label30";
-            Label label301 = this.Label30;
-            size = new System.Drawing.Size(78, 12);
-            label301.Size = size;
+            this.Label30.Size = new System.Drawing.Size(78, 12);
             this.Label30.TabIndex = 64;
             this.Label30.Text = "Subscr. Needed: ";
+            //
+            // LabelSubNeeded
+            //
             this.LabelSubNeeded.AutoSize = true;
             this.LabelSubNeeded.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.LabelSubNeeded.ForeColor = Color.Black;
-            Label labelSubNeeded = this.LabelSubNeeded;
-            point = new Point(86, 20);
-            labelSubNeeded.Location = point;
+            this.LabelSubNeeded.Location  = new Point(86, 20);
             this.LabelSubNeeded.Name = "LabelSubNeeded";
-            Label labelSubNeeded1 = this.LabelSubNeeded;
-            size = new System.Drawing.Size(9, 12);
-            labelSubNeeded1.Size = size;
+            this.LabelSubNeeded.Size = new System.Drawing.Size(9, 12);
             this.LabelSubNeeded.TabIndex = 65;
             this.LabelSubNeeded.Text = "*";
+            //
+            // GroupBox8
+            //
             this.GroupBox8.BackColor = Color.GhostWhite;
             this.GroupBox8.Controls.Add(this.TextBox4);
             this.GroupBox8.Controls.Add(this.ComboBox1);
@@ -2418,17 +2399,16 @@ namespace WindowsApplication1
             this.GroupBox8.Controls.Add(this.Label51);
             this.GroupBox8.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
             this.GroupBox8.ForeColor = Color.FromArgb(64, 64, 64);
-            GroupBox groupBox8 = this.GroupBox8;
-            point = new Point(675, 245);
-            groupBox8.Location = point;
+            this.GroupBox8.Location = new Point(675, 245);
             this.GroupBox8.Name = "GroupBox8";
-            GroupBox groupBox81 = this.GroupBox8;
-            size = new System.Drawing.Size(142, 238);
-            groupBox81.Size = size;
+            this.GroupBox8.Size = new System.Drawing.Size(142, 238);
             this.GroupBox8.TabIndex = 187;
             this.GroupBox8.TabStop = false;
             this.GroupBox8.Text = "DO NOT INSURE";
             this.GroupBox8.Visible = false;
+            //
+            // TextBox4
+            //
             this.TextBox4.BackColor = Color.Snow;
             this.TextBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.TextBox4.ForeColor = Color.Purple;
