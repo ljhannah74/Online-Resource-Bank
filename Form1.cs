@@ -2412,18 +2412,17 @@ namespace WindowsApplication1
             this.TextBox4.BackColor = Color.Snow;
             this.TextBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.TextBox4.ForeColor = Color.Purple;
-            TextBox textBox4 = this.TextBox4;
-            point = new Point(6, 155);
-            textBox4.Location = point;
+            this.TextBox4.Location  = new Point(6, 155);
             this.TextBox4.MaxLength = 100000;
             this.TextBox4.Multiline = true;
             this.TextBox4.Name = "TextBox4";
             this.TextBox4.ReadOnly = true;
             this.TextBox4.ScrollBars = ScrollBars.Vertical;
-            TextBox textBox = this.TextBox4;
-            size = new System.Drawing.Size(123, 72);
-            textBox.Size = size;
+            this.TextBox4.Size = new System.Drawing.Size(123, 72);
             this.TextBox4.TabIndex = 72;
+            //
+            // ComboBox1
+            //
             this.ComboBox1.DropDownHeight = 100;
             this.ComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ComboBox1.ForeColor = Color.Indigo;
@@ -2433,109 +2432,97 @@ namespace WindowsApplication1
             ComboBox.ObjectCollection items1 = this.ComboBox1.Items;
             objArray = new object[] { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
             items1.AddRange(objArray);
-            ComboBox comboBox11 = this.ComboBox1;
-            point = new Point(39, 110);
-            comboBox11.Location = point;
+            this.ComboBox1.Location = new Point(39, 110);
             this.ComboBox1.MaxDropDownItems = 10;
             this.ComboBox1.Name = "ComboBox1";
-            ComboBox comboBox12 = this.ComboBox1;
-            size = new System.Drawing.Size(44, 20);
-            comboBox12.Size = size;
+            this.ComboBox1.Size = new System.Drawing.Size(44, 20);
             this.ComboBox1.Sorted = true;
             this.ComboBox1.TabIndex = 71;
+            //
+            // Label40
+            //
             this.Label40.AutoSize = true;
             this.Label40.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.Label40.ForeColor = Color.DarkSlateBlue;
-            Label label40 = this.Label40;
-            point = new Point(6, 112);
-            label40.Location = point;
+            this.Label40.Location = new Point(6, 112);
             this.Label40.Name = "Label40";
-            Label label401 = this.Label40;
-            size = new System.Drawing.Size(33, 13);
-            label401.Size = size;
+            this.Label40.Size = new System.Drawing.Size(33, 13);
             this.Label40.TabIndex = 70;
             this.Label40.Text = "State";
-            Button button1 = this.Button1;
-            point = new Point(89, 110);
-            button1.Location = point;
+            //
+            // Button1
+            //
+            this.Button1.Location = new Point(89, 110);
             this.Button1.Name = "Button1";
-            Button button11 = this.Button1;
-            size = new System.Drawing.Size(40, 23);
-            button11.Size = size;
+            this.Button1.Size = new System.Drawing.Size(40, 23);
             this.Button1.TabIndex = 69;
             this.Button1.Text = "GO";
             this.Button1.UseVisualStyleBackColor = true;
-            TextBox textBox3 = this.TextBox3;
-            point = new Point(6, 81);
-            textBox3.Location = point;
+            //
+            // TextBox3
+            //
+            this.TextBox3;.Location = new Point(6, 81);
             this.TextBox3.Name = "TextBox3";
-            TextBox textBox31 = this.TextBox3;
-            size = new System.Drawing.Size(124, 23);
-            textBox31.Size = size;
+            this.TextBox3.Size = new System.Drawing.Size(124, 23);
             this.TextBox3.TabIndex = 68;
-            TextBox textBox2 = this.TextBox2;
-            point = new Point(6, 37);
-            textBox2.Location = point;
+            //
+            // TextBox2
+            //
+            this.TextBox2.Location = new Point(6, 37);
             this.TextBox2.Name = "TextBox2";
-            TextBox textBox21 = this.TextBox2;
-            size = new System.Drawing.Size(124, 23);
-            textBox21.Size = size;
+            this.TextBox2.Size = new System.Drawing.Size(124, 23);
             this.TextBox2.TabIndex = 67;
+            //
+            // Label41
+            //
             this.Label41.AutoSize = true;
             this.Label41.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.Label41.ForeColor = Color.Black;
-            Label label41 = this.Label41;
-            point = new Point(6, 137);
-            label41.Location = point;
+            this.Label41.Location = new Point(6, 137);
             this.Label41.Name = "Label41";
-            Label label411 = this.Label41;
-            size = new System.Drawing.Size(36, 15);
-            label411.Size = size;
+            this.Label41.Size = new System.Drawing.Size(36, 15);
             this.Label41.TabIndex = 66;
             this.Label41.Text = "result";
+            //
+            // Label50
+            //
             this.Label50.AutoSize = true;
             this.Label50.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.Label50.ForeColor = Color.DarkSlateBlue;
-            Label label50 = this.Label50;
-            point = new Point(6, 63);
-            label50.Location = point;
+            this.Label50.Location = new Point(6, 63);
             this.Label50.Name = "Label50";
-            Label label501 = this.Label50;
-            size = new System.Drawing.Size(64, 13);
-            label501.Size = size;
+            this.Label50.Size = new System.Drawing.Size(64, 13);
             this.Label50.TabIndex = 64;
             this.Label50.Text = "FIrst  Name";
+            //
+            // Label51
+            //
             this.Label51.AutoSize = true;
             this.Label51.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.Label51.ForeColor = Color.DarkSlateBlue;
-            Label label51 = this.Label51;
-            point = new Point(6, 22);
-            label51.Location = point;
+            this.Label51.Location = new Point(6, 22);
             this.Label51.Name = "Label51";
-            Label label511 = this.Label51;
-            size = new System.Drawing.Size(124, 13);
-            label511.Size = size;
+            this.Label51.Size = new System.Drawing.Size(124, 13);
             this.Label51.TabIndex = 63;
             this.Label51.Text = "Last Name or Company";
+            //
+            // GroupBox7
+            //
             this.GroupBox7.AutoSize = true;
             this.GroupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.GroupBox7.BackColor = Color.GhostWhite;
             this.GroupBox7.Controls.Add(this.TableLayoutPanel2);
             this.GroupBox7.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
             this.GroupBox7.ForeColor = Color.FromArgb(64, 64, 64);
-            GroupBox groupBox7 = this.GroupBox7;
-            point = new Point(7, 3);
-            groupBox7.Location = point;
-            GroupBox groupBox71 = this.GroupBox7;
-            size = new System.Drawing.Size(418, 235);
-            groupBox71.MinimumSize = size;
+            this.GroupBox7.Location = new Point(7, 3);
+            this.GroupBox7.Size = new System.Drawing.Size(418, 235);
             this.GroupBox7.Name = "GroupBox7";
-            GroupBox groupBox1 = this.GroupBox7;
-            size = new System.Drawing.Size(418, 412);
-            groupBox1.Size = size;
             this.GroupBox7.TabIndex = 184;
             this.GroupBox7.TabStop = false;
             this.GroupBox7.Text = "SEARCHABLE INDEXES";
+            //
+            // TableLayoutPanel2
+            //
             this.TableLayoutPanel2.AutoSize = true;
             this.TableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.TableLayoutPanel2.ColumnCount = 4;
@@ -2603,13 +2590,9 @@ namespace WindowsApplication1
             this.TableLayoutPanel2.Controls.Add(this.LinkLabel_SecState, 1, 16);
             this.TableLayoutPanel2.Controls.Add(this.LinkLabel_State_Code, 1, 17);
             this.TableLayoutPanel2.Controls.Add(this.LinkLabel_DeptIns, 1, 18);
-            TableLayoutPanel tableLayoutPanel2 = this.TableLayoutPanel2;
-            point = new Point(12, 22);
-            tableLayoutPanel2.Location = point;
+            this.TableLayoutPanel2.Location = new Point(12, 22);
             this.TableLayoutPanel2.Name = "TableLayoutPanel2";
-            TableLayoutPanel tableLayoutPanel = this.TableLayoutPanel2;
-            padding = new System.Windows.Forms.Padding(1);
-            tableLayoutPanel.Padding = padding;
+            this.TableLayoutPanel2.Padding = new System.Windows.Forms.Padding(1);
             this.TableLayoutPanel2.RowCount = 20;
             this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
             this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
