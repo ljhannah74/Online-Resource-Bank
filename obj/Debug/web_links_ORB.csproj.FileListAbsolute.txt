@@ -7,4 +7,12 @@ C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\WindowsApplication1.f
 C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\WindowsApplication1.Resources.resources
 C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.GenerateResource.cache
 C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.CoreCompileInputs.cache
-C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\WindowsApplication1.SampleForm.resources
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\web_links_ORB.exe.config
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\web_links_ORB.exe
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\web_links_ORB.pdb
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\ORB_DLL.dll
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\bin\Debug\ORB_DLL.pdb
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.CopyComplete
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\web_links_ORB.exe
+C:\Users\lhann\Source\Repos\Online-Resource-Bank\obj\Debug\web_links_ORB.pdb

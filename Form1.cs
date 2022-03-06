@@ -222,7 +222,7 @@ namespace WindowsApplication1
                         this.lbl_IndexPmtMethod.Text = this.orb_obj.index_pmt_method;
                         this.lbl_IndexFeeAmt.Text = this.orb_obj.subscrFeeAmt;
                         this.LabelUseTap.Text = this.orb_obj.tap;
-                        this.LabelUseRV.Text = this.orb_obj.rv;
+                        this.LabelUseRV.Text =this.orb_obj.rv;
                         this.LabelUseDtree.Text = this.orb_obj.dtree_desk;
                         this.LabelUseIns.Text = this.orb_obj.ins;
                         this.LabelUseProps.Text = this.orb_obj.props;
@@ -238,7 +238,7 @@ namespace WindowsApplication1
                         }
                         else if (!(this.orb_obj.land_url.StartsWith("http") | this.orb_obj.land_url.StartsWith("www")))
                         {
-                            this.LinkLabelCounty.Text = this.orb_obj.land_url;
+                            this.LinkLabelCounty.Text=this.orb_obj.land_url;
                             this.LinkLabelCounty.Visible = true;
                             this.LabelCountyURL.Visible = true;
                             this.txt_login_landU.Visible = false;
@@ -283,9 +283,9 @@ namespace WindowsApplication1
                             this.txt_login_courtP.Visible = false;
                         }
                         else if (!(this.orb_obj.court_url.StartsWith("http") | this.orb_obj.court_url.StartsWith("www")))
-                        {
-                            this.LinkLabelCourt.Text = this.orb_obj.court_url;
-                            this.LinkLabelCourt.Visible = true;
+						{
+							this.LinkLabelCourt.Text = this.orb_obj.court_url;
+							this.LinkLabelCourt.Visible = true;
                             this.LabelCourt.Visible = true;
                             this.txt_login_courtU.Visible = false;
                             this.txt_login_courtP.Visible = false;
@@ -1023,7 +1023,6 @@ namespace WindowsApplication1
                 if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[this.i]["st"].ToString(), this.cbox_StatsStates.Text, false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[this.i]["county"].ToString(), this.cbox_StatsTaxCounties.Text, false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[this.i]["payee"].ToString(), "", false) != 0)
                 {
                     num = checked(num + (long)1);
-                    this.txt_StatsTaxOffices;
                     string[] text = new string[] { this.txt_StatsTaxOffices.Text, dataTable.Rows[this.i]["st"].ToString(), " - ", dataTable.Rows[this.i]["county"].ToString(), " - ", dataTable.Rows[this.i]["tax_auth"].ToString(), "\r\n" };
                     this.txt_StatsTaxOffices.Text = string.Concat(text);
                 }
@@ -1431,7 +1430,7 @@ namespace WindowsApplication1
             this.EditForm = new frm_Edit();
             this.ButtonReset.PerformClick();
             this.Refresh();
-            this.xlLoad1();
+            //this.xlLoad1();
             UpdateCheckInfo updateCheckInfo = null;
             if (ApplicationDeployment.IsNetworkDeployed)
             {
@@ -1495,8 +1494,7 @@ namespace WindowsApplication1
         [DebuggerStepThrough]
         private void InitializeComponent()
         {
-			this.pbxExport.Click += new EventHandler(pbxExport_Click);
-			this.TabControl1.MouseClick += new MouseEventHandler(TabPage1_Click);
+
             this.components = new System.ComponentModel.Container();
             ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(WindowsApplication1.Form1));
             DataGridViewCellStyle dataGridViewCellStyle = new DataGridViewCellStyle();
@@ -3525,7 +3523,7 @@ namespace WindowsApplication1
             this.Label16.AutoSize = true;
             this.Label16.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
             this.Label16.ForeColor = Color.DarkSlateBlue;
-            thisLabel16.Location = new Point(7, 132);
+            this.Label16.Location = new Point(7, 132);
             this.Label16.Name = "Label16";
             this.Label16.Size = new System.Drawing.Size(90, 12);
             this.Label16.TabIndex = 68;
@@ -3659,7 +3657,7 @@ namespace WindowsApplication1
             this.TabPg1Docs.Size = new System.Drawing.Size(866, 201);
             this.TabPg1Docs.TabIndex = 0;
             this.TabPg1Docs.Text = "Doc Manager";
-            this.pbox_Abstr_SOP.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.pbox_Abstr_SOP.Image = WindowsApplication1.Resources.word_logo;
             this.pbox_Abstr_SOP.Location = new Point(22, 11);
             this.pbox_Abstr_SOP.Name = "pbox_Abstr_SOP";
             this.pbox_Abstr_SOP.Size = new System.Drawing.Size(14, 14);
@@ -3868,7 +3866,7 @@ namespace WindowsApplication1
             this.lbl_NotFound.Size = new System.Drawing.Size(134, 15);
             this.lbl_NotFound.TabIndex = 0;
             this.lbl_NotFound.Text = "DOC NOT FOUND. Visit ";
-            this.pboxOpenClearanceCustSpecs.Image = WindowsApplication1.My.Resources.Resources.xls_icon;
+            this.pboxOpenClearanceCustSpecs.Image = WindowsApplication1.Resources.xls_icon;
             this.pboxOpenClearanceCustSpecs.Location = new Point(21, 107);
             this.pboxOpenClearanceCustSpecs.Name = "pboxOpenClearanceCustSpecs";
             this.pboxOpenClearanceCustSpecs.Size = new System.Drawing.Size(14, 14);
@@ -3898,7 +3896,7 @@ namespace WindowsApplication1
             this.lblOpenTitleCustSpec.Size = new System.Drawing.Size(174, 15);
             this.lblOpenTitleCustSpec.TabIndex = 190;
             this.lblOpenTitleCustSpec.Text = "Title Production Cust. Specifics";
-            this.pboxOpenRunSheet.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.pboxOpenRunSheet.Image = WindowsApplication1.Resources.word_logo;
             this.pboxOpenRunSheet.Location = new Point(22, 35);
             this.pboxOpenRunSheet.Name = "pboxOpenRunSheet";
             this.pboxOpenRunSheet.Size = new System.Drawing.Size(14, 14);
@@ -3919,7 +3917,7 @@ namespace WindowsApplication1
             this.TabPg2PhBk.Size = new System.Drawing.Size(866, 201);
             this.TabPg2PhBk.TabIndex = 1;
             this.TabPg2PhBk.Text = "Phone Book";
-            this.PictureBox9.Image = WindowsApplication1.My.Resources.Resources.xls_icon;
+            this.PictureBox9.Image = WindowsApplication1.Resources.xls_icon;
             this.PictureBox9.Location = new Point(13, 17);
             this.PictureBox9.Name = "PictureBox9";
             this.PictureBox9.Size = new System.Drawing.Size(14, 14);
@@ -4018,7 +4016,7 @@ namespace WindowsApplication1
             this.TabPg4Clearing.Size = new System.Drawing.Size(866, 201);
             this.TabPg4Clearing.TabIndex = 4;
             this.TabPg4Clearing.Text = "Clearing & Examination";
-            this.PictureBox8.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox8.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox8.Location = new Point(633, 98);
             this.PictureBox8.Name = "PictureBox8";
             this.PictureBox8.Size = new System.Drawing.Size(14, 14);
@@ -4033,7 +4031,7 @@ namespace WindowsApplication1
             this.lbl_doc_Lease_Fee_LandContract.Size = new System.Drawing.Size(170, 13);
             this.lbl_doc_Lease_Fee_LandContract.TabIndex = 201;
             this.lbl_doc_Lease_Fee_LandContract.Text = "Lease vs. Fee and Land Contracts";
-            this.PictureBox6.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox6.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox6.Location = new Point(634, 77);
             this.PictureBox6.Name = "PictureBox6";
             this.PictureBox6.Size = new System.Drawing.Size(14, 14);
@@ -4048,7 +4046,7 @@ namespace WindowsApplication1
             this.lbl_doc_SOP_deedprep.Size = new System.Drawing.Size(144, 13);
             this.lbl_doc_SOP_deedprep.TabIndex = 199;
             this.lbl_doc_SOP_deedprep.Text = "iMS SOP-Vesting/Deed Prep";
-            this.PictureBox7.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox7.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox7.Location = new Point(634, 56);
             this.PictureBox7.Name = "PictureBox7";
             this.PictureBox7.Size = new System.Drawing.Size(14, 14);
@@ -4063,7 +4061,7 @@ namespace WindowsApplication1
             this.lbl_doc_approvePOA.Size = new System.Drawing.Size(85, 13);
             this.lbl_doc_approvePOA.TabIndex = 197;
             this.lbl_doc_approvePOA.Text = "Approving POAs";
-            this.PictureBox5.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox5.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox5.Location = new Point(634, 34);
             this.PictureBox5.Name = "PictureBox5";
             this.PictureBox5.Size = new System.Drawing.Size(14, 14);
@@ -4078,7 +4076,7 @@ namespace WindowsApplication1
             this.lbl_doc_aboutVesting.Size = new System.Drawing.Size(73, 13);
             this.lbl_doc_aboutVesting.TabIndex = 195;
             this.lbl_doc_aboutVesting.Text = "About Vesting";
-            this.PictureBox4.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox4.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox4.Location = new Point(634, 13);
             this.PictureBox4.Name = "PictureBox4";
             this.PictureBox4.Size = new System.Drawing.Size(14, 14);
@@ -4878,7 +4876,7 @@ namespace WindowsApplication1
             this.linkLocTax3.TabStop = true;
             this.linkLocTax3.Text = "Tax Web3";
             this.linkLocTax3.VisitedLinkColor = Color.DarkSlateBlue;
-            this.pbxExport.Image = WindowsApplication1.My.Resources.Resources.doc_icon;
+            this.pbxExport.Image = WindowsApplication1.Resources.doc_icon;
             this.pbxExport.Location = new Point(542, 22);
             this.pbxExport.Name = "pbxExport";
             this.pbxExport.Size = new System.Drawing.Size(23, 25);
@@ -4886,7 +4884,7 @@ namespace WindowsApplication1
             this.pbxExport.TabIndex = 198;
             this.pbxExport.TabStop = false;
             this.pbxExport.Tag = "clipboard";
-            this.pbxCopy5.Image = WindowsApplication1.My.Resources.Resources.clipboard;
+            this.pbxCopy5.Image = WindowsApplication1.Resources.clipboard;
             this.pbxCopy5.Location = new Point(21, 347);
             this.pbxCopy5.Name = "pbxCopy5";
             this.pbxCopy5.Size = new System.Drawing.Size(21, 23);
@@ -4894,7 +4892,7 @@ namespace WindowsApplication1
             this.pbxCopy5.TabIndex = 197;
             this.pbxCopy5.TabStop = false;
             this.pbxCopy5.Tag = "clipboard";
-            this.pbxCopy4.Image = WindowsApplication1.My.Resources.Resources.clipboard;
+            this.pbxCopy4.Image = WindowsApplication1.Resources.clipboard;
             this.pbxCopy4.Location = new Point(22, 268);
             this.pbxCopy4.Name = "pbxCopy4";
             this.pbxCopy4.Size = new System.Drawing.Size(21, 23);
@@ -4902,7 +4900,7 @@ namespace WindowsApplication1
             this.pbxCopy4.TabIndex = 196;
             this.pbxCopy4.TabStop = false;
             this.pbxCopy4.Tag = "clipboard";
-            this.pbxCopy3.Image = WindowsApplication1.My.Resources.Resources.clipboard;
+            this.pbxCopy3.Image = WindowsApplication1.Resources.clipboard;
             this.pbxCopy3.Location = new Point(22, 190);
             this.pbxCopy3.Name = "pbxCopy3";
             this.pbxCopy3.Size = new System.Drawing.Size(21, 23);
@@ -4910,7 +4908,7 @@ namespace WindowsApplication1
             this.pbxCopy3.TabIndex = 195;
             this.pbxCopy3.TabStop = false;
             this.pbxCopy3.Tag = "clipboard";
-            this.pbxCopy2.Image = WindowsApplication1.My.Resources.Resources.clipboard;
+            this.pbxCopy2.Image = WindowsApplication1.Resources.clipboard;
             this.pbxCopy2.Location = new Point(22, 107);
             this.pbxCopy2.Name = "pbxCopy2";
             this.pbxCopy2.Size = new System.Drawing.Size(21, 23);
@@ -4918,7 +4916,7 @@ namespace WindowsApplication1
             this.pbxCopy2.TabIndex = 194;
             this.pbxCopy2.TabStop = false;
             this.pbxCopy2.Tag = "clipboard";
-            this.pbxCopy1.Image = WindowsApplication1.My.Resources.Resources.clipboard;
+            this.pbxCopy1.Image = WindowsApplication1.Resources.clipboard;
             this.pbxCopy1.Location = new Point(22, 28);
             this.pbxCopy1.Name = "pbxCopy1";
             this.pbxCopy1.Size = new System.Drawing.Size(21, 23);
@@ -5359,7 +5357,7 @@ namespace WindowsApplication1
             this.TabPage3.Size = new System.Drawing.Size(866, 201);
             this.TabPage3.TabIndex = 11;
             this.TabPage3.Text = "About ALTAs";
-            this.PictureBox3.Image = WindowsApplication1.My.Resources.Resources.word_logo;
+            this.PictureBox3.Image = WindowsApplication1.Resources.word_logo;
             this.PictureBox3.Location = new Point(699, 41);
             this.PictureBox3.Name = "PictureBox3";
             this.PictureBox3.Size = new System.Drawing.Size(14, 14);
@@ -5709,7 +5707,7 @@ namespace WindowsApplication1
             this.Panel2.Name = "Panel2";
             this.Panel2.Size = new System.Drawing.Size(860, 520);
             this.Panel2.TabIndex = 198;
-            this.pboxOpenCredCard.Image = WindowsApplication1.My.Resources.Resources.xls_icon;
+            this.pboxOpenCredCard.Image = WindowsApplication1.Resources.xls_icon;
             this.pboxOpenCredCard.Location = new Point(21, 59);
             this.pboxOpenCredCard.Name = "pboxOpenCredCard";
             this.pboxOpenCredCard.Size = new System.Drawing.Size(14, 14);
@@ -5738,131 +5736,133 @@ namespace WindowsApplication1
             this.Name = "Form1";
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "ORB - iMS Online Resource Bank";
-			this.Button_PolicyWarehouse.Click += new EventHandler(form1.Button_PolicyWarehouse_Click);
-			this.Button_RateCalc.Click += new EventHandler(form1.Button_RateCalc_Click);
-			this.Button_Search.Click += new EventHandler(form1.ButtonGetLinks_Click);
-			this.Button_TitleDept.Click += new EventHandler(form1.Button2_Click);
-			this.ButtonExit.Click += new EventHandler(form1.ButtonExit_Click);
-			this.ButtonGetDoc.Click += new EventHandler(form1.ButtonGetDoc_Click);
-			this.ButtonReset.Click += new EventHandler(form1.ButtonReset_Click);
-			this.ButtonHelp.Click += new EventHandler(form1.ButtonHelp_Click);
-			this.ButtonResetDocs.Click += new EventHandler(form1.ButtonResetDocs_Click);
-		this.cbox_StatsStates.TextChanged += new EventHandler(form1.cbox_StatsStates_SelectedIndexChanged);
-		this.cbox_StatsTaxCounties.SelectedIndexChanged += new EventHandler(form1.cbox_StatsTaxCounties_SelectedIndexChanged);
-		this.cbxAddtlLinks.SelectedIndexChanged += new EventHandler(form1.cbxAddtlLinks_SelectedIndexChanged);
-		this.ComboBoxCounty.TextChanged += new EventHandler(form1.ComboBoxCounty_SelectedIndexChanged);
-		this.ComboBoxState.TextChanged += new EventHandler(form1.comboboxState_TextChanged);
-		this.ComboBoxTaxAuth.TextChanged += new EventHandler(form1.ComboBoxTaxAuth_SelectedIndexChanged);
-		this.DataGridView1.CellContentDoubleClick += new DataGridViewCellEventHandler(form1.DataGridView1_CellContentDoubleClick);
-		this.Label4Tap.MouseLeave += new EventHandler(form1.Label4Tap_Leave);
-		this.Label4Tap.MouseHover += new EventHandler(form11.Label4Tap_Hover);
-		this.Label4Tap.Click += new EventHandler(form12.Label4Tap_Click);
-		this.Label5dtree.MouseLeave += new EventHandler(form1.Label5dtree_Leave);
-		this.Label5dtree.MouseHover += new EventHandler(form11.Label5dtree_Hover);
-		this.Label5dtree.Click += new EventHandler(form12.Label5dtree_Click);
-		this.Label6RV.Click += new EventHandler(form1.Label6RV_Click);
-		this.Label6RV.MouseLeave += new EventHandler(form11.Label6RV_Leave);
-		this.Label6RV.MouseHover += new EventHandler(form12.Label6RV_Hover);				
-		this.lbl_BusnPhones.MouseLeave += new EventHandler(form1.lbl_BusnPhones_mouseLeave);
-		this.lbl_BusnPhones.MouseHover += new EventHandler(form11.lbl_BusnPhones_mouseHover);
-		this.lbl_BusnPhones.Click += new EventHandler(form12.lbl_BusnPhones_Click);
-		this.lbl_creditCard.MouseLeave += new EventHandler(form1.lbl_creditCard_mouseLeave);
-		this.lbl_creditCard.MouseHover += new EventHandler(form11.lbl_creditCard_mouseHover);
-		this.lbl_creditCard.Click += new EventHandler(form12.lbl_creditCard_Click);
-		this.lbl_deed_prep.MouseLeave += new EventHandler(form1.lblDeedPrep_mouseLeave);
-		this.lbl_deed_prep.MouseHover += new EventHandler(form11.lblDeedPrep_mouseHover);
-		this.lbl_deed_prep.Click += new EventHandler(form12.lblDeedPrep_Click);
-		this.lbl_doc_aboutDeeds.MouseLeave += new EventHandler(form1.lblDocDeeds_mouseLeave);
-		this.lbl_doc_aboutDeeds.MouseHover += new EventHandler(form11.lblDocDeeds_mouseHover);
-		this.lbl_doc_aboutDeeds.Click += new EventHandler(form12.lblDocDeeds_Click);
-		this.lbl_doc_aboutVesting.MouseLeave += new EventHandler(form1.lblVesting_mouseLeave);
-		this.lbl_doc_aboutVesting.MouseHover += new EventHandler(form11.lblVesting_mouseHover);
-		this.lbl_doc_aboutVesting.Click += new EventHandler(form12.lblVesting_Click);			
-		this.lbl_doc_AbstractingSOPs.MouseLeave += new EventHandler(form1.lbl_AbstrSOP_mouseLeave);
-		this.lbl_doc_AbstractingSOPs.MouseHover += new EventHandler(form11.lbl_AbstrSOP_mouseHover);
-		this.lbl_doc_AbstractingSOPs.Click += new EventHandler(form12.lbl_AbstrSOP_Click);
-		this.lbl_doc_Alta_Clta.MouseLeave += new EventHandler(form1.lblAltaClta_mouseLeave);
-		this.lbl_doc_Alta_Clta.MouseHover += new EventHandler(form11.lblAltaClta_mouseHover);
-		this.lbl_doc_Alta_Clta.Click += new EventHandler(form12.lblAltaClta_Click);
-		this.lbl_doc_approvePOA.MouseLeave += new EventHandler(form1.lblPOA_mouseLeave);
-		this.lbl_doc_approvePOA.MouseHover += new EventHandler(form11.lblPOA_mouseHover);
-		this.lbl_doc_approvePOA.Click += new EventHandler(form12.lblPOA_Click);
-		this.lbl_doc_endorsInfo.MouseLeave += new EventHandler(form1.lbl_endorsInfo_mouseLeave);
-		this.lbl_doc_endorsInfo.MouseHover += new EventHandler(form11.lbl_endorsInfo_mouseHover);
-		this_lbl_doc_endorsInfo.Click += new EventHandler(form12.lbl_endorsInfo_Click);
-		this.lbl_doc_SOP_deedprep.MouseLeave += new EventHandler(form1.lblDeedPrepSOP_mouseLeave);
-		this.lbl_doc_SOP_deedprep.MouseHover += new EventHandler(form11.lblDeedPrepSOP_mouseHover);
-		this.lbl_doc_SOP_deedprep.Click += new EventHandler(form12.lblDeedPrepSOP_Click);											
-		this.lbl_doc_Lease_Fee_LandContract.MouseLeave += new EventHandler(form1.lblLeaseFee_mouseLeave);
-		this.lbl_doc_Lease_Fee_LandContract.MouseHover += new EventHandler(form11.lblLeaseFee_mouseHover);
-		this.lbl_doc_Lease_Fee_LandContract.Click += new EventHandler(form12.lblLeaseFee_Click);
-		this.lblOpenClearanceCustSpecs.MouseLeave += new EventHandler(form1.lblOpenClearance_mouseLeave);
-		this.lblOpenClearanceCustSpecs.MouseHover += new EventHandler(form11.lblOpenClearance_mouseHover);
-		this.lblOpenClearanceCustSpecs.Click += new EventHandler(form12.lblOpenClearance_Click);
-		this.lblOpenEtitleWkshare.MouseLeave += new EventHandler(form1.lblOpenEtitleWkshare_mouseLeave);
-		this.lblOpenEtitleWkshare.MouseHover += new EventHandler(form11.lblOpenEtitleWkshare_mouseHover);
-		this.lblOpenEtitleWkshare.Click += new EventHandler(form12.lblOpenEtitleWkshare_Click);
-		this.lblOpenORT_Wkshare.MouseLeave += new EventHandler(form1.lblOpenORT_Wkshare_mouseLeave);
-		this.lblOpenORT_Wkshare.MouseHover += new EventHandler(form11.lblOpenORT_Wkshare_mouseHover);
-		this.lblOpenORT_Wkshare.Click += new EventHandler(form12.lblOpenORT_Wkshare_Click);
-		this.lblOpenRunSheet.MouseLeave += new EventHandler(form1.lblOpenRunSheet_mouseLeave);
-		this.lblOpenRunSheet.MouseHover += new EventHandler(form11.lblOpenRunSheet_mouseHover);
-		this.lblOpenRunSheet.Click += new EventHandler(form12.lblOpenRunSheet_Click);
-		this.lblOpenTitleCustSpec.MouseLeave += new EventHandler(form1.lblOpenTitleCustSpec_mouseLeave);
-		this.lblOpenTitleCustSpec.MouseHover += new EventHandler(form11.lblOpenTitleCustSpec_mouseHover);
-		this.lblOpenTitleCustSpec.Click += new EventHandler(form12.lblOpenTitleProdCustSpecs_Click);
-		this.lblSOL_Heloc.MouseLeave += new EventHandler(form1.lblSOL_heloc_mouseLeave);
-		this.lblSOL_Heloc.MouseHover += new EventHandler(form11.lblSOL_heloc_mouseHover);
-		this.lblSOL_Mtg.MouseLeave += new EventHandler(form1.lblSOL_Mtg_mouseLeave);
-		this.lblSOL_Mtg.MouseHover += new EventHandler(form11.lblSOL_Mtg_mouseHover);
-		this.LinkLabel_MyFlCountiesURL.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabel_MyFla_LinkClicked);																						
-		this.LinkLabel10.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabel10_LinkClicked);
-		this.LinkLabel16.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabel16_LinkClicked);
-		this.LinkLabel4.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabel4_LinkClicked);
-		this.LinkLabel9.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabel9_LinkClicked);
-		this.LinkLabelCoHome.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelCoHome_LinkClicked);
-		this.LinkLabelCounty.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelCounty_LinkClicked);
-		this.LinkLabelCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelCourt_LinkClicked);
-		this.LinkLabelForeclosure.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelForeclosure_LinkClicked);
-		this.LinkLabelMaps.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelMaps_LinkClicked);
-		this.LinkLabelMuniCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelTax2_LinkClicked);
-		this.LinkLabelOtherTax.LinkClicked +=  new LinkLabelLinkClickedEventHandler(form1.LinkLabelOtherTax_LinkClicked);		
-this.LinkLabelProbate.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelProbate_LinkClicked);
-this.LinkLabelProthon.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelPro_LinkClicked);
-this.LinkLabelSheriff.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelSheriff_LinkClicked);
-this.LinkLabelTax.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelTax_LinkClicked);
-this.linkLocTax1.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelLocTx1_LinkClicked);
-this.linkLocTax2.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelLocTx2_LinkClicked);
-this.linkLocTax3.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelLocTx3_LinkClicked);
-this.linkLocTax4.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelLocTx4_LinkClicked);
-this.linkLocTax5.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.LinkLabelLocTx5_LinkClicked);
-this.linkUS_Legal_Forms.LinkClicked += new LinkLabelLinkClickedEventHandler(form1.linkUS_Legal_Forms_LinkClicked);
-this.pbox_Abstr_SOP.MouseLeave += new EventHandler(form1.pboxAbstr_SOP_MouseLeave);
-this.pbox_Abstr_SOP.MouseHover += new EventHandler(form11.pboxAbstr_SOP_MouseHover);
-this.pboxOpenClearanceCustSpecs.Click += new EventHandler(form1.pboxOpenClearance_Click);
-this.pboxOpenClearanceCustSpecs.MouseLeave += new EventHandler(form11.pboxOpenClearanceCustSpecs_MouseLeave);
-this.pboxOpenClearanceCustSpecs.MouseHover += new EventHandler(form12.pboxOpenClearanceCustSpecs_MouseHover);
-this.pboxOpenCredCard.MouseHover += new EventHandler(form1.pboxOpenCreditCard_MouseHover);
-this.pboxOpenCredCard.Click += new EventHandler(form11.pboxOpenCredCard_Click);
-this.pboxOpenCredCard.MouseLeave += new EventHandler(form12.pboxOpenCredCard_MouseLeave);
-this.pboxOpenEtitleWkshare.Click += new EventHandler(form1.pboxOpenEtitleWkshare_Click);
-this.pboxOpenEtitleWkshare.MouseLeave += new EventHandler(form11.pboxOpenEtitleWkshare_MouseLeave);
-this.pboxOpenEtitleWkshare.MouseHover += new EventHandler(form12.pboxOpenEtitleWkshare_MouseHover);
-    this.pboxOpenORT_Wkshare.Click += new EventHandler(form1.pboxOpenORT_Wkshare_Click);;
-                    this.pboxOpenORT_Wkshare.MouseLeave += new EventHandler(form11.pboxOpenORT_Wkshare_MouseLeave);;
-                    this.pboxOpenORT_Wkshare.MouseHover += new EventHandler(form12.pboxOpenORT_Wkshare_MouseHover);
-     this.pboxOpenRunSheet.Click += new EventHandler(form1.pboxOpenRunSheet_Click);
-                    this.pboxOpenRunSheet.MouseLeave += new EventHandler(form11.pboxOpenRunSheet_MouseLeave);
-                    this.pboxOpenRunSheet.MouseHover += new EventHandler(form12.pboxOpenRunSheet_MouseHover);
-                    this.pboxOpenRunSheet.Click += new EventHandler(form13.pboxAbstr_SOP_Click);
-					    this.pboxOpenTitleCustSpecs.Click += new EventHandler(form1.pboxOpenTitleProdSpecs_Click);
-                    this.pboxOpenTitleCustSpecs.MouseLeave += new EventHandler(form11.pboxOpenTitleCustSpecs_MouseLeave);
-                    this.pboxOpenTitleCustSpecs.MouseHover += new EventHandler(form12.pboxOpenTitleCustSpecs_MouseHover);
- this.pbxCopy1.MouseClick += new MouseEventHandler(form1.pboxCopy1_MouseClick);               
-  this.pbxCopy2.MouseClick += new MouseEventHandler(form1.pbxCopy2_Mouseclick);                                                            
- this.pbxCopy3.MouseClick += new MouseEventHandler(form1.pboxCopy3_MouseClick);
-this.pbxCopy4.MouseClick += new MouseEventHandler(form1.pboxCopy4_MouseClick); 
-this.pbxCopy5.MouseClick += new MouseEventHandler(form1.pboxCopy5_MouseClick);
+            this.pbxExport.Click += new EventHandler(pbxExport_Click);
+            this.TabControl1.MouseClick += new MouseEventHandler(TabPage1_Click);
+            this.Button_PolicyWarehouse.Click += new EventHandler(Button_PolicyWarehouse_Click);
+			this.Button_RateCalc.Click += new EventHandler(Button_RateCalc_Click);
+			this.Button_Search.Click += new EventHandler(ButtonGetLinks_Click);
+			this.Button_TitleDept.Click += new EventHandler(Button2_Click);
+			this.ButtonExit.Click += new EventHandler(ButtonExit_Click);
+			this.ButtonGetDoc.Click += new EventHandler(ButtonGetDoc_Click);
+			this.ButtonReset.Click += new EventHandler(ButtonReset_Click);
+			this.ButtonHelp.Click += new EventHandler(ButtonHelp_Click);
+			this.ButtonResetDocs.Click += new EventHandler(ButtonResetDocs_Click);
+		this.cbox_StatsStates.TextChanged += new EventHandler(cbox_StatsStates_SelectedIndexChanged);
+		this.cbox_StatsTaxCounties.SelectedIndexChanged += new EventHandler(cbox_StatsTaxCounties_SelectedIndexChanged);
+		this.cbxAddtlLinks.SelectedIndexChanged += new EventHandler(cbxAddtlLinks_SelectedIndexChanged);
+		this.ComboBoxCounty.TextChanged += new EventHandler(ComboBoxCounty_SelectedIndexChanged);
+		this.ComboBoxState.TextChanged += new EventHandler(comboboxState_TextChanged);
+		this.ComboBoxTaxAuth.TextChanged += new EventHandler(ComboBoxTaxAuth_SelectedIndexChanged);
+		this.DataGridView1.CellContentDoubleClick += new DataGridViewCellEventHandler(DataGridView1_CellContentDoubleClick);
+		this.Label4Tap.MouseLeave += new EventHandler(Label4Tap_Leave);
+		this.Label4Tap.MouseHover += new EventHandler(Label4Tap_Hover);
+		this.Label4Tap.Click += new EventHandler(Label4Tap_Click);
+		this.Label5dtree.MouseLeave += new EventHandler(Label5dtree_Leave);
+		this.Label5dtree.MouseHover += new EventHandler(Label5dtree_Hover);
+		this.Label5dtree.Click += new EventHandler(Label5dtree_Click);
+		this.Label6RV.Click += new EventHandler(Label6RV_Click);
+		this.Label6RV.MouseLeave += new EventHandler(Label6RV_Leave);
+		this.Label6RV.MouseHover += new EventHandler(Label6RV_Hover);				
+		this.lbl_BusnPhones.MouseLeave += new EventHandler(lbl_BusnPhones_mouseLeave);
+		this.lbl_BusnPhones.MouseHover += new EventHandler(lbl_BusnPhones_mouseHover);
+		this.lbl_BusnPhones.Click += new EventHandler(lbl_BusnPhones_Click);
+		this.lbl_creditCard.MouseLeave += new EventHandler(lbl_creditCard_mouseLeave);
+		this.lbl_creditCard.MouseHover += new EventHandler(lbl_creditCard_mouseHover);
+		this.lbl_creditCard.Click += new EventHandler(lbl_creditCard_Click);
+		this.lbl_deed_prep.MouseLeave += new EventHandler(lblDeedPrep_mouseLeave);
+		this.lbl_deed_prep.MouseHover += new EventHandler(lblDeedPrep_mouseHover);
+		this.lbl_deed_prep.Click += new EventHandler(lblDeedPrep_Click);
+		this.lbl_doc_aboutDeeds.MouseLeave += new EventHandler(lblDocDeeds_mouseLeave);
+		this.lbl_doc_aboutDeeds.MouseHover += new EventHandler(lblDocDeeds_mouseHover);
+		this.lbl_doc_aboutDeeds.Click += new EventHandler(lblDocDeeds_Click);
+		this.lbl_doc_aboutVesting.MouseLeave += new EventHandler(lblVesting_mouseLeave);
+		this.lbl_doc_aboutVesting.MouseHover += new EventHandler(lblVesting_mouseHover);
+		this.lbl_doc_aboutVesting.Click += new EventHandler(lblVesting_Click);			
+		this.lbl_doc_AbstractingSOPs.MouseLeave += new EventHandler(lbl_AbstrSOP_mouseLeave);
+		this.lbl_doc_AbstractingSOPs.MouseHover += new EventHandler(lbl_AbstrSOP_mouseHover);
+		this.lbl_doc_AbstractingSOPs.Click += new EventHandler(lbl_AbstrSOP_Click);
+		this.lbl_doc_Alta_Clta.MouseLeave += new EventHandler(lblAltaClta_mouseLeave);
+		this.lbl_doc_Alta_Clta.MouseHover += new EventHandler(lblAltaClta_mouseHover);
+		this.lbl_doc_Alta_Clta.Click += new EventHandler(lblAltaClta_Click);
+		this.lbl_doc_approvePOA.MouseLeave += new EventHandler(lblPOA_mouseLeave);
+		this.lbl_doc_approvePOA.MouseHover += new EventHandler(lblPOA_mouseHover);
+		this.lbl_doc_approvePOA.Click += new EventHandler(lblPOA_Click);
+		this.lbl_doc_endorsInfo.MouseLeave += new EventHandler(lbl_endorsInfo_mouseLeave);
+		this.lbl_doc_endorsInfo.MouseHover += new EventHandler(lbl_endorsInfo_mouseHover);
+		this.lbl_doc_endorsInfo.Click += new EventHandler(lbl_endorsInfo_Click);
+		this.lbl_doc_SOP_deedprep.MouseLeave += new EventHandler(lblDeedPrepSOP_mouseLeave);
+		this.lbl_doc_SOP_deedprep.MouseHover += new EventHandler(lblDeedPrepSOP_mouseHover);
+		this.lbl_doc_SOP_deedprep.Click += new EventHandler(lblDeedPrepSOP_Click);											
+		this.lbl_doc_Lease_Fee_LandContract.MouseLeave += new EventHandler(lblLeaseFee_mouseLeave);
+		this.lbl_doc_Lease_Fee_LandContract.MouseHover += new EventHandler(lblLeaseFee_mouseHover);
+		this.lbl_doc_Lease_Fee_LandContract.Click += new EventHandler(lblLeaseFee_Click);
+		this.lblOpenClearanceCustSpecs.MouseLeave += new EventHandler(lblOpenClearance_mouseLeave);
+		this.lblOpenClearanceCustSpecs.MouseHover += new EventHandler(lblOpenClearance_mouseHover);
+		this.lblOpenClearanceCustSpecs.Click += new EventHandler(lblOpenClearance_Click);
+		this.lblOpenEtitleWkshare.MouseLeave += new EventHandler(lblOpenEtitleWkshare_mouseLeave);
+		this.lblOpenEtitleWkshare.MouseHover += new EventHandler(lblOpenEtitleWkshare_mouseHover);
+		this.lblOpenEtitleWkshare.Click += new EventHandler(lblOpenEtitleWkshare_Click);
+		this.lblOpenORT_Wkshare.MouseLeave += new EventHandler(lblOpenORT_Wkshare_mouseLeave);
+		this.lblOpenORT_Wkshare.MouseHover += new EventHandler(lblOpenORT_Wkshare_mouseHover);
+		this.lblOpenORT_Wkshare.Click += new EventHandler(lblOpenORT_Wkshare_Click);
+		this.lblOpenRunSheet.MouseLeave += new EventHandler(lblOpenRunSheet_mouseLeave);
+		this.lblOpenRunSheet.MouseHover += new EventHandler(lblOpenRunSheet_mouseHover);
+		this.lblOpenRunSheet.Click += new EventHandler(lblOpenRunSheet_Click);
+		this.lblOpenTitleCustSpec.MouseLeave += new EventHandler(lblOpenTitleCustSpec_mouseLeave);
+		this.lblOpenTitleCustSpec.MouseHover += new EventHandler(lblOpenTitleCustSpec_mouseHover);
+		this.lblOpenTitleCustSpec.Click += new EventHandler(lblOpenTitleProdCustSpecs_Click);
+		this.lblSOL_Heloc.MouseLeave += new EventHandler(lblSOL_heloc_mouseLeave);
+		this.lblSOL_Heloc.MouseHover += new EventHandler(lblSOL_heloc_mouseHover);
+		this.lblSOL_Mtg.MouseLeave += new EventHandler(lblSOL_Mtg_mouseLeave);
+		this.lblSOL_Mtg.MouseHover += new EventHandler(lblSOL_Mtg_mouseHover);
+		this.LinkLabel_MyFlCountiesURL.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel_MyFla_LinkClicked);																						
+		this.LinkLabel10.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel10_LinkClicked);
+		this.LinkLabel16.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel16_LinkClicked);
+		this.LinkLabel4.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel4_LinkClicked);
+		this.LinkLabel9.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel9_LinkClicked);
+		this.LinkLabelCoHome.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCoHome_LinkClicked);
+		this.LinkLabelCounty.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCounty_LinkClicked);
+		this.LinkLabelCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCourt_LinkClicked);
+		this.LinkLabelForeclosure.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelForeclosure_LinkClicked);
+		this.LinkLabelMaps.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelMaps_LinkClicked);
+		this.LinkLabelMuniCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelTax2_LinkClicked);
+		this.LinkLabelOtherTax.LinkClicked +=  new LinkLabelLinkClickedEventHandler(LinkLabelOtherTax_LinkClicked);		
+this.LinkLabelProbate.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelProbate_LinkClicked);
+this.LinkLabelProthon.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelPro_LinkClicked);
+this.LinkLabelSheriff.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelSheriff_LinkClicked);
+this.LinkLabelTax.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelTax_LinkClicked);
+this.linkLocTax1.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx1_LinkClicked);
+this.linkLocTax2.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx2_LinkClicked);
+this.linkLocTax3.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx3_LinkClicked);
+this.linkLocTax4.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx4_LinkClicked);
+this.linkLocTax5.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx5_LinkClicked);
+this.linkUS_Legal_Forms.LinkClicked += new LinkLabelLinkClickedEventHandler(linkUS_Legal_Forms_LinkClicked);
+this.pbox_Abstr_SOP.MouseLeave += new EventHandler(pboxAbstr_SOP_MouseLeave);
+this.pbox_Abstr_SOP.MouseHover += new EventHandler(pboxAbstr_SOP_MouseHover);
+this.pboxOpenClearanceCustSpecs.Click += new EventHandler(pboxOpenClearance_Click);
+this.pboxOpenClearanceCustSpecs.MouseLeave += new EventHandler(pboxOpenClearanceCustSpecs_MouseLeave);
+this.pboxOpenClearanceCustSpecs.MouseHover += new EventHandler(pboxOpenClearanceCustSpecs_MouseHover);
+this.pboxOpenCredCard.MouseHover += new EventHandler(pboxOpenCreditCard_MouseHover);
+this.pboxOpenCredCard.Click += new EventHandler(pboxOpenCredCard_Click);
+this.pboxOpenCredCard.MouseLeave += new EventHandler(pboxOpenCredCard_MouseLeave);
+this.pboxOpenEtitleWkshare.Click += new EventHandler(pboxOpenEtitleWkshare_Click);
+this.pboxOpenEtitleWkshare.MouseLeave += new EventHandler(pboxOpenEtitleWkshare_MouseLeave);
+this.pboxOpenEtitleWkshare.MouseHover += new EventHandler(pboxOpenEtitleWkshare_MouseHover);
+    this.pboxOpenORT_Wkshare.Click += new EventHandler(pboxOpenORT_Wkshare_Click);
+                    this.pboxOpenORT_Wkshare.MouseLeave += new EventHandler(pboxOpenORT_Wkshare_MouseLeave);;
+                    this.pboxOpenORT_Wkshare.MouseHover += new EventHandler(pboxOpenORT_Wkshare_MouseHover);
+     this.pboxOpenRunSheet.Click += new EventHandler(pboxOpenRunSheet_Click);
+                    this.pboxOpenRunSheet.MouseLeave += new EventHandler(pboxOpenRunSheet_MouseLeave);
+                    this.pboxOpenRunSheet.MouseHover += new EventHandler(pboxOpenRunSheet_MouseHover);
+                    this.pboxOpenRunSheet.Click += new EventHandler(pboxAbstr_SOP_Click);
+					    this.pboxOpenTitleCustSpecs.Click += new EventHandler(pboxOpenTitleProdSpecs_Click);
+                    this.pboxOpenTitleCustSpecs.MouseLeave += new EventHandler(pboxOpenTitleCustSpecs_MouseLeave);
+                    this.pboxOpenTitleCustSpecs.MouseHover += new EventHandler(pboxOpenTitleCustSpecs_MouseHover);
+ this.pbxCopy1.MouseClick += new MouseEventHandler(pboxCopy1_MouseClick);               
+  this.pbxCopy2.MouseClick += new MouseEventHandler(pbxCopy2_Mouseclick);                                                            
+ this.pbxCopy3.MouseClick += new MouseEventHandler(pboxCopy3_MouseClick);
+this.pbxCopy4.MouseClick += new MouseEventHandler(pboxCopy4_MouseClick); 
+this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
 
             this.SplitContainer1.Panel1.ResumeLayout(false);
             this.SplitContainer1.Panel1.PerformLayout();
@@ -6552,9 +6552,8 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(form1.pboxCopy5_MouseClick);
                 if ((Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "ALL", false) == 0) & (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["ins"].ToString(), "Yes", false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["props"].ToString(), "Yes", false) == 0))
                 {
                     numArray[5] = decimal.Add(numArray[5], decimal.One);
-                    this.txt_StatsCounties;
                     text = new string[] { this.txt_StatsCounties.Text, dataTable.Rows[checked((int)j)]["st"].ToString(), " - ", dataTable.Rows[checked((int)j)]["county"].ToString(), "\r\n" };
-                    txtStatsCounties.Text = string.Concat(text);
+                    txt_StatsCounties.Text = string.Concat(text);
                 }
                 if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "ALL", false) == 0)
                 {
@@ -6575,16 +6574,14 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(form1.pboxCopy5_MouseClick);
                 if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable1.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable1.Rows[checked((int)j)]["payee"].ToString(), "", false) != 0)
                 {
                     numArray[7] = decimal.Add(numArray[7], decimal.One);
-                    this.txt_StatsTaxOffices;
                     text = new string[] { this.txt_StatsTaxOffices.Text, dataTable1.Rows[checked((int)j)]["st"].ToString(), " - ", dataTable1.Rows[checked((int)j)]["county"].ToString(), " - ", dataTable1.Rows[checked((int)j)]["tax_auth"].ToString(), "\r\n" };
                     txt_StatsTaxOffices.Text = string.Concat(text);
                 }
             }
             if (decimal.Compare(numArray[6], decimal.Zero) != 0)
             {
-                Label lblCoOnlineStats = this.lbl_CoOnlineStats;
                 text = new string[] { "Of ", Conversions.ToString(numArray[6]), " Counties, ", Conversions.ToString(Math.Round(decimal.Multiply(decimal.Divide(numArray[5], numArray[6]), new decimal((long)100)))), " % Online" };
-                lblCoOnlineStats.Text = string.Concat(text);
+                lbl_CoOnlineStats.Text = string.Concat(text);
             }
             if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "", false) == 0)
             {
@@ -7078,16 +7075,6 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(form1.pboxCopy5_MouseClick);
             }
         }
 
-        private void xlLoad1()
-        {
-            this.cmd.CommandType = CommandType.TableDirect;
-            this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-            this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm1, "$]");
-            this.cmd.Connection = new OleDbConnection(this.dsn);
-            this.da.SelectCommand = this.cmd;
-            this.cmdBuilder.DataAdapter = this.da;
-            this.da.Fill(this.st_cty);
-            this.da.Dispose();
-        }
+ 
     }
 }
