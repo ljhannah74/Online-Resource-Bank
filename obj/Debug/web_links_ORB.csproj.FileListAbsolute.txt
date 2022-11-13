@@ -32,9 +32,15 @@ C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\Window
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\WindowsApplication1.Form4_pw.resources
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\WindowsApplication1.SplashScreen1.resources
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\WindowsApplication1.Form1.resources
-C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\WindowsApplication1.frm_Edit.resources
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\WindowsApplication1.Resources.resources
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.GenerateResource.cache
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.CoreCompileInputs.cache
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\web_links_ORB.exe
 C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\web_links_ORB.pdb
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\web_links_ORB.exe.config
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\web_links_ORB.exe
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\web_links_ORB.pdb
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\ORB_DLL.pdb
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\obj\Debug\web_links_ORB.csproj.CopyComplete
+C:\Users\lhann\OneDrive\Documents\Software\Online-Resource-Bank\bin\Debug\ORB_DLL.dll

@@ -1947,7 +1947,7 @@ namespace WindowsApplication1
 	private System.Windows.Forms.Label Label57;
 	private System.Windows.Forms.Label Label59;
 	private System.Windows.Forms.Label Label60;
-	private System.Windows.Forms.Label_Label54;
+	private System.Windows.Forms.Label Label54;
 	private System.Windows.Forms.Label Label53;
 	private System.Windows.Forms.Label Label51;
 	private System.Windows.Forms.Label Label44;

@@ -27,7 +27,7 @@ namespace WindowsApplication1
 
         private DataGridViewLinkColumn links;
 
-        private Resource_Lookup orb_obj;
+        private Online_Resource orb_obj;
 
         private Statutes_Lookup orbStats;
 
@@ -88,7 +88,7 @@ namespace WindowsApplication1
         private string sheetNm7;
 
 
-        private frm_Edit EditForm;
+        private frmEdit EditForm;
         public Form1()
         {
             base.Load += new EventHandler(this.Form1_Load);
@@ -128,11 +128,7 @@ namespace WindowsApplication1
             this.Panel2.Visible = true;
             this.Panel2.BringToFront();
             this.TabControl1.Visible = false;
-            EditForm.cboxState_EditORB.Text = this.ComboBoxState.Text;
-            EditForm.cboxCounty_EditORB.Text = this.ComboBoxCounty.Text;
-            EditForm.cboxTaxAuth_EditORB.Text = this.ComboBoxTaxAuth.Text;
-            EditForm.cboxTaxAuthType_EditORB.Text = this.ComboBoxTaxType.Text;
-            EditForm.Button_SEARCH.PerformClick();
+            EditForm.SetStateCounty(this.ComboBoxState.Text, this.ComboBoxCounty.Text, this.ComboBoxTaxAuth.Text, this.ComboBoxTaxType.Text);
         }
 
         private void Button_PolicyWarehouse_Click(object sender, EventArgs e)
@@ -174,18 +170,14 @@ namespace WindowsApplication1
 
         private void ButtonGetLinks_Click(object sender, EventArgs e)
         {
-            string text = this.ComboBoxState.Text;
-            string str = this.ComboBoxCounty.Text;
-            string text1 = this.ComboBoxTaxAuth.Text;
-            string str1 = this.ComboBoxTaxType.Text;
-            this.orb_obj = new Resource_Lookup(text, str, text1);
-            if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "\"", false) != 0)
-            {
-                while (this.c <= checked(this.dt.Rows.Count - 1))
-                {
-                    if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.dt.Rows[this.c]["st"].ToString(), text, false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.dt.Rows[this.c]["county"].ToString(), this.ComboBoxCounty.Text, false) == 0)
-                    {
-                        this.txt_login_landU.Text = this.orb_obj.county_user;
+            string state = this.ComboBoxState.Text;
+            string county = this.ComboBoxCounty.Text;
+            string tax = this.ComboBoxTaxAuth.Text;
+            string taxtype = this.ComboBoxTaxType.Text;
+            Resource_Lookup rsLookup = new Resource_Lookup();
+            this.orb_obj = rsLookup.GetResources(state, county, tax);
+           
+                      this.txt_login_landU.Text = this.orb_obj.county_user;
                         this.txt_login_landP.Text = this.orb_obj.county_pwd;
                         this.txt_login_courtU.Text = this.orb_obj.court_user;
                         this.txt_login_courtP.Text = this.orb_obj.court_pwd;
@@ -508,11 +500,8 @@ namespace WindowsApplication1
                         {
                             this.txtComments.Visible = true;
                         }
-                        this.c = checked(this.dt.Rows.Count + this.c);
-                    }
-                    this.c = checked(this.c + 1);
-                }
-            }
+     
+            /*
             this.dt2.Clear();
             this.cmd2.CommandType = CommandType.TableDirect;
             this.dsn2 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
@@ -960,12 +949,12 @@ namespace WindowsApplication1
             oleDbCommandBuilder.DataAdapter = oleDbDataAdapter;
             oleDbDataAdapter.Fill(dataTable1);
             oleDbDataAdapter.Dispose();
-            this.DataGridView2.DataSource = dataTable1;
+            this.DataGridView2.DataSource = dataTable1;*/
         }
 
         private void ButtonHelp_Click(object sender, EventArgs e)
         {
-            Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\HELP.doc");
+            //Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\HELP.doc");
         }
 
         private void ButtonReset_Click(object sender, EventArgs e)
@@ -1110,7 +1099,7 @@ namespace WindowsApplication1
 
         private void ComboBoxCounty_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.cmd.CommandType = CommandType.TableDirect;
+        /*    this.cmd.CommandType = CommandType.TableDirect;
             this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
             this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
             this.cmd.Connection = new OleDbConnection(this.dsn);
@@ -1147,225 +1136,84 @@ namespace WindowsApplication1
             }
             this.resetVis();
             this.lbl_NotFound.Visible = false;
-            this.linkUS_Legal_Forms.Visible = false;
+            this.linkUS_Legal_Forms.Visible = false;*/
         }
 
         private void comboboxState_TextChanged(object sender, EventArgs e)
         {
             this.TopMost = false;
             string text = this.ComboBoxState.Text;
-            if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "AK", false) == 0)
+            switch (text)
             {
-                goto Label0;
+                case "AK":
+                case "AR":
+                case "CT":
+                case "AZ":
+                case "CA":
+                case "HI":
+                case "ID":
+                case "NM":
+                case "NV":
+                case "OR":
+                case "OK":
+                case "SD":
+                case "TX":
+                case "UT":
+                case "WA":
+                case "WY":
+                    {
+                        this.lblDefault_UW_Name.Text = "Not Licensed";
+                        break;
+                    }
+                case "AL":
+                case "CO":
+                case "FL":
+                case "IA":
+                case "IN":
+                case "KS":
+                case "KY":
+                case "MD":
+                case "ME":
+                case "MN":
+                case "MO":
+                case "MS":
+                case "NC":
+                case "NJ":
+                case "NY":
+                case "OH":
+                case "SC":
+                case "TN":
+                case "VT":
+                case "WI":
+                    {
+                        this.lblDefault_UW_Name.Text = "Licensed - Stewart";
+                        break;
+                    }
+                case "DC":
+                case "DE":
+                case "GA":
+                case "IL":
+                case "LA":
+                case "MA":
+                case "MI":
+                case "MT":
+                case "ND":
+                case "NE":
+                case "NH":
+                case "PA":
+                case "RI":
+                case "VA":
+                case "WV":
+                    {
+                        this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
+                        break;
+                    }
+
             }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "AR", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "CT", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "AZ", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "CA", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "HI", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "ID", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NM", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NV", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "OR", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "OK", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "SD", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "TX", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "UT", false) == 0)
-            {
-                goto Label0;
-            }
-            else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "WA", false) != 0)
-            {
-                if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "WY", false) == 0)
-                {
-                    goto Label0;
-                }
-                if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "AL", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "CO", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "DC", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "DE", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "FL", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "GA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "IA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "IL", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "IN", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "KS", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "KY", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "LA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MD", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "ME", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MI", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MN", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MO", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MS", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "MT", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NC", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "ND", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NE", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NH", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NJ", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "NY", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "OH", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "PA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "RI", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "SC", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "TN", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "VA", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "VT", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "WI", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Stewart";
-                }
-                else if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(text, "WV", false) == 0)
-                {
-                    this.lblDefault_UW_Name.Text = "Licensed - Old Republic";
-                }
-            }
-            else
-            {
-                goto Label0;
-            }
-        Label1:
             if (text.Length >= 2)
             {
-                this.ComboBoxCounty.Items.Clear();
-                this.ComboBoxCounty.Text = "choose";
+                
+              
                 this.ComboBoxTaxAuth.Items.Clear();
                 this.ComboBoxTaxAuth.Text = "choose";
                 this.ComboBoxTaxType.Items.Clear();
@@ -1373,23 +1221,18 @@ namespace WindowsApplication1
                 this.resetVis();
                 this.lbl_NotFound.Visible = false;
                 this.linkUS_Legal_Forms.Visible = false;
-                for (int i = 0; i < this.st_cty.Rows.Count; i = checked(i + 1))
-                {
-                    if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.st_cty.Rows[i]["st"].ToString(), text, false) == 0)
-                    {
-                        this.ComboBoxCounty.Items.Add(this.st_cty.Rows[i]["county"].ToString());
-                    }
-                }
+
+                Resource_Lookup rLookup = new Resource_Lookup();
+                DataTable st_cty = rLookup.GetCountiesByState(ComboBoxState.Text);
+                this.ComboBoxCounty.DataSource = st_cty;
+                this.ComboBoxCounty.DisplayMember = "county";
+                this.ComboBoxCounty.ValueMember = "county";
             }
-            return;
-        Label0:
-            this.lblDefault_UW_Name.Text = "Not Licensed";
-            goto Label1;
         }
 
         private void ComboBoxTaxAuth_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.cmd.CommandType = CommandType.TableDirect;
+        /*    this.cmd.CommandType = CommandType.TableDirect;
             this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
             this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
             this.cmd.Connection = new OleDbConnection(this.dsn);
@@ -1407,7 +1250,7 @@ namespace WindowsApplication1
                 }
                 this.i = checked(this.i + 1);
             }
-            this.resetVis();
+            this.resetVis();*/
         }
 
         private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1427,7 +1270,7 @@ namespace WindowsApplication1
         {
             this.TopMost = true;
             this.Label32.Text = string.Concat("Today is ", Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongDate));
-            this.EditForm = new frm_Edit();
+            this.EditForm = new frmEdit();
             this.ButtonReset.PerformClick();
             this.Refresh();
             //this.xlLoad1();
