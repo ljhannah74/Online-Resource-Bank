@@ -60,21 +60,11 @@ namespace WindowsApplication1
 		private string sheetNm8;
 
 
-		this.Button_ExitApp.Click += new EventHandler(frmEdit.Button_ExitApp_Click);
-		this.Button_EXITupdates.Click += new EventHandler(frmEdit.Button_EXITupdates_Click);
-		this.Button_NEW.Click += new EventHandler(frmEdit.Button_NEW_Click);
-		this.Button_Reset.Click += new EventHandler(frmEdit.Button_Reset_Click);		
-		this.Button_SAVE.Click += new EventHandler(frmEdit.Button_SAVE_Click);
-		this.Button_SEARCH.Click += new EventHandler(frmEdit.Button_SEARCH_Click);
-		this.cboxCounty_EditORB.TextChanged += new EventHandler(frmEdit.cboxCounty_EditORB_SelectedIndexChanged);
-		this.cboxState_EditORB.TextChanged += new EventHandler(frmEdit.cboxState_EditORB_TextChanged);
-		this.cboxTaxAuth_EditORB.TextChanged += new EventHandler(frmEdit.cboxTaxAuth_EditORB_SelectedIndexChanged);
-		this.TabControl1.DrawItem += new DrawItemEventHandler(frmEdit.TabControl1_DrawItem);
+
 
 		public frm_Edit()
 		{
-			frm_Edit frmEdit = this;
-			base.Load += new EventHandler(frmEdit.frm_Edit_Load);
+			base.Load += new EventHandler(frm_Edit_Load);
 			this.dt0 = new System.Data.DataTable();
 			this.i = 0;
 			this.c = 0;

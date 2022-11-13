@@ -4,7 +4,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web_links_ORB", "web_links_ORB.csproj", "{0E159336-BF3D-4460-9977-ADF371F03D1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORB_DLL", "..\..\..\Downloads\Online-Resource-Bank-main\Online-Resource-Bank-main\ORB_DLL\ORB_DLL.csproj", "{4E204BD8-0DAD-4D5C-830F-AB00281B6E98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORB_DLL", "ORB_DLL\ORB_DLL.csproj", "{4E204BD8-0DAD-4D5C-830F-AB00281B6E98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

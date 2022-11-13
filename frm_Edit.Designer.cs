@@ -1827,6 +1827,16 @@ namespace WindowsApplication1
 			this.Name = "frm_Edit";
 			this.StartPosition = FormStartPosition.CenterScreen;
 			this.Text = "Edit ORB Database";
+			this.Button_ExitApp.Click += new EventHandler(Button_ExitApp_Click);
+			this.Button_EXITupdates.Click += new EventHandler(Button_EXITupdates_Click);
+			this.Button_NEW.Click += new EventHandler(Button_NEW_Click);
+			this.Button_Reset.Click += new EventHandler(Button_Reset_Click);
+			this.Button_SAVE.Click += new EventHandler(Button_SAVE_Click);
+			this.Button_SEARCH.Click += new EventHandler(Button_SEARCH_Click);
+			this.cboxCounty_EditORB.TextChanged += new EventHandler(cboxCounty_EditORB_SelectedIndexChanged);
+			this.cboxState_EditORB.TextChanged += new EventHandler(cboxState_EditORB_TextChanged);
+			this.cboxTaxAuth_EditORB.TextChanged += new EventHandler(cboxTaxAuth_EditORB_SelectedIndexChanged);
+			this.TabControl1.DrawItem += new DrawItemEventHandler(TabControl1_DrawItem);
 			this.TabPage07.ResumeLayout(false);
 			this.TabPage07.PerformLayout();
 			this.TabPage03.ResumeLayout(false);
