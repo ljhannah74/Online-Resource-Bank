@@ -151,23 +151,6 @@ namespace WindowsApplication1
             this.Close();
         }
 
-        private void ButtonGetDoc_Click(object sender, EventArgs e)
-        {
-            string[] str = new string[] { "T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\docs\\", this.cboxDocState.Text.ToString(), "-", this.cboxDocType.Text.ToString(), ".doc" };
-            string str1 = string.Concat(str);
-            if (!File.Exists(str1))
-            {
-                this.lbl_NotFound.Visible = true;
-                this.linkUS_Legal_Forms.Visible = true;
-            }
-            else
-            {
-                Process.Start(str1);
-                this.lbl_NotFound.Visible = false;
-                this.linkUS_Legal_Forms.Visible = false;
-            }
-        }
-
         private void ButtonGetLinks_Click(object sender, EventArgs e)
         {
             string state = this.ComboBoxState.Text;
@@ -501,12 +484,11 @@ namespace WindowsApplication1
                             this.txtComments.Visible = true;
                         }
      
-            /*
+            
             this.dt2.Clear();
             this.cmd2.CommandType = CommandType.TableDirect;
-            this.dsn2 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
             this.cmd2.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
-            this.cmd2.Connection = new OleDbConnection(this.dsn2);
+            this.cmd2.Connection = new OleDbConnection(this.dsn);
             this.da2.SelectCommand = this.cmd2;
             this.cmdBuilder2.DataAdapter = this.da2;
             this.da2.Fill(this.dt2);
@@ -682,7 +664,7 @@ namespace WindowsApplication1
             this.LabelUseTap.Visible = true;
             this.LabelUseRV.Visible = true;
             this.LabelUseDtree.Visible = true;
-            this.orbStats = new Statutes_Lookup(text);
+            this.orbStats = new Statutes_Lookup(state);
             this.c = 0;
             if (this.orbStats.SOL_MtgRD != null & this.orbStats.SOL_MtgAM != null)
             {
@@ -839,7 +821,7 @@ namespace WindowsApplication1
             this.TableLayoutPanel2.AutoSize = true;
             this.c = checked(this.dt.Rows.Count + this.c);
             this.c = checked(this.c + 1);
-            this.orb_misc = new ORB_DLL.Orb.orb_misc(text);
+            this.orb_misc = new ORB_DLL.Orb.orb_misc(state);
             this.c = 0;
             this.txt_foreclosure_notes.Text = this.orb_misc.Foreclosure_Notes;
             if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.txt_foreclosure_notes.Text, "", false) != 0)
@@ -916,40 +898,13 @@ namespace WindowsApplication1
             OleDbCommandBuilder oleDbCommandBuilder = new OleDbCommandBuilder();
             OleDbCommand oleDbCommand = new OleDbCommand();
             OleDbCommand oleDbConnection = new OleDbCommand();
-            num = 0;
-            oleDbCommand.CommandType = CommandType.TableDirect;
-            string str3 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-            oleDbCommand.CommandText = string.Concat("Select * From [", this.sheetNm3, "$]");
-            oleDbCommand.Connection = new OleDbConnection(str3);
-            oleDbDataAdapter.SelectCommand = oleDbCommand;
-            oleDbCommandBuilder.DataAdapter = oleDbDataAdapter;
-            oleDbDataAdapter.Fill(dataTable);
-            this.DataGridView1.DataSource = dataTable;
-            while (num < checked(this.DataGridView1.RowCount - 1))
-            {
-                if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.DataGridView1.Rows[num].Cells[0].Value.ToString(), "", false) == 0)
-                {
-                    this.DataGridView1.Rows.RemoveAt(num);
-                }
-                else if (!Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(this.DataGridView1.Rows[num].Cells[0].Value.ToString(), this.ComboBoxState.SelectedItem, false))
-                {
-                    this.DataGridView1.Rows.RemoveAt(num);
-                }
-                else
-                {
-                    num = checked(num + 1);
-                }
-            }
-            oleDbDataAdapter.Dispose();
-            oleDbConnection.CommandType = CommandType.TableDirect;
-            str3 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
             oleDbConnection.CommandText = string.Concat("Select * From [", this.sheetNm5, "$]");
-            oleDbConnection.Connection = new OleDbConnection(str3);
+            oleDbConnection.Connection = new OleDbConnection(this.dsn);
             oleDbDataAdapter.SelectCommand = oleDbConnection;
             oleDbCommandBuilder.DataAdapter = oleDbDataAdapter;
             oleDbDataAdapter.Fill(dataTable1);
             oleDbDataAdapter.Dispose();
-            this.DataGridView2.DataSource = dataTable1;*/
+            this.DataGridView2.DataSource = dataTable1;
         }
 
         private void ButtonHelp_Click(object sender, EventArgs e)
@@ -965,14 +920,6 @@ namespace WindowsApplication1
             this.ComboBoxTaxType.ResetText();
             this.resetVis();
             this.lblDefault_UW_Name.ResetText();
-        }
-
-        private void ButtonResetDocs_Click(object sender, EventArgs e)
-        {
-            this.lbl_NotFound.Visible = false;
-            this.linkUS_Legal_Forms.Visible = false;
-            this.cboxDocState.ResetText();
-            this.cboxDocType.ResetText();
         }
 
         private void cbox_StatsStates_SelectedIndexChanged(object sender, EventArgs e)
@@ -997,8 +944,7 @@ namespace WindowsApplication1
         {
             DataTable dataTable = new DataTable();
             this.cmd.CommandType = CommandType.TableDirect;
-            this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-            this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
+	        this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
             this.cmd.Connection = new OleDbConnection(this.dsn);
             this.da.SelectCommand = this.cmd;
             this.cmdBuilder.DataAdapter = this.da;
@@ -1219,8 +1165,6 @@ namespace WindowsApplication1
                 this.ComboBoxTaxType.Items.Clear();
                 this.ComboBoxTaxType.Text = "choose";
                 this.resetVis();
-                this.lbl_NotFound.Visible = false;
-                this.linkUS_Legal_Forms.Visible = false;
 
                 Resource_Lookup rLookup = new Resource_Lookup();
                 DataTable st_cty = rLookup.GetCountiesByState(ComboBoxState.Text);
@@ -1253,26 +1197,16 @@ namespace WindowsApplication1
             this.resetVis();*/
         }
 
-        private void DataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 5)
-            {
-                string str = string.Concat("mailto:", this.DataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
-                Process.Start(str);
-            }
-            else if (e.ColumnIndex == 4)
-            {
-                string[] strArrays = new string[] { "mailto:[fax:", this.DataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), "@", this.DataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(), "]" };
-                Process.Start(string.Concat(strArrays));
-            }
-        }
         private void Form1_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
             this.Label32.Text = string.Concat("Today is ", Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongDate));
             this.EditForm = new frmEdit();
             this.ButtonReset.PerformClick();
-            this.Refresh();
+			string dataFileName = @"C:\Users\lhann\OneDrive\Documents\Software\ORB_DATABASE.xlsx";
+			this.dsn = string.Concat("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=", dataFileName, ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1\"");
+
+			this.Refresh();
             //this.xlLoad1();
             UpdateCheckInfo updateCheckInfo = null;
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -1337,4449 +1271,4705 @@ namespace WindowsApplication1
         [DebuggerStepThrough]
         private void InitializeComponent()
         {
-
-            this.components = new System.ComponentModel.Container();
-            ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(WindowsApplication1.Form1));
-            DataGridViewCellStyle dataGridViewCellStyle = new DataGridViewCellStyle();
-            DataGridViewCellStyle whiteSmoke = new DataGridViewCellStyle();
-            DataGridViewCellStyle window = new DataGridViewCellStyle();
-            DataGridViewCellStyle lavenderBlush = new DataGridViewCellStyle();
-            DataGridViewCellStyle thistle = new DataGridViewCellStyle();
-            DataGridViewCellStyle font = new DataGridViewCellStyle();
-            DataGridViewCellStyle controlText = new DataGridViewCellStyle();
-            DataGridViewCellStyle indigo = new DataGridViewCellStyle();
-
-            this.Label32 = new Label();
-            this.SplitContainer1 = new SplitContainer();
-            this.lbl_attyState = new Label();
-            this.PictureBox1 = new PictureBox();
-            this.lblDefault_UW_Name = new Label();
-            this.Panel1 = new Panel();
-            this.ButtonExit = new Button();
-            this.Label36 = new Label();
-            this.ComboBoxTaxType = new ComboBox();
-            this.GroupBox6 = new GroupBox();
-            this.cbxAddtlLinks = new ComboBox();
-            this.Button_EditORB = new Button();
-            this.Button_Search = new Button();
-            this.ComboBoxState = new ComboBox();
-            this.ComboBoxCounty = new ComboBox();
-            this.Label2 = new Label();
-            this.Label1 = new Label();
-            this.Label3 = new Label();
-            this.ComboBoxTaxAuth = new ComboBox();
-            this.ButtonReset = new Button();
-            this.GroupBox10 = new GroupBox();
-            this.lbl_SubTerm = new Label();
-            this.Label135 = new Label();
-            this.lbl_IndexFeeAmt = new Label();
-            this.Label19 = new Label();
-            this.Label13 = new Label();
-            this.lbl_WeSubscribe = new Label();
-            this.lbl_IndexPmtMethod = new Label();
-            this.Label11 = new Label();
-            this.Label128 = new Label();
-            this.lbl_Free = new Label();
-            this.Label30 = new Label();
-            this.LabelSubNeeded = new Label();
-            this.GroupBox8 = new GroupBox();
-            this.TextBox4 = new TextBox();
-            this.ComboBox1 = new ComboBox();
-            this.Label40 = new Label();
-            this.Button1 = new Button();
-            this.TextBox3 = new TextBox();
-            this.TextBox2 = new TextBox();
-            this.Label41 = new Label();
-            this.Label50 = new Label();
-            this.Label51 = new Label();
-            this.GroupBox7 = new GroupBox();
-            this.TableLayoutPanel2 = new TableLayoutPanel();
-            this.txt_myfl_P = new TextBox();
-            this.LinkLabel_MyFlCountiesURL = new LinkLabel();
-            this.txt_myfl_U = new TextBox();
-            this.txt_login_tax2P = new TextBox();
-            this.lbl_MyFlaCounties = new Label();
-            this.Label_DOI = new Label();
-            this.txt_login_tax2U = new TextBox();
-            this.Label_stCode = new Label();
-            this.txt_login_otherP = new TextBox();
-            this.txt_login_courtP = new TextBox();
-            this.txt_login_otherU = new TextBox();
-            this.Label_secState = new Label();
-            this.txt_login_asrP = new TextBox();
-            this.txt_login_probateP = new TextBox();
-            this.txt_login_asrU = new TextBox();
-            this.txt_login_courtU = new TextBox();
-            this.txt_login_tax1P = new TextBox();
-            this.txt_login_muniP = new TextBox();
-            this.txt_login_tax1U = new TextBox();
-            this.txt_login_probateU = new TextBox();
-            this.txt_login_muniU = new TextBox();
-            this.txt_login_prothonP = new TextBox();
-            this.txt_login_landP = new TextBox();
-            this.txt_login_prothonU = new TextBox();
-            this.LabelOtherURL = new Label();
-            this.txt_login_landU = new TextBox();
-            this.LabelCountyURL = new Label();
-            this.LinkLabelOtherTax = new LinkLabel();
-            this.LinkLabelSheriff = new LinkLabel();
-            this.LabelUCC = new Label();
-            this.txtComments = new TextBox();
-            this.LinkLabelCounty = new LinkLabel();
-            this.LabelOtherTax = new Label();
-            this.LinkLabelForeclosure = new LinkLabel();
-            this.LabelCourt = new Label();
-            this.LinkLabelMuniCourt = new LinkLabel();
-            this.LabelForeclosures = new Label();
-            this.LinkLabelMaps = new LinkLabel();
-            this.LabelSheriff = new Label();
-            this.LinkLabelAssessor = new LinkLabel();
-            this.LinkLabelTax = new LinkLabel();
-            this.LabelMapsGIS = new Label();
-            this.LinkLabelCoHome = new LinkLabel();
-            this.LinkLabelCourt = new LinkLabel();
-            this.LabelProthon = new Label();
-            this.LabelAssessor = new Label();
-            this.LinkLabelProthon = new LinkLabel();
-            this.LabelCountyTax = new Label();
-            this.LinkLabelProbate = new LinkLabel();
-            this.LabelCountyHome = new Label();
-            this.LabelMuniCourt = new Label();
-            this.LabelProbate = new Label();
-            this.Label_user = new Label();
-            this.Label_pwd = new Label();
-            this.LinkLabelPlats = new LinkLabel();
-            this.LinkLabel_OtherURL = new LinkLabel();
-            this.LinkLabel_UCC = new LinkLabel();
-            this.LinkLabel_SecState = new LinkLabel();
-            this.LinkLabel_State_Code = new LinkLabel();
-            this.LinkLabel_DeptIns = new LinkLabel();
-            this.GroupBox4 = new GroupBox();
-            this.LabelUseIns = new Label();
-            this.LabelUseProps = new Label();
-            this.LabelUseCopy = new Label();
-            this.Label20 = new Label();
-            this.Label15 = new Label();
-            this.Label28 = new Label();
-            this.GroupBox3 = new GroupBox();
-            this.Label4Tap = new Label();
-            this.Label5dtree = new Label();
-            this.Label6RV = new Label();
-            this.LinkLabel10 = new LinkLabel();
-            this.LinkLabel9 = new LinkLabel();
-            this.LinkLabel16 = new LinkLabel();
-            this.LabelUseTap = new Label();
-            this.LabelUseDtree = new Label();
-            this.LabelUseRV = new Label();
-            this.GroupBox2 = new GroupBox();
-            this.lbl_courtImgDate = new Label();
-            this.lbl_courtIndexDate = new Label();
-            this.Label34 = new Label();
-            this.Label35 = new Label();
-            this.lbl_copyFeeAmt = new Label();
-            this.Label16 = new Label();
-            this.Label27 = new Label();
-            this.LabelIndex_source = new Label();
-            this.LabelCopyPmtType = new Label();
-            this.Label26 = new Label();
-            this.LabelImage_date = new Label();
-            this.LabelIndex_date = new Label();
-            this.Label12 = new Label();
-            this.Label10 = new Label();
-            this.Label29 = new Label();
-            this.LabelCopy_source = new Label();
-            this.lblOpenRunSheet = new Label();
-            this.TabControl1 = new TabControl();
-            this.TabPg1Docs = new TabPage();
-            this.pbox_Abstr_SOP = new PictureBox();
-            this.lbl_doc_AbstractingSOPs = new Label();
-            this.Button_PolicyWarehouse = new Button();
-            this.pboxOpenEtitleWkshare = new PictureBox();
-            this.lblOpenEtitleWkshare = new Label();
-            this.pboxOpenORT_Wkshare = new PictureBox();
-            this.lblOpenORT_Wkshare = new Label();
-            this.Button_ClosingDept = new Button();
-            this.Button_TitleDept = new Button();
-            this.ButtonHelp = new Button();
-            this.Button_RateCalc = new Button();
-            this.GroupBox5 = new GroupBox();
-            this.Label114 = new Label();
-            this.Label113 = new Label();
-            this.ButtonResetDocs = new Button();
-            this.ButtonGetDoc = new Button();
-            this.cboxDocType = new ComboBox();
-            this.cboxDocState = new ComboBox();
-            this.linkUS_Legal_Forms = new LinkLabel();
-            this.lbl_NotFound = new Label();
-            this.pboxOpenClearanceCustSpecs = new PictureBox();
-            this.lblOpenClearanceCustSpecs = new Label();
-            this.pboxOpenTitleCustSpecs = new PictureBox();
-            this.lblOpenTitleCustSpec = new Label();
-            this.pboxOpenRunSheet = new PictureBox();
-            this.TabPg2PhBk = new TabPage();
-            this.PictureBox9 = new PictureBox();
-            this.lbl_BusnPhones = new Label();
-            this.Label48 = new Label();
-            this.Label49 = new Label();
-            this.DataGridView1 = new DataGridView();
-            this.TabPg3Cal = new TabPage();
-            this.TabPg4Clearing = new TabPage();
-            this.PictureBox8 = new PictureBox();
-            this.lbl_doc_Lease_Fee_LandContract = new Label();
-            this.PictureBox6 = new PictureBox();
-            this.lbl_doc_SOP_deedprep = new Label();
-            this.PictureBox7 = new PictureBox();
-            this.lbl_doc_approvePOA = new Label();
-            this.PictureBox5 = new PictureBox();
-            this.lbl_doc_aboutVesting = new Label();
-            this.PictureBox4 = new PictureBox();
-            this.lbl_doc_aboutDeeds = new Label();
-            this.TableLayoutPanel1 = new TableLayoutPanel();
-            this.txtSOL_notes = new TextBox();
-            this.Label_statutecomments = new Label();
-            this.lblSOL_Tax_RedemPer = new Label();
-            this.Label_forclRedem = new Label();
-            this.Label_taxTakRedem = new Label();
-            this.Label_mtg = new Label();
-            this.lblSOL_forecl_redem_per = new Label();
-            this.Label73 = new Label();
-            this.Label46 = new Label();
-            this.Label74 = new Label();
-            this.Label54 = new Label();
-            this.Label52 = new Label();
-            this.lblSOL_Mtg = new Label();
-            this.Label58 = new Label();
-            this.Label_heloc = new Label();
-            this.lblSOL_Heloc = new Label();
-            this.Label_teRule = new Label();
-            this.lblSOL_TERule = new Label();
-            this.Label_spousal = new Label();
-            this.lblSOL_PersTax = new Label();
-            this.Label_persTax = new Label();
-            this.lblSOL_ClaimLien = new Label();
-            this.lblSOL_HOA = new Label();
-            this.lblSOL_Support = new Label();
-            this.Label_support = new Label();
-            this.Label_claimLien = new Label();
-            this.lblSOL_Notice = new Label();
-            this.lblSOL_Hosp = new Label();
-            this.Label_HOA = new Label();
-            this.Label_hospLien = new Label();
-            this.lblSOL_Mech = new Label();
-            this.Label_NOC = new Label();
-            this.lblSOL_lispen = new Label();
-            this.Label_mechLien = new Label();
-            this.Label_lisPendens = new Label();
-            this.lblSOL_Jgmt = new Label();
-            this.Label_jgmt = new Label();
-            this.lblSOL_Spousal = new Label();
-            this.Label_stateJgmt = new Label();
-            this.lblSOL_StateJgmt = new Label();
-            this.Label_fc = new Label();
-            this.txt_foreclosure_notes = new TextBox();
-            this.Label_credclaim = new Label();
-            this.Label_aftacq = new Label();
-            this.lblSOL_Creditor_Claims = new Label();
-            this.lblSOL_AftAcq = new Label();
-            this.txt_ProbateInfo = new TextBox();
-            this.Label_probate = new Label();
-            this.TabPg5Req = new TabPage();
-            this.WebBrowser3 = new WebBrowser();
-            this.TabPg6OtherLogins = new TabPage();
-            this.DataGridView2 = new DataGridView();
-            this.TabPg7Taxes = new TabPage();
-            this.lbl_verifDate5 = new Label();
-            this.lbl_verified_taxoff5 = new Label();
-            this.lbl_verifDate4 = new Label();
-            this.lbl_verified_taxoff4 = new Label();
-            this.lbl_verifDate3 = new Label();
-            this.lbl_verified_taxoff3 = new Label();
-            this.lbl_verifDate2 = new Label();
-            this.lbl_verified_taxoff2 = new Label();
-            this.lbl_verifDate1 = new Label();
-            this.lbl_verified_taxoff1 = new Label();
-            this.Label39 = new Label();
-            this.txtTaxOffice1 = new TextBox();
-            this.txtTaxOffice2 = new TextBox();
-            this.txtTaxOffice3 = new TextBox();
-            this.txtTaxOffice4 = new TextBox();
-            this.txtTaxOffice5 = new TextBox();
-            this.lblTxAuth1 = new Label();
-            this.linkLocTax1 = new LinkLabel();
-            this.linkLocTax5 = new LinkLabel();
-            this.lblTxAuth5 = new Label();
-            this.lblTxAuth2 = new Label();
-            this.linkLocTax2 = new LinkLabel();
-            this.linkLocTax4 = new LinkLabel();
-            this.lblTxAuth4 = new Label();
-            this.lblTxAuth3 = new Label();
-            this.linkLocTax3 = new LinkLabel();
-            this.pbxExport = new PictureBox();
-            this.pbxCopy5 = new PictureBox();
-            this.pbxCopy4 = new PictureBox();
-            this.pbxCopy3 = new PictureBox();
-            this.pbxCopy2 = new PictureBox();
-            this.pbxCopy1 = new PictureBox();
-            this.TabPg8UWMan = new TabPage();
-            this.WebBrowser1 = new WebBrowser();
-            this.TabPage1 = new TabPage();
-            this.GroupBox1 = new GroupBox();
-            this.lbl_vstats_YTD = new Label();
-            this.lbl_vstats_Jan = new Label();
-            this.lbl_vstats_Dec = new Label();
-            this.lbl_vstats_Feb = new Label();
-            this.lbl_vstats_Nov = new Label();
-            this.lbl_vstats_Mar = new Label();
-            this.lbl_vstats_Oct = new Label();
-            this.lbl_vstats_Apr = new Label();
-            this.lbl_vstats_Sep = new Label();
-            this.lbl_vstats_May = new Label();
-            this.lbl_vstats_Aug = new Label();
-            this.lbl_vstats_Jun = new Label();
-            this.lbl_vstats_Jul = new Label();
-            this.Label121 = new Label();
-            this.Label118 = new Label();
-            this.Label21 = new Label();
-            this.cbox_StatsTaxCounties = new ComboBox();
-            this.txt_StatsTaxOffices = new TextBox();
-            this.lbl_TaxOnlineStats = new Label();
-            this.Label14 = new Label();
-            this.lbl_OrbStat6 = new Label();
-            this.Label37 = new Label();
-            this.cbox_StatsStates = new ComboBox();
-            this.Label25 = new Label();
-            this.Label23 = new Label();
-            this.lbl_OrbStats = new Label();
-            this.lbl_OrbStat5 = new Label();
-            this.txt_StatsCounties = new TextBox();
-            this.lbl_OrbStat4 = new Label();
-            this.lbl_OrbStat3 = new Label();
-            this.lbl_OrbStat2 = new Label();
-            this.lbl_OrbStat1 = new Label();
-            this.lbl_CoOnlineStats = new Label();
-            this.Label120 = new Label();
-            this.Label119 = new Label();
-            this.Label116 = new Label();
-            this.Label115 = new Label();
-            this.TabPage2 = new TabPage();
-            this.lblSOL_being_Clause = new Label();
-            this.lbl_homestead = new Label();
-            this.txt_homestead_notes = new TextBox();
-            this.lbl_deed_prep = new Label();
-            this.lbl_attyClose = new Label();
-            this.txt_AttyNotes = new TextBox();
-            this.txt_DeedNotes = new TextBox();
-            this.CheckBox1 = new CheckBox();
-            this.Label123 = new Label();
-            this.txt_PolicyNotes = new TextBox();
-            this.TabPage3 = new TabPage();
-            this.PictureBox3 = new PictureBox();
-            this.lbl_doc_endorsInfo = new Label();
-            this.PictureBox2 = new PictureBox();
-            this.lbl_doc_Alta_Clta = new Label();
-            this.WebBrowser2 = new WebBrowser();
-            this.LinkLabel4 = new LinkLabel();
-            this.Label56 = new Label();
-            this.ToolTip2 = new ToolTip(this.components);
-            this.Label55 = new Label();
-            this.Label62 = new Label();
-            this.Label64 = new Label();
-            this.Label66 = new Label();
-            this.Label70 = new Label();
-            this.Label75 = new Label();
-            this.Label76 = new Label();
-            this.Label77 = new Label();
-            this.Label78 = new Label();
-            this.Label80 = new Label();
-            this.Label82 = new Label();
-            this.Label84 = new Label();
-            this.Label85 = new Label();
-            this.Label86 = new Label();
-            this.Label87 = new Label();
-            this.Label88 = new Label();
-            this.TextBox1 = new TextBox();
-            this.Label89 = new Label();
-            this.Label90 = new Label();
-            this.Label91 = new Label();
-            this.Label92 = new Label();
-            this.Label93 = new Label();
-            this.Label94 = new Label();
-            this.Label95 = new Label();
-            this.Label96 = new Label();
-            this.Label97 = new Label();
-            this.Label98 = new Label();
-            this.Label99 = new Label();
-            this.Label100 = new Label();
-            this.Label101 = new Label();
-            this.Label102 = new Label();
-            this.Label103 = new Label();
-            this.Label104 = new Label();
-            this.Label105 = new Label();
-            this.Label106 = new Label();
-            this.Label107 = new Label();
-            this.Label108 = new Label();
-            this.Label109 = new Label();
-            this.Label110 = new Label();
-            this.Label111 = new Label();
-            this.Label112 = new Label();
-            this.Panel2 = new Panel();
-            this.pboxOpenCredCard = new PictureBox();
-            this.lbl_creditCard = new Label();
-            this.SplitContainer1.Panel1.SuspendLayout();
-            this.SplitContainer1.Panel2.SuspendLayout();
-            this.SplitContainer1.SuspendLayout();
-            ((ISupportInitialize)this.PictureBox1).BeginInit();
-            this.Panel1.SuspendLayout();
-            this.GroupBox6.SuspendLayout();
-            this.GroupBox10.SuspendLayout();
-            this.GroupBox8.SuspendLayout();
-            this.GroupBox7.SuspendLayout();
-            this.TableLayoutPanel2.SuspendLayout();
-            this.GroupBox4.SuspendLayout();
-            this.GroupBox3.SuspendLayout();
-            this.GroupBox2.SuspendLayout();
-            this.TabControl1.SuspendLayout();
-            this.TabPg1Docs.SuspendLayout();
-            ((ISupportInitialize)this.pbox_Abstr_SOP).BeginInit();
-            ((ISupportInitialize)this.pboxOpenEtitleWkshare).BeginInit();
-            ((ISupportInitialize)this.pboxOpenORT_Wkshare).BeginInit();
-            this.GroupBox5.SuspendLayout();
-            ((ISupportInitialize)this.pboxOpenClearanceCustSpecs).BeginInit();
-            ((ISupportInitialize)this.pboxOpenTitleCustSpecs).BeginInit();
-            ((ISupportInitialize)this.pboxOpenRunSheet).BeginInit();
-            this.TabPg2PhBk.SuspendLayout();
-            ((ISupportInitialize)this.PictureBox9).BeginInit();
-            ((ISupportInitialize)this.DataGridView1).BeginInit();
-            this.TabPg3Cal.SuspendLayout();
-            this.TabPg4Clearing.SuspendLayout();
-            ((ISupportInitialize)this.PictureBox8).BeginInit();
-            ((ISupportInitialize)this.PictureBox6).BeginInit();
-            ((ISupportInitialize)this.PictureBox7).BeginInit();
-            ((ISupportInitialize)this.PictureBox5).BeginInit();
-            ((ISupportInitialize)this.PictureBox4).BeginInit();
-            this.TableLayoutPanel1.SuspendLayout();
-            this.TabPg5Req.SuspendLayout();
-            this.TabPg6OtherLogins.SuspendLayout();
-            ((ISupportInitialize)this.DataGridView2).BeginInit();
-            this.TabPg7Taxes.SuspendLayout();
-            ((ISupportInitialize)this.pbxExport).BeginInit();
-            ((ISupportInitialize)this.pbxCopy5).BeginInit();
-            ((ISupportInitialize)this.pbxCopy4).BeginInit();
-            ((ISupportInitialize)this.pbxCopy3).BeginInit();
-            ((ISupportInitialize)this.pbxCopy2).BeginInit();
-            ((ISupportInitialize)this.pbxCopy1).BeginInit();
-            this.TabPg8UWMan.SuspendLayout();
-            this.TabPage1.SuspendLayout();
-            this.GroupBox1.SuspendLayout();
-            this.TabPage2.SuspendLayout();
-            this.TabPage3.SuspendLayout();
-            ((ISupportInitialize)this.PictureBox3).BeginInit();
-            ((ISupportInitialize)this.PictureBox2).BeginInit();
-            ((ISupportInitialize)this.pboxOpenCredCard).BeginInit();
-            this.SuspendLayout();
-            //
-            // Label32
-            //
-            this.Label32.AutoSize = true;
-            this.Label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label32.ForeColor = Color.Black;
-            this.Label32.ImageAlign = ContentAlignment.TopRight;
-            this.Label32.Location = new Point(514, 26);
-            this.Label32.Name = "Label32";
-            this.Label32.Size = new System.Drawing.Size(80, 15);
-            this.Label32.TabIndex = 54;
-            this.Label32.Text = "todays date";
-            this.Label32.TextAlign = ContentAlignment.TopRight;
-            //
-            // SplitContainer1
-            //
-            this.SplitContainer1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            this.SplitContainer1.Location = new Point(0, 6);
-            this.SplitContainer1.Name = "SplitContainer1";
-            this.SplitContainer1.Orientation = Orientation.Horizontal;
-            this.SplitContainer1.Panel1.BackColor = Color.Honeydew;
-            this.SplitContainer1.Panel1.Controls.Add(this.lbl_attyState);
-            this.SplitContainer1.Panel1.Controls.Add(this.PictureBox1);
-            this.SplitContainer1.Panel1.Controls.Add(this.lblDefault_UW_Name);
-            this.SplitContainer1.Panel1.Controls.Add(this.Label32);
-            this.SplitContainer1.Panel1.Controls.Add(this.Panel1);
-            this.SplitContainer1.Panel2.AutoScroll = true;
-            this.SplitContainer1.Panel2.BackColor = Color.Honeydew;
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox10);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox8);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox7);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox4);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox3);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBox2);
-            this.SplitContainer1.Size = new System.Drawing.Size(874, 385);
-            this.SplitContainer1.SplitterDistance = 109;
-            this.SplitContainer1.TabIndex = 179;
-            //
-            // lbl_attyState
-            //
-            this.lbl_attyState.AutoSize = true;
-            this.lbl_attyState.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_attyState.ForeColor = Color.Red;
-            this.lbl_attyState.Location = new Point(262, 4);
-            this.lbl_attyState.Name = "lbl_attyState";
-            this.lbl_attyState.Size = new System.Drawing.Size(10, 15);
-            this.lbl_attyState.TabIndex = 84;
-            this.lbl_attyState.Text = ".";
-            //
-            // PictureBox1
-            //
-            this.PictureBox1.BackgroundImageLayout = ImageLayout.None;
-            this.PictureBox1.Image = (Image)componentResourceManager.GetObject("PictureBox1.Image");
-            this.PictureBox1.Location = new Point(3, 4);
-            this.PictureBox1.Name = "PictureBox1";
-            this.PictureBox1.Size = new System.Drawing.Size(238, 35);
-            this.PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox1.TabIndex = 48;
-            this.PictureBox1.TabStop = false;
-            this.PictureBox1.Tag = "ORB";
-            //
-            // lblDefault_UW_Name
-            //
-            this.lblDefault_UW_Name.AutoSize = true;
-            this.lblDefault_UW_Name.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lblDefault_UW_Name.ForeColor = Color.Red;
-            this.lblDefault_UW_Name.Location = new Point(262, 26);
-            this.lblDefault_UW_Name.Name = "lblDefault_UW_Name";
-            this.lblDefault_UW_Name.Size = new System.Drawing.Size(10, 15);
-            this.lblDefault_UW_Name.TabIndex = 66;
-            this.lblDefault_UW_Name.Text = ".";
-            //
-            // Panel1
-            //
-            this.Panel1.BackColor = Color.LightSteelBlue;
-            this.Panel1.Controls.Add(this.ButtonExit);
-            this.Panel1.Controls.Add(this.Label36);
-            this.Panel1.Controls.Add(this.Button_PolicyWarehouse);
-            this.Panel1.Controls.Add(this.ComboBoxTaxType);
-            this.Panel1.Controls.Add(this.GroupBox6);
-            this.Panel1.Controls.Add(this.Button_EditORB);
-            this.Panel1.Controls.Add(this.Button_Search);
-            this.Panel1.Controls.Add(this.ButtonHelp);
-            this.Panel1.Controls.Add(this.Button_RateCalc);
-            this.Panel1.Controls.Add(this.ComboBoxState);
-            this.Panel1.Controls.Add(this.ComboBoxCounty);
-            this.Panel1.Controls.Add(this.Label2);
-            this.Panel1.Controls.Add(this.Label1);
-            this.Panel1.Controls.Add(this.Label3);
-            this.Panel1.Controls.Add(this.ComboBoxTaxAuth);
-            this.Panel1.Controls.Add(this.ButtonReset);
-            this.Panel1.Dock = DockStyle.Bottom;
-            this.Panel1.Location = new Point(0, 44);
-            this.Panel1.Name = "Panel1";
-            this.Panel1.Size = new System.Drawing.Size(874, 65);
-            this.Panel1.TabIndex = 83;
-            //
-            // ButtonExit
-            //
-            this.ButtonExit.BackColor = Color.FromArgb(220, 185, 255);
-            this.ButtonExit.Cursor = Cursors.Hand;
-            this.ButtonExit.FlatAppearance.BorderColor = Color.Purple;
-            this.ButtonExit.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.ButtonExit.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.ButtonExit.FlatStyle = FlatStyle.Flat;
-            this.ButtonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.ButtonExit.ForeColor = Color.Indigo;
-            this.ButtonExit.Location = new Point(811, 25);
-            this.ButtonExit.Name = "ButtonExit";
-            this.ButtonExit.Size = new System.Drawing.Size(59, 35);
-            this.ButtonExit.TabIndex = 84;
-            this.ButtonExit.Text = "EXIT";
-            this.ButtonExit.UseVisualStyleBackColor = false;
-			//
+			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			this.Label32 = new System.Windows.Forms.Label();
+			this.SplitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.lbl_attyState = new System.Windows.Forms.Label();
+			this.PictureBox1 = new System.Windows.Forms.PictureBox();
+			this.lblDefault_UW_Name = new System.Windows.Forms.Label();
+			this.Panel1 = new System.Windows.Forms.Panel();
+			this.ButtonExit = new System.Windows.Forms.Button();
+			this.Label36 = new System.Windows.Forms.Label();
+			this.Button_PolicyWarehouse = new System.Windows.Forms.Button();
+			this.ComboBoxTaxType = new System.Windows.Forms.ComboBox();
+			this.GroupBox6 = new System.Windows.Forms.GroupBox();
+			this.cbxAddtlLinks = new System.Windows.Forms.ComboBox();
+			this.Button_EditORB = new System.Windows.Forms.Button();
+			this.Button_Search = new System.Windows.Forms.Button();
+			this.ButtonHelp = new System.Windows.Forms.Button();
+			this.Button_RateCalc = new System.Windows.Forms.Button();
+			this.ComboBoxState = new System.Windows.Forms.ComboBox();
+			this.ComboBoxCounty = new System.Windows.Forms.ComboBox();
+			this.Label2 = new System.Windows.Forms.Label();
+			this.Label1 = new System.Windows.Forms.Label();
+			this.Label3 = new System.Windows.Forms.Label();
+			this.ComboBoxTaxAuth = new System.Windows.Forms.ComboBox();
+			this.ButtonReset = new System.Windows.Forms.Button();
+			this.GroupBox10 = new System.Windows.Forms.GroupBox();
+			this.lbl_SubTerm = new System.Windows.Forms.Label();
+			this.Label135 = new System.Windows.Forms.Label();
+			this.lbl_IndexFeeAmt = new System.Windows.Forms.Label();
+			this.Label19 = new System.Windows.Forms.Label();
+			this.Label13 = new System.Windows.Forms.Label();
+			this.lbl_WeSubscribe = new System.Windows.Forms.Label();
+			this.lbl_IndexPmtMethod = new System.Windows.Forms.Label();
+			this.Label11 = new System.Windows.Forms.Label();
+			this.Label128 = new System.Windows.Forms.Label();
+			this.lbl_Free = new System.Windows.Forms.Label();
+			this.Label30 = new System.Windows.Forms.Label();
+			this.LabelSubNeeded = new System.Windows.Forms.Label();
+			this.GroupBox8 = new System.Windows.Forms.GroupBox();
+			this.TextBox4 = new System.Windows.Forms.TextBox();
+			this.ComboBox1 = new System.Windows.Forms.ComboBox();
+			this.Label40 = new System.Windows.Forms.Label();
+			this.Button1 = new System.Windows.Forms.Button();
+			this.TextBox3 = new System.Windows.Forms.TextBox();
+			this.TextBox2 = new System.Windows.Forms.TextBox();
+			this.Label41 = new System.Windows.Forms.Label();
+			this.Label50 = new System.Windows.Forms.Label();
+			this.Label51 = new System.Windows.Forms.Label();
+			this.GroupBox7 = new System.Windows.Forms.GroupBox();
+			this.TableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.txt_myfl_P = new System.Windows.Forms.TextBox();
+			this.LinkLabel_MyFlCountiesURL = new System.Windows.Forms.LinkLabel();
+			this.txt_myfl_U = new System.Windows.Forms.TextBox();
+			this.txt_login_tax2P = new System.Windows.Forms.TextBox();
+			this.lbl_MyFlaCounties = new System.Windows.Forms.Label();
+			this.Label_DOI = new System.Windows.Forms.Label();
+			this.txt_login_tax2U = new System.Windows.Forms.TextBox();
+			this.Label_stCode = new System.Windows.Forms.Label();
+			this.txt_login_otherP = new System.Windows.Forms.TextBox();
+			this.txt_login_courtP = new System.Windows.Forms.TextBox();
+			this.txt_login_otherU = new System.Windows.Forms.TextBox();
+			this.Label_secState = new System.Windows.Forms.Label();
+			this.txt_login_asrP = new System.Windows.Forms.TextBox();
+			this.txt_login_probateP = new System.Windows.Forms.TextBox();
+			this.txt_login_asrU = new System.Windows.Forms.TextBox();
+			this.txt_login_courtU = new System.Windows.Forms.TextBox();
+			this.txt_login_tax1P = new System.Windows.Forms.TextBox();
+			this.txt_login_muniP = new System.Windows.Forms.TextBox();
+			this.txt_login_tax1U = new System.Windows.Forms.TextBox();
+			this.txt_login_probateU = new System.Windows.Forms.TextBox();
+			this.txt_login_muniU = new System.Windows.Forms.TextBox();
+			this.txt_login_prothonP = new System.Windows.Forms.TextBox();
+			this.txt_login_landP = new System.Windows.Forms.TextBox();
+			this.txt_login_prothonU = new System.Windows.Forms.TextBox();
+			this.LabelOtherURL = new System.Windows.Forms.Label();
+			this.txt_login_landU = new System.Windows.Forms.TextBox();
+			this.LabelCountyURL = new System.Windows.Forms.Label();
+			this.LinkLabelOtherTax = new System.Windows.Forms.LinkLabel();
+			this.LinkLabelSheriff = new System.Windows.Forms.LinkLabel();
+			this.LabelUCC = new System.Windows.Forms.Label();
+			this.txtComments = new System.Windows.Forms.TextBox();
+			this.LinkLabelCounty = new System.Windows.Forms.LinkLabel();
+			this.LabelOtherTax = new System.Windows.Forms.Label();
+			this.LinkLabelForeclosure = new System.Windows.Forms.LinkLabel();
+			this.LabelCourt = new System.Windows.Forms.Label();
+			this.LinkLabelMuniCourt = new System.Windows.Forms.LinkLabel();
+			this.LabelForeclosures = new System.Windows.Forms.Label();
+			this.LinkLabelMaps = new System.Windows.Forms.LinkLabel();
+			this.LabelSheriff = new System.Windows.Forms.Label();
+			this.LinkLabelAssessor = new System.Windows.Forms.LinkLabel();
+			this.LinkLabelTax = new System.Windows.Forms.LinkLabel();
+			this.LabelMapsGIS = new System.Windows.Forms.Label();
+			this.LinkLabelCoHome = new System.Windows.Forms.LinkLabel();
+			this.LinkLabelCourt = new System.Windows.Forms.LinkLabel();
+			this.LabelProthon = new System.Windows.Forms.Label();
+			this.LabelAssessor = new System.Windows.Forms.Label();
+			this.LinkLabelProthon = new System.Windows.Forms.LinkLabel();
+			this.LabelCountyTax = new System.Windows.Forms.Label();
+			this.LinkLabelProbate = new System.Windows.Forms.LinkLabel();
+			this.LabelCountyHome = new System.Windows.Forms.Label();
+			this.LabelMuniCourt = new System.Windows.Forms.Label();
+			this.LabelProbate = new System.Windows.Forms.Label();
+			this.Label_user = new System.Windows.Forms.Label();
+			this.Label_pwd = new System.Windows.Forms.Label();
+			this.LinkLabelPlats = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel_OtherURL = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel_UCC = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel_SecState = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel_State_Code = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel_DeptIns = new System.Windows.Forms.LinkLabel();
+			this.GroupBox4 = new System.Windows.Forms.GroupBox();
+			this.LabelUseIns = new System.Windows.Forms.Label();
+			this.LabelUseProps = new System.Windows.Forms.Label();
+			this.LabelUseCopy = new System.Windows.Forms.Label();
+			this.Label20 = new System.Windows.Forms.Label();
+			this.Label15 = new System.Windows.Forms.Label();
+			this.Label28 = new System.Windows.Forms.Label();
+			this.GroupBox3 = new System.Windows.Forms.GroupBox();
+			this.Label4Tap = new System.Windows.Forms.Label();
+			this.Label5dtree = new System.Windows.Forms.Label();
+			this.Label6RV = new System.Windows.Forms.Label();
+			this.LinkLabel10 = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel9 = new System.Windows.Forms.LinkLabel();
+			this.LinkLabel16 = new System.Windows.Forms.LinkLabel();
+			this.LabelUseTap = new System.Windows.Forms.Label();
+			this.LabelUseDtree = new System.Windows.Forms.Label();
+			this.LabelUseRV = new System.Windows.Forms.Label();
+			this.GroupBox2 = new System.Windows.Forms.GroupBox();
+			this.lbl_courtImgDate = new System.Windows.Forms.Label();
+			this.lbl_courtIndexDate = new System.Windows.Forms.Label();
+			this.Label34 = new System.Windows.Forms.Label();
+			this.Label35 = new System.Windows.Forms.Label();
+			this.lbl_copyFeeAmt = new System.Windows.Forms.Label();
+			this.Label16 = new System.Windows.Forms.Label();
+			this.Label27 = new System.Windows.Forms.Label();
+			this.LabelIndex_source = new System.Windows.Forms.Label();
+			this.LabelCopyPmtType = new System.Windows.Forms.Label();
+			this.Label26 = new System.Windows.Forms.Label();
+			this.LabelImage_date = new System.Windows.Forms.Label();
+			this.LabelIndex_date = new System.Windows.Forms.Label();
+			this.Label12 = new System.Windows.Forms.Label();
+			this.Label10 = new System.Windows.Forms.Label();
+			this.Label29 = new System.Windows.Forms.Label();
+			this.LabelCopy_source = new System.Windows.Forms.Label();
+			this.TabControl1 = new System.Windows.Forms.TabControl();
+			this.TabPg4Clearing = new System.Windows.Forms.TabPage();
+			this.TableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.txtSOL_notes = new System.Windows.Forms.TextBox();
+			this.Label_statutecomments = new System.Windows.Forms.Label();
+			this.lblSOL_Tax_RedemPer = new System.Windows.Forms.Label();
+			this.Label_forclRedem = new System.Windows.Forms.Label();
+			this.Label_taxTakRedem = new System.Windows.Forms.Label();
+			this.Label_mtg = new System.Windows.Forms.Label();
+			this.lblSOL_forecl_redem_per = new System.Windows.Forms.Label();
+			this.Label73 = new System.Windows.Forms.Label();
+			this.Label46 = new System.Windows.Forms.Label();
+			this.Label74 = new System.Windows.Forms.Label();
+			this.Label54 = new System.Windows.Forms.Label();
+			this.Label52 = new System.Windows.Forms.Label();
+			this.lblSOL_Mtg = new System.Windows.Forms.Label();
+			this.Label58 = new System.Windows.Forms.Label();
+			this.Label_heloc = new System.Windows.Forms.Label();
+			this.lblSOL_Heloc = new System.Windows.Forms.Label();
+			this.Label_teRule = new System.Windows.Forms.Label();
+			this.lblSOL_TERule = new System.Windows.Forms.Label();
+			this.Label_spousal = new System.Windows.Forms.Label();
+			this.lblSOL_PersTax = new System.Windows.Forms.Label();
+			this.Label_persTax = new System.Windows.Forms.Label();
+			this.lblSOL_ClaimLien = new System.Windows.Forms.Label();
+			this.lblSOL_HOA = new System.Windows.Forms.Label();
+			this.lblSOL_Support = new System.Windows.Forms.Label();
+			this.Label_support = new System.Windows.Forms.Label();
+			this.Label_claimLien = new System.Windows.Forms.Label();
+			this.lblSOL_Notice = new System.Windows.Forms.Label();
+			this.lblSOL_Hosp = new System.Windows.Forms.Label();
+			this.Label_HOA = new System.Windows.Forms.Label();
+			this.Label_hospLien = new System.Windows.Forms.Label();
+			this.lblSOL_Mech = new System.Windows.Forms.Label();
+			this.Label_NOC = new System.Windows.Forms.Label();
+			this.lblSOL_lispen = new System.Windows.Forms.Label();
+			this.Label_mechLien = new System.Windows.Forms.Label();
+			this.Label_lisPendens = new System.Windows.Forms.Label();
+			this.lblSOL_Jgmt = new System.Windows.Forms.Label();
+			this.Label_jgmt = new System.Windows.Forms.Label();
+			this.lblSOL_Spousal = new System.Windows.Forms.Label();
+			this.Label_stateJgmt = new System.Windows.Forms.Label();
+			this.lblSOL_StateJgmt = new System.Windows.Forms.Label();
+			this.Label_fc = new System.Windows.Forms.Label();
+			this.txt_foreclosure_notes = new System.Windows.Forms.TextBox();
+			this.Label_credclaim = new System.Windows.Forms.Label();
+			this.Label_aftacq = new System.Windows.Forms.Label();
+			this.lblSOL_Creditor_Claims = new System.Windows.Forms.Label();
+			this.lblSOL_AftAcq = new System.Windows.Forms.Label();
+			this.txt_ProbateInfo = new System.Windows.Forms.TextBox();
+			this.Label_probate = new System.Windows.Forms.Label();
+			this.TabPg6OtherLogins = new System.Windows.Forms.TabPage();
+			this.DataGridView2 = new System.Windows.Forms.DataGridView();
+			this.TabPg7Taxes = new System.Windows.Forms.TabPage();
+			this.lbl_verifDate5 = new System.Windows.Forms.Label();
+			this.lbl_verified_taxoff5 = new System.Windows.Forms.Label();
+			this.lbl_verifDate4 = new System.Windows.Forms.Label();
+			this.lbl_verified_taxoff4 = new System.Windows.Forms.Label();
+			this.lbl_verifDate3 = new System.Windows.Forms.Label();
+			this.lbl_verified_taxoff3 = new System.Windows.Forms.Label();
+			this.lbl_verifDate2 = new System.Windows.Forms.Label();
+			this.lbl_verified_taxoff2 = new System.Windows.Forms.Label();
+			this.lbl_verifDate1 = new System.Windows.Forms.Label();
+			this.lbl_verified_taxoff1 = new System.Windows.Forms.Label();
+			this.Label39 = new System.Windows.Forms.Label();
+			this.txtTaxOffice1 = new System.Windows.Forms.TextBox();
+			this.txtTaxOffice2 = new System.Windows.Forms.TextBox();
+			this.txtTaxOffice3 = new System.Windows.Forms.TextBox();
+			this.txtTaxOffice4 = new System.Windows.Forms.TextBox();
+			this.txtTaxOffice5 = new System.Windows.Forms.TextBox();
+			this.lblTxAuth1 = new System.Windows.Forms.Label();
+			this.linkLocTax1 = new System.Windows.Forms.LinkLabel();
+			this.linkLocTax5 = new System.Windows.Forms.LinkLabel();
+			this.lblTxAuth5 = new System.Windows.Forms.Label();
+			this.lblTxAuth2 = new System.Windows.Forms.Label();
+			this.linkLocTax2 = new System.Windows.Forms.LinkLabel();
+			this.linkLocTax4 = new System.Windows.Forms.LinkLabel();
+			this.lblTxAuth4 = new System.Windows.Forms.Label();
+			this.lblTxAuth3 = new System.Windows.Forms.Label();
+			this.linkLocTax3 = new System.Windows.Forms.LinkLabel();
+			this.pbxExport = new System.Windows.Forms.PictureBox();
+			this.pbxCopy5 = new System.Windows.Forms.PictureBox();
+			this.pbxCopy4 = new System.Windows.Forms.PictureBox();
+			this.pbxCopy3 = new System.Windows.Forms.PictureBox();
+			this.pbxCopy2 = new System.Windows.Forms.PictureBox();
+			this.pbxCopy1 = new System.Windows.Forms.PictureBox();
+			this.TabPg1Statistics = new System.Windows.Forms.TabPage();
+			this.GroupBox1 = new System.Windows.Forms.GroupBox();
+			this.lbl_vstats_YTD = new System.Windows.Forms.Label();
+			this.lbl_vstats_Jan = new System.Windows.Forms.Label();
+			this.lbl_vstats_Dec = new System.Windows.Forms.Label();
+			this.lbl_vstats_Feb = new System.Windows.Forms.Label();
+			this.lbl_vstats_Nov = new System.Windows.Forms.Label();
+			this.lbl_vstats_Mar = new System.Windows.Forms.Label();
+			this.lbl_vstats_Oct = new System.Windows.Forms.Label();
+			this.lbl_vstats_Apr = new System.Windows.Forms.Label();
+			this.lbl_vstats_Sep = new System.Windows.Forms.Label();
+			this.lbl_vstats_May = new System.Windows.Forms.Label();
+			this.lbl_vstats_Aug = new System.Windows.Forms.Label();
+			this.lbl_vstats_Jun = new System.Windows.Forms.Label();
+			this.lbl_vstats_Jul = new System.Windows.Forms.Label();
+			this.Label121 = new System.Windows.Forms.Label();
+			this.Label118 = new System.Windows.Forms.Label();
+			this.Label21 = new System.Windows.Forms.Label();
+			this.cbox_StatsTaxCounties = new System.Windows.Forms.ComboBox();
+			this.txt_StatsTaxOffices = new System.Windows.Forms.TextBox();
+			this.lbl_TaxOnlineStats = new System.Windows.Forms.Label();
+			this.Label14 = new System.Windows.Forms.Label();
+			this.lbl_OrbStat6 = new System.Windows.Forms.Label();
+			this.Label37 = new System.Windows.Forms.Label();
+			this.cbox_StatsStates = new System.Windows.Forms.ComboBox();
+			this.Label25 = new System.Windows.Forms.Label();
+			this.Label23 = new System.Windows.Forms.Label();
+			this.lbl_OrbStats = new System.Windows.Forms.Label();
+			this.lbl_OrbStat5 = new System.Windows.Forms.Label();
+			this.txt_StatsCounties = new System.Windows.Forms.TextBox();
+			this.lbl_OrbStat4 = new System.Windows.Forms.Label();
+			this.lbl_OrbStat3 = new System.Windows.Forms.Label();
+			this.lbl_OrbStat2 = new System.Windows.Forms.Label();
+			this.lbl_OrbStat1 = new System.Windows.Forms.Label();
+			this.lbl_CoOnlineStats = new System.Windows.Forms.Label();
+			this.Label120 = new System.Windows.Forms.Label();
+			this.Label119 = new System.Windows.Forms.Label();
+			this.Label116 = new System.Windows.Forms.Label();
+			this.Label115 = new System.Windows.Forms.Label();
+			this.TabPg2Misc = new System.Windows.Forms.TabPage();
+			this.lblSOL_being_Clause = new System.Windows.Forms.Label();
+			this.lbl_homestead = new System.Windows.Forms.Label();
+			this.txt_homestead_notes = new System.Windows.Forms.TextBox();
+			this.lbl_deed_prep = new System.Windows.Forms.Label();
+			this.lbl_attyClose = new System.Windows.Forms.Label();
+			this.txt_AttyNotes = new System.Windows.Forms.TextBox();
+			this.txt_DeedNotes = new System.Windows.Forms.TextBox();
+			this.CheckBox1 = new System.Windows.Forms.CheckBox();
+			this.Label123 = new System.Windows.Forms.Label();
+			this.txt_PolicyNotes = new System.Windows.Forms.TextBox();
+			this.LinkLabel4 = new System.Windows.Forms.LinkLabel();
+			this.Label56 = new System.Windows.Forms.Label();
+			this.ToolTip2 = new System.Windows.Forms.ToolTip(this.components);
+			this.Label55 = new System.Windows.Forms.Label();
+			this.Label62 = new System.Windows.Forms.Label();
+			this.Label64 = new System.Windows.Forms.Label();
+			this.Label66 = new System.Windows.Forms.Label();
+			this.Label70 = new System.Windows.Forms.Label();
+			this.Label75 = new System.Windows.Forms.Label();
+			this.Label76 = new System.Windows.Forms.Label();
+			this.Label77 = new System.Windows.Forms.Label();
+			this.Label78 = new System.Windows.Forms.Label();
+			this.Label80 = new System.Windows.Forms.Label();
+			this.Label82 = new System.Windows.Forms.Label();
+			this.Label84 = new System.Windows.Forms.Label();
+			this.Label85 = new System.Windows.Forms.Label();
+			this.Label86 = new System.Windows.Forms.Label();
+			this.Label87 = new System.Windows.Forms.Label();
+			this.Label88 = new System.Windows.Forms.Label();
+			this.TextBox1 = new System.Windows.Forms.TextBox();
+			this.Label89 = new System.Windows.Forms.Label();
+			this.Label90 = new System.Windows.Forms.Label();
+			this.Label91 = new System.Windows.Forms.Label();
+			this.Label92 = new System.Windows.Forms.Label();
+			this.Label93 = new System.Windows.Forms.Label();
+			this.Label94 = new System.Windows.Forms.Label();
+			this.Label95 = new System.Windows.Forms.Label();
+			this.Label96 = new System.Windows.Forms.Label();
+			this.Label97 = new System.Windows.Forms.Label();
+			this.Label98 = new System.Windows.Forms.Label();
+			this.Label99 = new System.Windows.Forms.Label();
+			this.Label100 = new System.Windows.Forms.Label();
+			this.Label101 = new System.Windows.Forms.Label();
+			this.Label102 = new System.Windows.Forms.Label();
+			this.Label103 = new System.Windows.Forms.Label();
+			this.Label104 = new System.Windows.Forms.Label();
+			this.Label105 = new System.Windows.Forms.Label();
+			this.Label106 = new System.Windows.Forms.Label();
+			this.Label107 = new System.Windows.Forms.Label();
+			this.Label108 = new System.Windows.Forms.Label();
+			this.Label109 = new System.Windows.Forms.Label();
+			this.Label110 = new System.Windows.Forms.Label();
+			this.Label111 = new System.Windows.Forms.Label();
+			this.Label112 = new System.Windows.Forms.Label();
+			this.Panel2 = new System.Windows.Forms.Panel();
+			this.SplitContainer1.Panel1.SuspendLayout();
+			this.SplitContainer1.Panel2.SuspendLayout();
+			this.SplitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
+			this.Panel1.SuspendLayout();
+			this.GroupBox6.SuspendLayout();
+			this.GroupBox10.SuspendLayout();
+			this.GroupBox8.SuspendLayout();
+			this.GroupBox7.SuspendLayout();
+			this.TableLayoutPanel2.SuspendLayout();
+			this.GroupBox4.SuspendLayout();
+			this.GroupBox3.SuspendLayout();
+			this.GroupBox2.SuspendLayout();
+			this.TabControl1.SuspendLayout();
+			this.TabPg4Clearing.SuspendLayout();
+			this.TableLayoutPanel1.SuspendLayout();
+			this.TabPg6OtherLogins.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.DataGridView2)).BeginInit();
+			this.TabPg7Taxes.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbxExport)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy5)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy4)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy3)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy1)).BeginInit();
+			this.TabPg1Statistics.SuspendLayout();
+			this.GroupBox1.SuspendLayout();
+			this.TabPg2Misc.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// Label32
+			// 
+			this.Label32.AutoSize = true;
+			this.Label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label32.ForeColor = System.Drawing.Color.Black;
+			this.Label32.ImageAlign = System.Drawing.ContentAlignment.TopRight;
+			this.Label32.Location = new System.Drawing.Point(514, 26);
+			this.Label32.Name = "Label32";
+			this.Label32.Size = new System.Drawing.Size(80, 15);
+			this.Label32.TabIndex = 54;
+			this.Label32.Text = "todays date";
+			this.Label32.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
+			// SplitContainer1
+			// 
+			this.SplitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.SplitContainer1.Location = new System.Drawing.Point(0, 6);
+			this.SplitContainer1.Name = "SplitContainer1";
+			this.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// SplitContainer1.Panel1
+			// 
+			this.SplitContainer1.Panel1.BackColor = System.Drawing.Color.Honeydew;
+			this.SplitContainer1.Panel1.Controls.Add(this.lbl_attyState);
+			this.SplitContainer1.Panel1.Controls.Add(this.PictureBox1);
+			this.SplitContainer1.Panel1.Controls.Add(this.lblDefault_UW_Name);
+			this.SplitContainer1.Panel1.Controls.Add(this.Label32);
+			this.SplitContainer1.Panel1.Controls.Add(this.Panel1);
+			// 
+			// SplitContainer1.Panel2
+			// 
+			this.SplitContainer1.Panel2.AutoScroll = true;
+			this.SplitContainer1.Panel2.BackColor = System.Drawing.Color.Honeydew;
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox10);
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox8);
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox7);
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox4);
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox3);
+			this.SplitContainer1.Panel2.Controls.Add(this.GroupBox2);
+			this.SplitContainer1.Size = new System.Drawing.Size(874, 385);
+			this.SplitContainer1.SplitterDistance = 109;
+			this.SplitContainer1.TabIndex = 179;
+			// 
+			// lbl_attyState
+			// 
+			this.lbl_attyState.AutoSize = true;
+			this.lbl_attyState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_attyState.ForeColor = System.Drawing.Color.Red;
+			this.lbl_attyState.Location = new System.Drawing.Point(262, 4);
+			this.lbl_attyState.Name = "lbl_attyState";
+			this.lbl_attyState.Size = new System.Drawing.Size(10, 15);
+			this.lbl_attyState.TabIndex = 84;
+			this.lbl_attyState.Text = ".";
+			// 
+			// PictureBox1
+			// 
+			this.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.PictureBox1.Image = global::WindowsApplication1.Resources.ims_ORB_logo;
+			this.PictureBox1.Location = new System.Drawing.Point(3, 4);
+			this.PictureBox1.Name = "PictureBox1";
+			this.PictureBox1.Size = new System.Drawing.Size(238, 35);
+			this.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBox1.TabIndex = 48;
+			this.PictureBox1.TabStop = false;
+			this.PictureBox1.Tag = "ORB";
+			// 
+			// lblDefault_UW_Name
+			// 
+			this.lblDefault_UW_Name.AutoSize = true;
+			this.lblDefault_UW_Name.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblDefault_UW_Name.ForeColor = System.Drawing.Color.Red;
+			this.lblDefault_UW_Name.Location = new System.Drawing.Point(262, 26);
+			this.lblDefault_UW_Name.Name = "lblDefault_UW_Name";
+			this.lblDefault_UW_Name.Size = new System.Drawing.Size(10, 15);
+			this.lblDefault_UW_Name.TabIndex = 66;
+			this.lblDefault_UW_Name.Text = ".";
+			// 
+			// Panel1
+			// 
+			this.Panel1.BackColor = System.Drawing.Color.LightSteelBlue;
+			this.Panel1.Controls.Add(this.ButtonExit);
+			this.Panel1.Controls.Add(this.Label36);
+			this.Panel1.Controls.Add(this.Button_PolicyWarehouse);
+			this.Panel1.Controls.Add(this.ComboBoxTaxType);
+			this.Panel1.Controls.Add(this.GroupBox6);
+			this.Panel1.Controls.Add(this.Button_EditORB);
+			this.Panel1.Controls.Add(this.Button_Search);
+			this.Panel1.Controls.Add(this.ButtonHelp);
+			this.Panel1.Controls.Add(this.Button_RateCalc);
+			this.Panel1.Controls.Add(this.ComboBoxState);
+			this.Panel1.Controls.Add(this.ComboBoxCounty);
+			this.Panel1.Controls.Add(this.Label2);
+			this.Panel1.Controls.Add(this.Label1);
+			this.Panel1.Controls.Add(this.Label3);
+			this.Panel1.Controls.Add(this.ComboBoxTaxAuth);
+			this.Panel1.Controls.Add(this.ButtonReset);
+			this.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.Panel1.Location = new System.Drawing.Point(0, 44);
+			this.Panel1.Name = "Panel1";
+			this.Panel1.Size = new System.Drawing.Size(874, 65);
+			this.Panel1.TabIndex = 83;
+			// 
+			// ButtonExit
+			// 
+			this.ButtonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(185)))), ((int)(((byte)(255)))));
+			this.ButtonExit.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.ButtonExit.FlatAppearance.BorderColor = System.Drawing.Color.Purple;
+			this.ButtonExit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.ButtonExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Cyan;
+			this.ButtonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.ButtonExit.ForeColor = System.Drawing.Color.Indigo;
+			this.ButtonExit.Location = new System.Drawing.Point(811, 25);
+			this.ButtonExit.Name = "ButtonExit";
+			this.ButtonExit.Size = new System.Drawing.Size(59, 35);
+			this.ButtonExit.TabIndex = 84;
+			this.ButtonExit.Text = "EXIT";
+			this.ButtonExit.UseVisualStyleBackColor = false;
+			this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click);
+			// 
 			// Label36
-			//
-            this.Label36.AutoSize = true;
-            this.Label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label36.Location = new Point(305, 18);
-            this.Label36.Name = "Label36";
-            this.Label36.Size = new System.Drawing.Size(54, 16);
-            this.Label36.TabIndex = 93;
-            this.Label36.Text = "tax type";
-			//
+			// 
+			this.Label36.AutoSize = true;
+			this.Label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label36.Location = new System.Drawing.Point(305, 18);
+			this.Label36.Name = "Label36";
+			this.Label36.Size = new System.Drawing.Size(53, 16);
+			this.Label36.TabIndex = 93;
+			this.Label36.Text = "tax type";
+			// 
+			// Button_PolicyWarehouse
+			// 
+			this.Button_PolicyWarehouse.BackColor = System.Drawing.Color.Turquoise;
+			this.Button_PolicyWarehouse.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.Button_PolicyWarehouse.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+			this.Button_PolicyWarehouse.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.Button_PolicyWarehouse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightCyan;
+			this.Button_PolicyWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.Button_PolicyWarehouse.Font = new System.Drawing.Font("Arial", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Button_PolicyWarehouse.ForeColor = System.Drawing.Color.Indigo;
+			this.Button_PolicyWarehouse.Location = new System.Drawing.Point(717, 2);
+			this.Button_PolicyWarehouse.Name = "Button_PolicyWarehouse";
+			this.Button_PolicyWarehouse.Size = new System.Drawing.Size(70, 20);
+			this.Button_PolicyWarehouse.TabIndex = 202;
+			this.Button_PolicyWarehouse.Text = "POLICIES";
+			this.Button_PolicyWarehouse.UseVisualStyleBackColor = false;
+			this.Button_PolicyWarehouse.Click += new System.EventHandler(this.Button_PolicyWarehouse_Click);
+			// 
 			// ComboBoxTaxType
-			//
-            this.ComboBoxTaxType.DropDownHeight = 50;
-            this.ComboBoxTaxType.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ComboBoxTaxType.ForeColor = Color.Indigo;
-            this.ComboBoxTaxType.FormattingEnabled = true;
-            this.ComboBoxTaxType.IntegralHeight = false;
-            this.ComboBoxTaxType.ItemHeight = 12;
-            this.ComboBoxTaxType.Location = new Point(305, 37);
-            this.ComboBoxTaxType.MaxDropDownItems = 10;
-            this.ComboBoxTaxType.Name = "ComboBoxTaxType";
-            this.ComboBoxTaxType.Size =new System.Drawing.Size(120, 20);
-            this.ComboBoxTaxType.TabIndex = 92;
-			//
+			// 
+			this.ComboBoxTaxType.DropDownHeight = 50;
+			this.ComboBoxTaxType.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ComboBoxTaxType.ForeColor = System.Drawing.Color.Indigo;
+			this.ComboBoxTaxType.FormattingEnabled = true;
+			this.ComboBoxTaxType.IntegralHeight = false;
+			this.ComboBoxTaxType.ItemHeight = 12;
+			this.ComboBoxTaxType.Location = new System.Drawing.Point(305, 37);
+			this.ComboBoxTaxType.MaxDropDownItems = 10;
+			this.ComboBoxTaxType.Name = "ComboBoxTaxType";
+			this.ComboBoxTaxType.Size = new System.Drawing.Size(120, 20);
+			this.ComboBoxTaxType.TabIndex = 92;
+			// 
 			// GroupBox6
-			//
-            this.GroupBox6.BackColor = Color.FromArgb(220, 185, 255);
-            this.GroupBox6.Controls.Add(this.cbxAddtlLinks);
-            this.GroupBox6.FlatStyle = FlatStyle.Flat;
-            this.GroupBox6.Font = new System.Drawing.Font("Segoe UI", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.GroupBox6.Location = new Point(660, 25);
-            this.GroupBox6.Name = "GroupBox6";
-            this.GroupBox6.Size = new System.Drawing.Size(145, 38);
-            this.GroupBox6.TabIndex = 90;
-            this.GroupBox6.TabStop = false;
-            this.GroupBox6.Text = "Additional Links";
-			//
+			// 
+			this.GroupBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(185)))), ((int)(((byte)(255)))));
+			this.GroupBox6.Controls.Add(this.cbxAddtlLinks);
+			this.GroupBox6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.GroupBox6.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox6.Location = new System.Drawing.Point(660, 25);
+			this.GroupBox6.Name = "GroupBox6";
+			this.GroupBox6.Size = new System.Drawing.Size(145, 38);
+			this.GroupBox6.TabIndex = 90;
+			this.GroupBox6.TabStop = false;
+			this.GroupBox6.Text = "Additional Links";
+			// 
 			// cbxAddtlLinks
-			//
-            this.cbxAddtlLinks.DropDownHeight = 150;
-            this.cbxAddtlLinks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.cbxAddtlLinks.ForeColor = Color.Indigo;
-            this.cbxAddtlLinks.FormattingEnabled = true;
-            this.cbxAddtlLinks.IntegralHeight = false;
-            this.cbxAddtlLinks.ItemHeight = 12;
-            object[] objArray = new object[] { "CPL-Ticor", "CPL-Stewart", "Ernst Publishing", "FDIC.gov", "IRS.gov", "Justia (Courts)", "MERS-Releases", "NetrOnline", "Old Republic", "PACER", "Real Quest", "Stewart New York", "Stewart Title Guaranty", "Stewart VirtUW", "Ticor NTI Web", "US Courts Map", "USPS.com", "ZipCode Lookup" };
-            this.cbxAddtlLinks.Items.AddRange(objArray);
-            this.cbxAddtlLinks.Location = new Point(6, 13);
-            this.cbxAddtlLinks.Name = "cbxAddtlLinks";
-            this.cbxAddtlLinks.Size = new System.Drawing.Size(133, 20);
-            this.cbxAddtlLinks.TabIndex = 69;
-			//
+			// 
+			this.cbxAddtlLinks.DropDownHeight = 150;
+			this.cbxAddtlLinks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cbxAddtlLinks.ForeColor = System.Drawing.Color.Indigo;
+			this.cbxAddtlLinks.FormattingEnabled = true;
+			this.cbxAddtlLinks.IntegralHeight = false;
+			this.cbxAddtlLinks.ItemHeight = 12;
+			this.cbxAddtlLinks.Items.AddRange(new object[] {
+            "CPL-Ticor",
+            "CPL-Stewart",
+            "Ernst Publishing",
+            "FDIC.gov",
+            "IRS.gov",
+            "Justia (Courts)",
+            "MERS-Releases",
+            "NetrOnline",
+            "Old Republic",
+            "PACER",
+            "Real Quest",
+            "Stewart New York",
+            "Stewart Title Guaranty",
+            "Stewart VirtUW",
+            "Ticor NTI Web",
+            "US Courts Map",
+            "USPS.com",
+            "ZipCode Lookup"});
+			this.cbxAddtlLinks.Location = new System.Drawing.Point(6, 13);
+			this.cbxAddtlLinks.Name = "cbxAddtlLinks";
+			this.cbxAddtlLinks.Size = new System.Drawing.Size(133, 20);
+			this.cbxAddtlLinks.TabIndex = 69;
+			this.cbxAddtlLinks.SelectedIndexChanged += new System.EventHandler(this.cbxAddtlLinks_SelectedIndexChanged);
+			// 
 			// Button_EditORB
-			//
-            this.Button_EditORB.BackColor = Color.FromArgb(220, 185, 255);
-            this.Button_EditORB.Cursor = Cursors.Hand;
-            this.Button_EditORB.FlatAppearance.BorderColor = Color.Purple;
-            this.Button_EditORB.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_EditORB.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.Button_EditORB.FlatStyle = FlatStyle.Flat;
-            this.Button_EditORB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.Button_EditORB.ForeColor = Color.Indigo;
-            this.Button_EditORB.Location  = new Point(585, 25);
-            this.Button_EditORB.Name = "Button_EditORB";
-            this.Button_EditORB.Size = new System.Drawing.Size(72, 35);
-            this.Button_EditORB.TabIndex = 91;
-            this.Button_EditORB.Text = "EDIT";
-            this.Button_EditORB.UseVisualStyleBackColor = false;
-            this.Button_EditORB.Click += new EventHandler(Button_EditORB_Click);
-			//
+			// 
+			this.Button_EditORB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(185)))), ((int)(((byte)(255)))));
+			this.Button_EditORB.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.Button_EditORB.FlatAppearance.BorderColor = System.Drawing.Color.Purple;
+			this.Button_EditORB.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.Button_EditORB.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Cyan;
+			this.Button_EditORB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.Button_EditORB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Button_EditORB.ForeColor = System.Drawing.Color.Indigo;
+			this.Button_EditORB.Location = new System.Drawing.Point(585, 25);
+			this.Button_EditORB.Name = "Button_EditORB";
+			this.Button_EditORB.Size = new System.Drawing.Size(72, 35);
+			this.Button_EditORB.TabIndex = 91;
+			this.Button_EditORB.Text = "EDIT";
+			this.Button_EditORB.UseVisualStyleBackColor = false;
+			this.Button_EditORB.Click += new System.EventHandler(this.Button_EditORB_Click);
+			// 
 			// Button_Search
-			//
-            this.Button_Search.BackColor = Color.FromArgb(220, 185, 255);
-            this.Button_Search.Cursor = Cursors.Hand;
-            this.Button_Search.FlatAppearance.BorderColor = Color.Purple;
-            this.Button_Search.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_Search.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.Button_Search.FlatStyle = FlatStyle.Flat;
-            this.Button_Search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.Button_Search.ForeColor = Color.Indigo;
-            this.Button_Search.Location = new Point(433, 25);
-            this.Button_Search.Name = "Button_Search";
-            this.Button_Search.Size = new System.Drawing.Size(72, 35);
-            this.Button_Search.TabIndex = 87;
-            this.Button_Search.Text = "SEARCH";
-            this.Button_Search.UseVisualStyleBackColor = false;
-			//
+			// 
+			this.Button_Search.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(185)))), ((int)(((byte)(255)))));
+			this.Button_Search.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.Button_Search.FlatAppearance.BorderColor = System.Drawing.Color.Purple;
+			this.Button_Search.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.Button_Search.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Cyan;
+			this.Button_Search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.Button_Search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Button_Search.ForeColor = System.Drawing.Color.Indigo;
+			this.Button_Search.Location = new System.Drawing.Point(433, 25);
+			this.Button_Search.Name = "Button_Search";
+			this.Button_Search.Size = new System.Drawing.Size(72, 35);
+			this.Button_Search.TabIndex = 87;
+			this.Button_Search.Text = "SEARCH";
+			this.Button_Search.UseVisualStyleBackColor = false;
+			this.Button_Search.Click += new System.EventHandler(this.ButtonGetLinks_Click);
+			// 
+			// ButtonHelp
+			// 
+			this.ButtonHelp.BackColor = System.Drawing.Color.Turquoise;
+			this.ButtonHelp.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.ButtonHelp.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+			this.ButtonHelp.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.ButtonHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightCyan;
+			this.ButtonHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonHelp.Font = new System.Drawing.Font("Arial", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ButtonHelp.ForeColor = System.Drawing.Color.Indigo;
+			this.ButtonHelp.Location = new System.Drawing.Point(647, 2);
+			this.ButtonHelp.Margin = new System.Windows.Forms.Padding(0);
+			this.ButtonHelp.Name = "ButtonHelp";
+			this.ButtonHelp.Size = new System.Drawing.Size(70, 20);
+			this.ButtonHelp.TabIndex = 195;
+			this.ButtonHelp.Text = "ORB HELP";
+			this.ButtonHelp.UseVisualStyleBackColor = false;
+			this.ButtonHelp.Click += new System.EventHandler(this.ButtonHelp_Click);
+			// 
+			// Button_RateCalc
+			// 
+			this.Button_RateCalc.BackColor = System.Drawing.Color.Turquoise;
+			this.Button_RateCalc.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.Button_RateCalc.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+			this.Button_RateCalc.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.Button_RateCalc.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightCyan;
+			this.Button_RateCalc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.Button_RateCalc.Font = new System.Drawing.Font("Arial", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Button_RateCalc.ForeColor = System.Drawing.Color.Indigo;
+			this.Button_RateCalc.Location = new System.Drawing.Point(787, 2);
+			this.Button_RateCalc.Margin = new System.Windows.Forms.Padding(0);
+			this.Button_RateCalc.Name = "Button_RateCalc";
+			this.Button_RateCalc.Size = new System.Drawing.Size(83, 20);
+			this.Button_RateCalc.TabIndex = 194;
+			this.Button_RateCalc.Text = "RATE CALC";
+			this.Button_RateCalc.UseVisualStyleBackColor = false;
+			this.Button_RateCalc.Click += new System.EventHandler(this.Button_RateCalc_Click);
+			// 
 			// ComboBoxState
-			//
-            this.ComboBoxState.DropDownHeight = 100;
-            this.ComboBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ComboBoxState.ForeColor = Color.Indigo;
-            this.ComboBoxState.FormattingEnabled = true;
-            this.ComboBoxState.IntegralHeight = false;
-            this.ComboBoxState.ItemHeight = 12;
-            objArray = new object[] { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
-            this.ComboBoxState.Items.AddRange(objArray);
-            this.ComboBoxState.Location = new Point(3, 37);
-            this.ComboBoxState.MaxDropDownItems = 10;
-            this.ComboBoxState.Name = "ComboBoxState";
-            this.ComboBoxState.Size = new System.Drawing.Size(44, 20);
-            this.ComboBoxState.Sorted = true;
-            this.ComboBoxState.TabIndex = 82;
-			//
+			// 
+			this.ComboBoxState.DropDownHeight = 100;
+			this.ComboBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ComboBoxState.ForeColor = System.Drawing.Color.Indigo;
+			this.ComboBoxState.FormattingEnabled = true;
+			this.ComboBoxState.IntegralHeight = false;
+			this.ComboBoxState.ItemHeight = 12;
+			this.ComboBoxState.Items.AddRange(new object[] {
+            "AK",
+            "AL",
+            "AR",
+            "AZ",
+            "CA",
+            "CO",
+            "CT",
+            "DC",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "IA",
+            "ID",
+            "IL",
+            "IN",
+            "KS",
+            "KY",
+            "LA",
+            "MA",
+            "MD",
+            "ME",
+            "MI",
+            "MN",
+            "MO",
+            "MS",
+            "MT",
+            "NC",
+            "ND",
+            "NE",
+            "NH",
+            "NJ",
+            "NM",
+            "NV",
+            "NY",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VA",
+            "VT",
+            "WA",
+            "WI",
+            "WV",
+            "WY"});
+			this.ComboBoxState.Location = new System.Drawing.Point(3, 37);
+			this.ComboBoxState.MaxDropDownItems = 10;
+			this.ComboBoxState.Name = "ComboBoxState";
+			this.ComboBoxState.Size = new System.Drawing.Size(44, 20);
+			this.ComboBoxState.Sorted = true;
+			this.ComboBoxState.TabIndex = 82;
+			this.ComboBoxState.TextChanged += new System.EventHandler(this.comboboxState_TextChanged);
+			// 
 			// ComboBoxCounty
-			//
-            this.ComboBoxCounty.DropDownHeight = 50;
-            this.ComboBoxCounty.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ComboBoxCounty.ForeColor = Color.Indigo;
-            this.ComboBoxCounty.FormattingEnabled = true;
-            this.ComboBoxCounty.IntegralHeight = false;
-            this.ComboBoxCounty.ItemHeight = 12;
-            this.ComboBoxCounty.Location = new Point(53, 37);
-            this.ComboBoxCounty.MaxDropDownItems = 10;
-            this.ComboBoxCounty.Name = "ComboBoxCounty";
-            this.ComboBoxCounty.Size = new System.Drawing.Size(120, 20);
-            this.ComboBoxCounty.TabIndex = 83;
-            //
-            // Label2
-            //
-            this.Label2.AutoSize = true;
-            this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label2.Location = new Point(53, 18);
-            this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(47, 16);
-            this.Label2.TabIndex = 86;
-            this.Label2.Text = "county";
-            //
-            // Label1
-            //
-            this.Label1.AutoSize = true;
-            this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label1.Location = new Point(3, 18);
-            this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(37, 16);
-            this.Label1.TabIndex = 84;
-            this.Label1.Text = "state";
-            //
-            // Label3
-            //
-            this.Label3.AutoSize = true;
-            this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label3.Location = new Point(179, 18);
-            this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(78, 16);
-            this.Label3.TabIndex = 89;
-            this.Label3.Text = "tax authority";
-            //
-            // ComboBoxTaxAuth
-            //
-            this.ComboBoxTaxAuth.DropDownHeight = 50;
-            this.ComboBoxTaxAuth.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ComboBoxTaxAuth.ForeColor = Color.Indigo;
-            this.ComboBoxTaxAuth.FormattingEnabled = true;
-            this.ComboBoxTaxAuth.IntegralHeight = false;
-            this.ComboBoxTaxAuth.ItemHeight = 12;
-            this.ComboBoxTaxAuth.Location = new Point(179, 37);
-            this.ComboBoxTaxAuth.MaxDropDownItems = 10;
-            this.ComboBoxTaxAuth.Name = "ComboBoxTaxAuth";
-            this.ComboBoxTaxAuth.Size = new System.Drawing.Size(120, 20);
-            this.ComboBoxTaxAuth.TabIndex = 85;
-            //
-            // ButtonReset
-            //
-            this.ButtonReset.BackColor = Color.FromArgb(220, 185, 255);
-            this.ButtonReset.Cursor = Cursors.Hand;
-            this.ButtonReset.FlatAppearance.BorderColor = Color.Purple;
-            this.ButtonReset.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.ButtonReset.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.ButtonReset.FlatStyle = FlatStyle.Flat;
-            this.ButtonReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.ButtonReset.ForeColor = Color.Indigo;
-            this.ButtonReset.Location = new Point(509, 25);
-            this.ButtonReset.Name = "ButtonReset";
-            this.ButtonReset.Size = new System.Drawing.Size(72, 35);
-            this.ButtonReset.TabIndex = 88;
-            this.ButtonReset.Text = "RESET";
-            this.ButtonReset.UseVisualStyleBackColor = false;
-            // 
-            // GroupBox10
-            //
-            this.GroupBox10.BackColor = Color.GhostWhite;
-            this.GroupBox10.Controls.Add(this.lbl_SubTerm);
-            this.GroupBox10.Controls.Add(this.Label135);
-            this.GroupBox10.Controls.Add(this.lbl_IndexFeeAmt);
-            this.GroupBox10.Controls.Add(this.Label19);
-            this.GroupBox10.Controls.Add(this.Label13);
-            this.GroupBox10.Controls.Add(this.lbl_WeSubscribe);
-            this.GroupBox10.Controls.Add(this.lbl_IndexPmtMethod);
-            this.GroupBox10.Controls.Add(this.Label11);
-            this.GroupBox10.Controls.Add(this.Label128);
-            this.GroupBox10.Controls.Add(this.lbl_Free);
-            this.GroupBox10.Controls.Add(this.Label30);
-            this.GroupBox10.Controls.Add(this.LabelSubNeeded);
-            this.GroupBox10.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox10.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox10.Location = new Point(666, 88);
-            this.GroupBox10.Name = "GroupBox10";
-            this.GroupBox10.Size = new System.Drawing.Size(152, 149);
-            this.GroupBox10.TabIndex = 189;
-            this.GroupBox10.TabStop = false;
-            this.GroupBox10.Text = "INDEX SUBSCRIP'S";
-            //
-            // lbl_SubTerm
-            //
-            this.lbl_SubTerm.AutoSize = true;
-            this.lbl_SubTerm.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_SubTerm.ForeColor = Color.Black;
-            this.lbl_SubTerm.Location = new Point(86, 72);
-            this.lbl_SubTerm.Name = "lbl_SubTerm";
-            this.lbl_SubTerm.Size = new System.Drawing.Size(9, 12);
-            this.lbl_SubTerm.TabIndex = 74;
-            this.lbl_SubTerm.Text = "*";
-            //
-            // Label135
-            //
-            this.Label135.AutoSize = true;
-            this.Label135.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label135.ForeColor = Color.DarkSlateBlue;
-            this.Label135.Location = new Point(6, 72);
-            this.Label135.Name = "Label135";
-            this.Label135.Size = new System.Drawing.Size(74, 12);
-            this.Label135.TabIndex = 72;
-            this.Label135.Text = "Subscrip. Term: ";
-            //
-            // lbl_IndexFeeAmt
-            //
-            this.lbl_IndexFeeAmt.AutoSize = true;
-            this.lbl_IndexFeeAmt.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_IndexFeeAmt.ForeColor = Color.Black;
-            this.lbl_IndexFeeAmt.Location = new Point(73, 89);
-            this.lbl_IndexFeeAmt.Name = "lbl_IndexFeeAmt";
-            this.lbl_IndexFeeAmt.Size = new System.Drawing.Size(9, 12);
-            this.lbl_IndexFeeAmt.TabIndex = 71;
-            this.lbl_IndexFeeAmt.Text = "*";
-            //
-            // Label19
-            //
-            this.Label19.AutoSize = true;
-            this.Label19.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label19.ForeColor = Color.DarkSlateBlue;
-            this.Label19.Location = new Point(6, 54);
-            this.Label19.Name = "Label19";
-            this.Label19.Size = new System.Drawing.Size(81, 12);
-            this.Label19.TabIndex = 68;
-            this.Label19.Text = "Do we subscribe?";
-            //
-            // Label13
-            //
-            this.Label13.AutoSize = true;
-            this.Label13.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label13.ForeColor = Color.DarkSlateBlue;
-            this.Label13.Location = new Point(6, 89);
-            this.Label13.Name = "Label13";
-            this.Label13.Size = new System.Drawing.Size(67, 12);
-            this.Label13.TabIndex = 70;
-            this.Label13.Text = "Subscrip. Fee: ";
-            //
-            // lbl_WeSubscribe
-            //
-            this.lbl_WeSubscribe.AutoSize = true;
-            this.lbl_WeSubscribe.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_WeSubscribe.ForeColor = Color.Black;
-            this.lbl_WeSubscribe.Location = new Point(93, 54);
-            this.lbl_WeSubscribe.Name = "lbl_WeSubscribe";
-            this.lbl_WeSubscribe.Size = new System.Drawing.Size(9, 12);
-            this.lbl_WeSubscribe.TabIndex = 69;
-            this.lbl_WeSubscribe.Text = "*";
-            //
-            // lbl_IndexPmtMethod
-            //
-            this.lbl_IndexPmtMethod.AutoSize = true;
-            this.lbl_IndexPmtMethod.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_IndexPmtMethod.ForeColor = Color.Black;
-            this.lbl_IndexPmtMethod.Location = new Point(74, 107);
-            this.lbl_IndexPmtMethod.Name = "lbl_IndexPmtMethod";
-            this.lbl_IndexPmtMethod.Size = new System.Drawing.Size(9, 12);
-            this.lbl_IndexPmtMethod.TabIndex = 67;
-            this.lbl_IndexPmtMethod.Text = "*";
-            //
-            // Label11
-            //
-            this.Label11.AutoSize = true;
-            this.Label11.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label11.ForeColor = Color.DarkSlateBlue;
-            this.Label11.Location = new Point(6, 36);
-            this.Label11.Name = "Label11";
-            this.Label11.Size = new System.Drawing.Size(67, 12);
-            this.Label11.TabIndex = 66;
-            this.Label11.Text = "Free Subscrip?";
-            //
-            // Label128
-            //
-            this.Label128.AutoSize = true;
-            this.Label128.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label128.ForeColor = Color.DarkSlateBlue;
-            this.Label128.Location = new Point(6, 107);
-            this.Label128.Name = "Label128";
-            this.Label128.Size = new System.Drawing.Size(66, 12);
-            this.Label128.TabIndex = 66;
-            this.Label128.Text = "Pmt Method: ";
-            //
-            // lbl_Free
-            //
-            this.lbl_Free.AutoSize = true;
-            this.lbl_Free.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_Free.ForeColor = Color.Black;
-            this.lbl_Free.Location = new Point(86, 36);
-            this.lbl_Free.Name = "lbl_Free";
-            this.lbl_Free.Size = new System.Drawing.Size(9, 12);
-            this.lbl_Free.TabIndex = 67;
-            this.lbl_Free.Text = "*";
-            //
-            // Label30
-            //
-            this.Label30.AutoSize = true;
-            this.Label30.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label30.ForeColor = Color.DarkSlateBlue;
-            this.Label30.Location = new Point(6, 20);
-            this.Label30.Name = "Label30";
-            this.Label30.Size = new System.Drawing.Size(78, 12);
-            this.Label30.TabIndex = 64;
-            this.Label30.Text = "Subscr. Needed: ";
-            //
-            // LabelSubNeeded
-            //
-            this.LabelSubNeeded.AutoSize = true;
-            this.LabelSubNeeded.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelSubNeeded.ForeColor = Color.Black;
-            this.LabelSubNeeded.Location  = new Point(86, 20);
-            this.LabelSubNeeded.Name = "LabelSubNeeded";
-            this.LabelSubNeeded.Size = new System.Drawing.Size(9, 12);
-            this.LabelSubNeeded.TabIndex = 65;
-            this.LabelSubNeeded.Text = "*";
-            //
-            // GroupBox8
-            //
-            this.GroupBox8.BackColor = Color.GhostWhite;
-            this.GroupBox8.Controls.Add(this.TextBox4);
-            this.GroupBox8.Controls.Add(this.ComboBox1);
-            this.GroupBox8.Controls.Add(this.Label40);
-            this.GroupBox8.Controls.Add(this.Button1);
-            this.GroupBox8.Controls.Add(this.TextBox3);
-            this.GroupBox8.Controls.Add(this.TextBox2);
-            this.GroupBox8.Controls.Add(this.Label41);
-            this.GroupBox8.Controls.Add(this.Label50);
-            this.GroupBox8.Controls.Add(this.Label51);
-            this.GroupBox8.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox8.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox8.Location = new Point(675, 245);
-            this.GroupBox8.Name = "GroupBox8";
-            this.GroupBox8.Size = new System.Drawing.Size(142, 238);
-            this.GroupBox8.TabIndex = 187;
-            this.GroupBox8.TabStop = false;
-            this.GroupBox8.Text = "DO NOT INSURE";
-            this.GroupBox8.Visible = false;
-            //
-            // TextBox4
-            //
-            this.TextBox4.BackColor = Color.Snow;
-            this.TextBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.TextBox4.ForeColor = Color.Purple;
-            this.TextBox4.Location  = new Point(6, 155);
-            this.TextBox4.MaxLength = 100000;
-            this.TextBox4.Multiline = true;
-            this.TextBox4.Name = "TextBox4";
-            this.TextBox4.ReadOnly = true;
-            this.TextBox4.ScrollBars = ScrollBars.Vertical;
-            this.TextBox4.Size = new System.Drawing.Size(123, 72);
-            this.TextBox4.TabIndex = 72;
-            //
-            // ComboBox1
-            //
-            this.ComboBox1.DropDownHeight = 100;
-            this.ComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ComboBox1.ForeColor = Color.Indigo;
-            this.ComboBox1.FormattingEnabled = true;
-            this.ComboBox1.IntegralHeight = false;
-            this.ComboBox1.ItemHeight = 12;
-            ComboBox.ObjectCollection items1 = this.ComboBox1.Items;
-            objArray = new object[] { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
-            items1.AddRange(objArray);
-            this.ComboBox1.Location = new Point(39, 110);
-            this.ComboBox1.MaxDropDownItems = 10;
-            this.ComboBox1.Name = "ComboBox1";
-            this.ComboBox1.Size = new System.Drawing.Size(44, 20);
-            this.ComboBox1.Sorted = true;
-            this.ComboBox1.TabIndex = 71;
-            //
-            // Label40
-            //
-            this.Label40.AutoSize = true;
-            this.Label40.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label40.ForeColor = Color.DarkSlateBlue;
-            this.Label40.Location = new Point(6, 112);
-            this.Label40.Name = "Label40";
-            this.Label40.Size = new System.Drawing.Size(33, 13);
-            this.Label40.TabIndex = 70;
-            this.Label40.Text = "State";
-            //
-            // Button1
-            //
-            this.Button1.Location = new Point(89, 110);
-            this.Button1.Name = "Button1";
-            this.Button1.Size = new System.Drawing.Size(40, 23);
-            this.Button1.TabIndex = 69;
-            this.Button1.Text = "GO";
-            this.Button1.UseVisualStyleBackColor = true;
-            //
-            // TextBox3
-            //
-            this.TextBox3.Location = new Point(6, 81);
-            this.TextBox3.Name = "TextBox3";
-            this.TextBox3.Size = new System.Drawing.Size(124, 23);
-            this.TextBox3.TabIndex = 68;
-            //
-            // TextBox2
-            //
-            this.TextBox2.Location = new Point(6, 37);
-            this.TextBox2.Name = "TextBox2";
-            this.TextBox2.Size = new System.Drawing.Size(124, 23);
-            this.TextBox2.TabIndex = 67;
-            //
-            // Label41
-            //
-            this.Label41.AutoSize = true;
-            this.Label41.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label41.ForeColor = Color.Black;
-            this.Label41.Location = new Point(6, 137);
-            this.Label41.Name = "Label41";
-            this.Label41.Size = new System.Drawing.Size(36, 15);
-            this.Label41.TabIndex = 66;
-            this.Label41.Text = "result";
-            //
-            // Label50
-            //
-            this.Label50.AutoSize = true;
-            this.Label50.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label50.ForeColor = Color.DarkSlateBlue;
-            this.Label50.Location = new Point(6, 63);
-            this.Label50.Name = "Label50";
-            this.Label50.Size = new System.Drawing.Size(64, 13);
-            this.Label50.TabIndex = 64;
-            this.Label50.Text = "FIrst  Name";
-            //
-            // Label51
-            //
-            this.Label51.AutoSize = true;
-            this.Label51.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label51.ForeColor = Color.DarkSlateBlue;
-            this.Label51.Location = new Point(6, 22);
-            this.Label51.Name = "Label51";
-            this.Label51.Size = new System.Drawing.Size(124, 13);
-            this.Label51.TabIndex = 63;
-            this.Label51.Text = "Last Name or Company";
-            //
-            // GroupBox7
-            //
-            this.GroupBox7.AutoSize = true;
-            this.GroupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.GroupBox7.BackColor = Color.GhostWhite;
-            this.GroupBox7.Controls.Add(this.TableLayoutPanel2);
-            this.GroupBox7.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox7.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox7.Location = new Point(7, 3);
-            this.GroupBox7.Size = new System.Drawing.Size(418, 235);
-            this.GroupBox7.Name = "GroupBox7";
-            this.GroupBox7.TabIndex = 184;
-            this.GroupBox7.TabStop = false;
-            this.GroupBox7.Text = "SEARCHABLE INDEXES";
-            //
-            // TableLayoutPanel2
-            //
-            this.TableLayoutPanel2.AutoSize = true;
-            this.TableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.TableLayoutPanel2.ColumnCount = 4;
-            this.TableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel2.Controls.Add(this.txt_myfl_P, 3, 2);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_MyFlCountiesURL, 1, 2);
-            this.TableLayoutPanel2.Controls.Add(this.txt_myfl_U, 2, 2);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_tax2P, 3, 14);
-            this.TableLayoutPanel2.Controls.Add(this.lbl_MyFlaCounties, 0, 2);
-            this.TableLayoutPanel2.Controls.Add(this.Label_DOI, 0, 18);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_tax2U, 2, 14);
-            this.TableLayoutPanel2.Controls.Add(this.Label_stCode, 0, 17);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_otherP, 3, 13);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_courtP, 3, 3);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_otherU, 2, 13);
-            this.TableLayoutPanel2.Controls.Add(this.Label_secState, 0, 16);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_asrP, 3, 9);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_probateP, 3, 5);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_asrU, 2, 9);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_courtU, 2, 3);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_tax1P, 3, 8);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_muniP, 3, 6);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_tax1U, 2, 8);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_probateU, 2, 5);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_muniU, 2, 6);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_prothonP, 3, 4);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_landP, 3, 1);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_prothonU, 2, 4);
-            this.TableLayoutPanel2.Controls.Add(this.LabelOtherURL, 0, 13);
-            this.TableLayoutPanel2.Controls.Add(this.txt_login_landU, 2, 1);
-            this.TableLayoutPanel2.Controls.Add(this.LabelCountyURL, 0, 1);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelOtherTax, 1, 14);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelSheriff, 1, 11);
-            this.TableLayoutPanel2.Controls.Add(this.LabelUCC, 0, 15);
-            this.TableLayoutPanel2.Controls.Add(this.txtComments, 0, 19);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelCounty, 1, 1);
-            this.TableLayoutPanel2.Controls.Add(this.LabelOtherTax, 0, 14);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelForeclosure, 1, 12);
-            this.TableLayoutPanel2.Controls.Add(this.LabelCourt, 0, 3);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelMuniCourt, 1, 6);
-            this.TableLayoutPanel2.Controls.Add(this.LabelForeclosures, 0, 12);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelMaps, 1, 10);
-            this.TableLayoutPanel2.Controls.Add(this.LabelSheriff, 0, 11);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelAssessor, 1, 9);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelTax, 1, 8);
-            this.TableLayoutPanel2.Controls.Add(this.LabelMapsGIS, 0, 10);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelCoHome, 1, 7);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelCourt, 1, 3);
-            this.TableLayoutPanel2.Controls.Add(this.LabelProthon, 0, 4);
-            this.TableLayoutPanel2.Controls.Add(this.LabelAssessor, 0, 9);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelProthon, 1, 4);
-            this.TableLayoutPanel2.Controls.Add(this.LabelCountyTax, 0, 8);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelProbate, 1, 5);
-            this.TableLayoutPanel2.Controls.Add(this.LabelCountyHome, 0, 7);
-            this.TableLayoutPanel2.Controls.Add(this.LabelMuniCourt, 0, 6);
-            this.TableLayoutPanel2.Controls.Add(this.LabelProbate, 0, 5);
-            this.TableLayoutPanel2.Controls.Add(this.Label_user, 2, 0);
-            this.TableLayoutPanel2.Controls.Add(this.Label_pwd, 3, 0);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabelPlats, 2, 10);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_OtherURL, 1, 13);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_UCC, 1, 15);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_SecState, 1, 16);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_State_Code, 1, 17);
-            this.TableLayoutPanel2.Controls.Add(this.LinkLabel_DeptIns, 1, 18);
-            this.TableLayoutPanel2.Location = new Point(12, 22);
-            this.TableLayoutPanel2.Name = "TableLayoutPanel2";
-            this.TableLayoutPanel2.Padding = new System.Windows.Forms.Padding(1);
-            this.TableLayoutPanel2.RowCount = 20;
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel2.Size = new System.Drawing.Size(400, 368);
-            this.TableLayoutPanel2.TabIndex = 57;
-            //
-            // txt_myfl_P
-            //
-            this.txt_myfl_P.BackColor = Color.GhostWhite;
-            this.txt_myfl_P.BorderStyle = BorderStyle.None;
-            this.txt_myfl_P.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_myfl_P.Location = new Point(319, 31);
-            this.txt_myfl_P .Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+			// 
+			this.ComboBoxCounty.DropDownHeight = 50;
+			this.ComboBoxCounty.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ComboBoxCounty.ForeColor = System.Drawing.Color.Indigo;
+			this.ComboBoxCounty.FormattingEnabled = true;
+			this.ComboBoxCounty.IntegralHeight = false;
+			this.ComboBoxCounty.ItemHeight = 12;
+			this.ComboBoxCounty.Location = new System.Drawing.Point(53, 37);
+			this.ComboBoxCounty.MaxDropDownItems = 10;
+			this.ComboBoxCounty.Name = "ComboBoxCounty";
+			this.ComboBoxCounty.Size = new System.Drawing.Size(120, 20);
+			this.ComboBoxCounty.TabIndex = 83;
+			this.ComboBoxCounty.TextChanged += new System.EventHandler(this.ComboBoxCounty_SelectedIndexChanged);
+			// 
+			// Label2
+			// 
+			this.Label2.AutoSize = true;
+			this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label2.Location = new System.Drawing.Point(53, 18);
+			this.Label2.Name = "Label2";
+			this.Label2.Size = new System.Drawing.Size(46, 16);
+			this.Label2.TabIndex = 86;
+			this.Label2.Text = "county";
+			// 
+			// Label1
+			// 
+			this.Label1.AutoSize = true;
+			this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label1.Location = new System.Drawing.Point(3, 18);
+			this.Label1.Name = "Label1";
+			this.Label1.Size = new System.Drawing.Size(36, 16);
+			this.Label1.TabIndex = 84;
+			this.Label1.Text = "state";
+			// 
+			// Label3
+			// 
+			this.Label3.AutoSize = true;
+			this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label3.Location = new System.Drawing.Point(179, 18);
+			this.Label3.Name = "Label3";
+			this.Label3.Size = new System.Drawing.Size(77, 16);
+			this.Label3.TabIndex = 89;
+			this.Label3.Text = "tax authority";
+			// 
+			// ComboBoxTaxAuth
+			// 
+			this.ComboBoxTaxAuth.DropDownHeight = 50;
+			this.ComboBoxTaxAuth.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ComboBoxTaxAuth.ForeColor = System.Drawing.Color.Indigo;
+			this.ComboBoxTaxAuth.FormattingEnabled = true;
+			this.ComboBoxTaxAuth.IntegralHeight = false;
+			this.ComboBoxTaxAuth.ItemHeight = 12;
+			this.ComboBoxTaxAuth.Location = new System.Drawing.Point(179, 37);
+			this.ComboBoxTaxAuth.MaxDropDownItems = 10;
+			this.ComboBoxTaxAuth.Name = "ComboBoxTaxAuth";
+			this.ComboBoxTaxAuth.Size = new System.Drawing.Size(120, 20);
+			this.ComboBoxTaxAuth.TabIndex = 85;
+			this.ComboBoxTaxAuth.TextChanged += new System.EventHandler(this.ComboBoxTaxAuth_SelectedIndexChanged);
+			// 
+			// ButtonReset
+			// 
+			this.ButtonReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(185)))), ((int)(((byte)(255)))));
+			this.ButtonReset.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.ButtonReset.FlatAppearance.BorderColor = System.Drawing.Color.Purple;
+			this.ButtonReset.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Magenta;
+			this.ButtonReset.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Cyan;
+			this.ButtonReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.ButtonReset.ForeColor = System.Drawing.Color.Indigo;
+			this.ButtonReset.Location = new System.Drawing.Point(509, 25);
+			this.ButtonReset.Name = "ButtonReset";
+			this.ButtonReset.Size = new System.Drawing.Size(72, 35);
+			this.ButtonReset.TabIndex = 88;
+			this.ButtonReset.Text = "RESET";
+			this.ButtonReset.UseVisualStyleBackColor = false;
+			this.ButtonReset.Click += new System.EventHandler(this.ButtonReset_Click);
+			// 
+			// GroupBox10
+			// 
+			this.GroupBox10.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox10.Controls.Add(this.lbl_SubTerm);
+			this.GroupBox10.Controls.Add(this.Label135);
+			this.GroupBox10.Controls.Add(this.lbl_IndexFeeAmt);
+			this.GroupBox10.Controls.Add(this.Label19);
+			this.GroupBox10.Controls.Add(this.Label13);
+			this.GroupBox10.Controls.Add(this.lbl_WeSubscribe);
+			this.GroupBox10.Controls.Add(this.lbl_IndexPmtMethod);
+			this.GroupBox10.Controls.Add(this.Label11);
+			this.GroupBox10.Controls.Add(this.Label128);
+			this.GroupBox10.Controls.Add(this.lbl_Free);
+			this.GroupBox10.Controls.Add(this.Label30);
+			this.GroupBox10.Controls.Add(this.LabelSubNeeded);
+			this.GroupBox10.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox10.Location = new System.Drawing.Point(666, 88);
+			this.GroupBox10.Name = "GroupBox10";
+			this.GroupBox10.Size = new System.Drawing.Size(152, 149);
+			this.GroupBox10.TabIndex = 189;
+			this.GroupBox10.TabStop = false;
+			this.GroupBox10.Text = "INDEX SUBSCRIP\'S";
+			// 
+			// lbl_SubTerm
+			// 
+			this.lbl_SubTerm.AutoSize = true;
+			this.lbl_SubTerm.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_SubTerm.ForeColor = System.Drawing.Color.Black;
+			this.lbl_SubTerm.Location = new System.Drawing.Point(86, 72);
+			this.lbl_SubTerm.Name = "lbl_SubTerm";
+			this.lbl_SubTerm.Size = new System.Drawing.Size(9, 12);
+			this.lbl_SubTerm.TabIndex = 74;
+			this.lbl_SubTerm.Text = "*";
+			// 
+			// Label135
+			// 
+			this.Label135.AutoSize = true;
+			this.Label135.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label135.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label135.Location = new System.Drawing.Point(6, 72);
+			this.Label135.Name = "Label135";
+			this.Label135.Size = new System.Drawing.Size(73, 12);
+			this.Label135.TabIndex = 72;
+			this.Label135.Text = "Subscrip. Term: ";
+			// 
+			// lbl_IndexFeeAmt
+			// 
+			this.lbl_IndexFeeAmt.AutoSize = true;
+			this.lbl_IndexFeeAmt.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_IndexFeeAmt.ForeColor = System.Drawing.Color.Black;
+			this.lbl_IndexFeeAmt.Location = new System.Drawing.Point(73, 89);
+			this.lbl_IndexFeeAmt.Name = "lbl_IndexFeeAmt";
+			this.lbl_IndexFeeAmt.Size = new System.Drawing.Size(9, 12);
+			this.lbl_IndexFeeAmt.TabIndex = 71;
+			this.lbl_IndexFeeAmt.Text = "*";
+			// 
+			// Label19
+			// 
+			this.Label19.AutoSize = true;
+			this.Label19.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label19.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label19.Location = new System.Drawing.Point(6, 54);
+			this.Label19.Name = "Label19";
+			this.Label19.Size = new System.Drawing.Size(81, 12);
+			this.Label19.TabIndex = 68;
+			this.Label19.Text = "Do we subscribe?";
+			// 
+			// Label13
+			// 
+			this.Label13.AutoSize = true;
+			this.Label13.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label13.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label13.Location = new System.Drawing.Point(6, 89);
+			this.Label13.Name = "Label13";
+			this.Label13.Size = new System.Drawing.Size(67, 12);
+			this.Label13.TabIndex = 70;
+			this.Label13.Text = "Subscrip. Fee: ";
+			// 
+			// lbl_WeSubscribe
+			// 
+			this.lbl_WeSubscribe.AutoSize = true;
+			this.lbl_WeSubscribe.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_WeSubscribe.ForeColor = System.Drawing.Color.Black;
+			this.lbl_WeSubscribe.Location = new System.Drawing.Point(93, 54);
+			this.lbl_WeSubscribe.Name = "lbl_WeSubscribe";
+			this.lbl_WeSubscribe.Size = new System.Drawing.Size(9, 12);
+			this.lbl_WeSubscribe.TabIndex = 69;
+			this.lbl_WeSubscribe.Text = "*";
+			// 
+			// lbl_IndexPmtMethod
+			// 
+			this.lbl_IndexPmtMethod.AutoSize = true;
+			this.lbl_IndexPmtMethod.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_IndexPmtMethod.ForeColor = System.Drawing.Color.Black;
+			this.lbl_IndexPmtMethod.Location = new System.Drawing.Point(74, 107);
+			this.lbl_IndexPmtMethod.Name = "lbl_IndexPmtMethod";
+			this.lbl_IndexPmtMethod.Size = new System.Drawing.Size(9, 12);
+			this.lbl_IndexPmtMethod.TabIndex = 67;
+			this.lbl_IndexPmtMethod.Text = "*";
+			// 
+			// Label11
+			// 
+			this.Label11.AutoSize = true;
+			this.Label11.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label11.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label11.Location = new System.Drawing.Point(6, 36);
+			this.Label11.Name = "Label11";
+			this.Label11.Size = new System.Drawing.Size(67, 12);
+			this.Label11.TabIndex = 66;
+			this.Label11.Text = "Free Subscrip?";
+			// 
+			// Label128
+			// 
+			this.Label128.AutoSize = true;
+			this.Label128.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label128.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label128.Location = new System.Drawing.Point(6, 107);
+			this.Label128.Name = "Label128";
+			this.Label128.Size = new System.Drawing.Size(66, 12);
+			this.Label128.TabIndex = 66;
+			this.Label128.Text = "Pmt Method: ";
+			// 
+			// lbl_Free
+			// 
+			this.lbl_Free.AutoSize = true;
+			this.lbl_Free.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_Free.ForeColor = System.Drawing.Color.Black;
+			this.lbl_Free.Location = new System.Drawing.Point(86, 36);
+			this.lbl_Free.Name = "lbl_Free";
+			this.lbl_Free.Size = new System.Drawing.Size(9, 12);
+			this.lbl_Free.TabIndex = 67;
+			this.lbl_Free.Text = "*";
+			// 
+			// Label30
+			// 
+			this.Label30.AutoSize = true;
+			this.Label30.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label30.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label30.Location = new System.Drawing.Point(6, 20);
+			this.Label30.Name = "Label30";
+			this.Label30.Size = new System.Drawing.Size(78, 12);
+			this.Label30.TabIndex = 64;
+			this.Label30.Text = "Subscr. Needed: ";
+			// 
+			// LabelSubNeeded
+			// 
+			this.LabelSubNeeded.AutoSize = true;
+			this.LabelSubNeeded.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelSubNeeded.ForeColor = System.Drawing.Color.Black;
+			this.LabelSubNeeded.Location = new System.Drawing.Point(86, 20);
+			this.LabelSubNeeded.Name = "LabelSubNeeded";
+			this.LabelSubNeeded.Size = new System.Drawing.Size(9, 12);
+			this.LabelSubNeeded.TabIndex = 65;
+			this.LabelSubNeeded.Text = "*";
+			// 
+			// GroupBox8
+			// 
+			this.GroupBox8.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox8.Controls.Add(this.TextBox4);
+			this.GroupBox8.Controls.Add(this.ComboBox1);
+			this.GroupBox8.Controls.Add(this.Label40);
+			this.GroupBox8.Controls.Add(this.Button1);
+			this.GroupBox8.Controls.Add(this.TextBox3);
+			this.GroupBox8.Controls.Add(this.TextBox2);
+			this.GroupBox8.Controls.Add(this.Label41);
+			this.GroupBox8.Controls.Add(this.Label50);
+			this.GroupBox8.Controls.Add(this.Label51);
+			this.GroupBox8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox8.Location = new System.Drawing.Point(675, 245);
+			this.GroupBox8.Name = "GroupBox8";
+			this.GroupBox8.Size = new System.Drawing.Size(142, 238);
+			this.GroupBox8.TabIndex = 187;
+			this.GroupBox8.TabStop = false;
+			this.GroupBox8.Text = "DO NOT INSURE";
+			this.GroupBox8.Visible = false;
+			// 
+			// TextBox4
+			// 
+			this.TextBox4.BackColor = System.Drawing.Color.Snow;
+			this.TextBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TextBox4.ForeColor = System.Drawing.Color.Purple;
+			this.TextBox4.Location = new System.Drawing.Point(6, 155);
+			this.TextBox4.MaxLength = 100000;
+			this.TextBox4.Multiline = true;
+			this.TextBox4.Name = "TextBox4";
+			this.TextBox4.ReadOnly = true;
+			this.TextBox4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.TextBox4.Size = new System.Drawing.Size(123, 72);
+			this.TextBox4.TabIndex = 72;
+			// 
+			// ComboBox1
+			// 
+			this.ComboBox1.DropDownHeight = 100;
+			this.ComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ComboBox1.ForeColor = System.Drawing.Color.Indigo;
+			this.ComboBox1.FormattingEnabled = true;
+			this.ComboBox1.IntegralHeight = false;
+			this.ComboBox1.ItemHeight = 12;
+			this.ComboBox1.Items.AddRange(new object[] {
+            "AK",
+            "AL",
+            "AR",
+            "AZ",
+            "CA",
+            "CO",
+            "CT",
+            "DC",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "IA",
+            "ID",
+            "IL",
+            "IN",
+            "KS",
+            "KY",
+            "LA",
+            "MA",
+            "MD",
+            "ME",
+            "MI",
+            "MN",
+            "MO",
+            "MS",
+            "MT",
+            "NC",
+            "ND",
+            "NE",
+            "NH",
+            "NJ",
+            "NM",
+            "NV",
+            "NY",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VA",
+            "VT",
+            "WA",
+            "WI",
+            "WV",
+            "WY"});
+			this.ComboBox1.Location = new System.Drawing.Point(39, 110);
+			this.ComboBox1.MaxDropDownItems = 10;
+			this.ComboBox1.Name = "ComboBox1";
+			this.ComboBox1.Size = new System.Drawing.Size(44, 20);
+			this.ComboBox1.Sorted = true;
+			this.ComboBox1.TabIndex = 71;
+			// 
+			// Label40
+			// 
+			this.Label40.AutoSize = true;
+			this.Label40.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label40.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label40.Location = new System.Drawing.Point(6, 112);
+			this.Label40.Name = "Label40";
+			this.Label40.Size = new System.Drawing.Size(33, 13);
+			this.Label40.TabIndex = 70;
+			this.Label40.Text = "State";
+			// 
+			// Button1
+			// 
+			this.Button1.Location = new System.Drawing.Point(89, 110);
+			this.Button1.Name = "Button1";
+			this.Button1.Size = new System.Drawing.Size(40, 23);
+			this.Button1.TabIndex = 69;
+			this.Button1.Text = "GO";
+			this.Button1.UseVisualStyleBackColor = true;
+			// 
+			// TextBox3
+			// 
+			this.TextBox3.Location = new System.Drawing.Point(6, 81);
+			this.TextBox3.Name = "TextBox3";
+			this.TextBox3.Size = new System.Drawing.Size(124, 23);
+			this.TextBox3.TabIndex = 68;
+			// 
+			// TextBox2
+			// 
+			this.TextBox2.Location = new System.Drawing.Point(6, 37);
+			this.TextBox2.Name = "TextBox2";
+			this.TextBox2.Size = new System.Drawing.Size(124, 23);
+			this.TextBox2.TabIndex = 67;
+			// 
+			// Label41
+			// 
+			this.Label41.AutoSize = true;
+			this.Label41.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label41.ForeColor = System.Drawing.Color.Black;
+			this.Label41.Location = new System.Drawing.Point(6, 137);
+			this.Label41.Name = "Label41";
+			this.Label41.Size = new System.Drawing.Size(36, 15);
+			this.Label41.TabIndex = 66;
+			this.Label41.Text = "result";
+			// 
+			// Label50
+			// 
+			this.Label50.AutoSize = true;
+			this.Label50.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label50.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label50.Location = new System.Drawing.Point(6, 63);
+			this.Label50.Name = "Label50";
+			this.Label50.Size = new System.Drawing.Size(64, 13);
+			this.Label50.TabIndex = 64;
+			this.Label50.Text = "FIrst  Name";
+			// 
+			// Label51
+			// 
+			this.Label51.AutoSize = true;
+			this.Label51.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label51.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label51.Location = new System.Drawing.Point(6, 22);
+			this.Label51.Name = "Label51";
+			this.Label51.Size = new System.Drawing.Size(124, 13);
+			this.Label51.TabIndex = 63;
+			this.Label51.Text = "Last Name or Company";
+			// 
+			// GroupBox7
+			// 
+			this.GroupBox7.AutoSize = true;
+			this.GroupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.GroupBox7.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox7.Controls.Add(this.TableLayoutPanel2);
+			this.GroupBox7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox7.Location = new System.Drawing.Point(7, 3);
+			this.GroupBox7.Name = "GroupBox7";
+			this.GroupBox7.Size = new System.Drawing.Size(418, 452);
+			this.GroupBox7.TabIndex = 184;
+			this.GroupBox7.TabStop = false;
+			this.GroupBox7.Text = "SEARCHABLE INDEXES";
+			// 
+			// TableLayoutPanel2
+			// 
+			this.TableLayoutPanel2.AutoSize = true;
+			this.TableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.TableLayoutPanel2.ColumnCount = 4;
+			this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel2.Controls.Add(this.txt_myfl_P, 3, 2);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_MyFlCountiesURL, 1, 2);
+			this.TableLayoutPanel2.Controls.Add(this.txt_myfl_U, 2, 2);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_tax2P, 3, 14);
+			this.TableLayoutPanel2.Controls.Add(this.lbl_MyFlaCounties, 0, 2);
+			this.TableLayoutPanel2.Controls.Add(this.Label_DOI, 0, 18);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_tax2U, 2, 14);
+			this.TableLayoutPanel2.Controls.Add(this.Label_stCode, 0, 17);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_otherP, 3, 13);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_courtP, 3, 3);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_otherU, 2, 13);
+			this.TableLayoutPanel2.Controls.Add(this.Label_secState, 0, 16);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_asrP, 3, 9);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_probateP, 3, 5);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_asrU, 2, 9);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_courtU, 2, 3);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_tax1P, 3, 8);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_muniP, 3, 6);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_tax1U, 2, 8);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_probateU, 2, 5);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_muniU, 2, 6);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_prothonP, 3, 4);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_landP, 3, 1);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_prothonU, 2, 4);
+			this.TableLayoutPanel2.Controls.Add(this.LabelOtherURL, 0, 13);
+			this.TableLayoutPanel2.Controls.Add(this.txt_login_landU, 2, 1);
+			this.TableLayoutPanel2.Controls.Add(this.LabelCountyURL, 0, 1);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelOtherTax, 1, 14);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelSheriff, 1, 11);
+			this.TableLayoutPanel2.Controls.Add(this.LabelUCC, 0, 15);
+			this.TableLayoutPanel2.Controls.Add(this.txtComments, 0, 19);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelCounty, 1, 1);
+			this.TableLayoutPanel2.Controls.Add(this.LabelOtherTax, 0, 14);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelForeclosure, 1, 12);
+			this.TableLayoutPanel2.Controls.Add(this.LabelCourt, 0, 3);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelMuniCourt, 1, 6);
+			this.TableLayoutPanel2.Controls.Add(this.LabelForeclosures, 0, 12);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelMaps, 1, 10);
+			this.TableLayoutPanel2.Controls.Add(this.LabelSheriff, 0, 11);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelAssessor, 1, 9);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelTax, 1, 8);
+			this.TableLayoutPanel2.Controls.Add(this.LabelMapsGIS, 0, 10);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelCoHome, 1, 7);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelCourt, 1, 3);
+			this.TableLayoutPanel2.Controls.Add(this.LabelProthon, 0, 4);
+			this.TableLayoutPanel2.Controls.Add(this.LabelAssessor, 0, 9);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelProthon, 1, 4);
+			this.TableLayoutPanel2.Controls.Add(this.LabelCountyTax, 0, 8);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelProbate, 1, 5);
+			this.TableLayoutPanel2.Controls.Add(this.LabelCountyHome, 0, 7);
+			this.TableLayoutPanel2.Controls.Add(this.LabelMuniCourt, 0, 6);
+			this.TableLayoutPanel2.Controls.Add(this.LabelProbate, 0, 5);
+			this.TableLayoutPanel2.Controls.Add(this.Label_user, 2, 0);
+			this.TableLayoutPanel2.Controls.Add(this.Label_pwd, 3, 0);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabelPlats, 2, 10);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_OtherURL, 1, 13);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_UCC, 1, 15);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_SecState, 1, 16);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_State_Code, 1, 17);
+			this.TableLayoutPanel2.Controls.Add(this.LinkLabel_DeptIns, 1, 18);
+			this.TableLayoutPanel2.Location = new System.Drawing.Point(12, 22);
+			this.TableLayoutPanel2.Name = "TableLayoutPanel2";
+			this.TableLayoutPanel2.Padding = new System.Windows.Forms.Padding(1);
+			this.TableLayoutPanel2.RowCount = 20;
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel2.Size = new System.Drawing.Size(400, 408);
+			this.TableLayoutPanel2.TabIndex = 57;
+			// 
+			// txt_myfl_P
+			// 
+			this.txt_myfl_P.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_myfl_P.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_myfl_P.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_myfl_P.Location = new System.Drawing.Point(313, 38);
+			this.txt_myfl_P.Name = "txt_myfl_P";
+			this.txt_myfl_P.ReadOnly = true;
+			this.txt_myfl_P.Size = new System.Drawing.Size(77, 13);
+			this.txt_myfl_P.TabIndex = 201;
+			this.txt_myfl_P.WordWrap = false;
+			// 
+			// LinkLabel_MyFlCountiesURL
+			// 
+			this.LinkLabel_MyFlCountiesURL.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_MyFlCountiesURL.AutoSize = true;
+			this.LinkLabel_MyFlCountiesURL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_MyFlCountiesURL.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_MyFlCountiesURL.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_MyFlCountiesURL.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_MyFlCountiesURL.Location = new System.Drawing.Point(125, 35);
+			this.LinkLabel_MyFlCountiesURL.Name = "LinkLabel_MyFlCountiesURL";
+			this.LinkLabel_MyFlCountiesURL.Size = new System.Drawing.Size(103, 15);
+			this.LinkLabel_MyFlCountiesURL.TabIndex = 214;
+			this.LinkLabel_MyFlCountiesURL.TabStop = true;
+			this.LinkLabel_MyFlCountiesURL.Text = "MYFLORIDA.COM";
+			this.LinkLabel_MyFlCountiesURL.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_MyFlCountiesURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_MyFla_LinkClicked);
+			// 
+			// txt_myfl_U
+			// 
+			this.txt_myfl_U.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_myfl_U.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_myfl_U.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_myfl_U.Location = new System.Drawing.Point(240, 38);
+			this.txt_myfl_U.Name = "txt_myfl_U";
+			this.txt_myfl_U.ReadOnly = true;
+			this.txt_myfl_U.Size = new System.Drawing.Size(67, 13);
+			this.txt_myfl_U.TabIndex = 198;
+			this.txt_myfl_U.WordWrap = false;
+			// 
+			// txt_login_tax2P
+			// 
+			this.txt_login_tax2P.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_tax2P.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_tax2P.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_tax2P.Location = new System.Drawing.Point(313, 250);
+			this.txt_login_tax2P.Name = "txt_login_tax2P";
+			this.txt_login_tax2P.ReadOnly = true;
+			this.txt_login_tax2P.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_tax2P.TabIndex = 212;
+			this.txt_login_tax2P.WordWrap = false;
+			// 
+			// lbl_MyFlaCounties
+			// 
+			this.lbl_MyFlaCounties.AutoSize = true;
+			this.lbl_MyFlaCounties.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_MyFlaCounties.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.lbl_MyFlaCounties.Location = new System.Drawing.Point(4, 35);
+			this.lbl_MyFlaCounties.Name = "lbl_MyFlaCounties";
+			this.lbl_MyFlaCounties.Size = new System.Drawing.Size(87, 15);
+			this.lbl_MyFlaCounties.TabIndex = 213;
+			this.lbl_MyFlaCounties.Text = "MyFlorida.com";
+			// 
+			// Label_DOI
+			// 
+			this.Label_DOI.AutoSize = true;
+			this.Label_DOI.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_DOI.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label_DOI.Location = new System.Drawing.Point(4, 311);
+			this.Label_DOI.Name = "Label_DOI";
+			this.Label_DOI.Size = new System.Drawing.Size(92, 15);
+			this.Label_DOI.TabIndex = 190;
+			this.Label_DOI.Text = "Agent Licensing";
+			// 
+			// txt_login_tax2U
+			// 
+			this.txt_login_tax2U.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_tax2U.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_tax2U.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_tax2U.Location = new System.Drawing.Point(240, 250);
+			this.txt_login_tax2U.Name = "txt_login_tax2U";
+			this.txt_login_tax2U.ReadOnly = true;
+			this.txt_login_tax2U.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_tax2U.TabIndex = 211;
+			this.txt_login_tax2U.WordWrap = false;
+			// 
+			// Label_stCode
+			// 
+			this.Label_stCode.AutoSize = true;
+			this.Label_stCode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_stCode.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label_stCode.Location = new System.Drawing.Point(4, 296);
+			this.Label_stCode.Name = "Label_stCode";
+			this.Label_stCode.Size = new System.Drawing.Size(115, 15);
+			this.Label_stCode.TabIndex = 190;
+			this.Label_stCode.Text = "Administrative Code";
+			// 
+			// txt_login_otherP
+			// 
+			this.txt_login_otherP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_otherP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_otherP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_otherP.Location = new System.Drawing.Point(313, 231);
+			this.txt_login_otherP.Name = "txt_login_otherP";
+			this.txt_login_otherP.ReadOnly = true;
+			this.txt_login_otherP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_otherP.TabIndex = 210;
+			this.txt_login_otherP.WordWrap = false;
+			// 
+			// txt_login_courtP
+			// 
+			this.txt_login_courtP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_courtP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_courtP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_courtP.Location = new System.Drawing.Point(313, 57);
+			this.txt_login_courtP.Name = "txt_login_courtP";
+			this.txt_login_courtP.ReadOnly = true;
+			this.txt_login_courtP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_courtP.TabIndex = 198;
+			this.txt_login_courtP.WordWrap = false;
+			// 
+			// txt_login_otherU
+			// 
+			this.txt_login_otherU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_otherU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_otherU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_otherU.Location = new System.Drawing.Point(240, 231);
+			this.txt_login_otherU.Name = "txt_login_otherU";
+			this.txt_login_otherU.ReadOnly = true;
+			this.txt_login_otherU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_otherU.TabIndex = 209;
+			this.txt_login_otherU.WordWrap = false;
+			// 
+			// Label_secState
+			// 
+			this.Label_secState.AutoSize = true;
+			this.Label_secState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_secState.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label_secState.Location = new System.Drawing.Point(4, 281);
+			this.Label_secState.Name = "Label_secState";
+			this.Label_secState.Size = new System.Drawing.Size(96, 15);
+			this.Label_secState.TabIndex = 190;
+			this.Label_secState.Text = "LLC/Corp Search";
+			// 
+			// txt_login_asrP
+			// 
+			this.txt_login_asrP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_asrP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_asrP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_asrP.Location = new System.Drawing.Point(313, 167);
+			this.txt_login_asrP.Name = "txt_login_asrP";
+			this.txt_login_asrP.ReadOnly = true;
+			this.txt_login_asrP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_asrP.TabIndex = 208;
+			this.txt_login_asrP.WordWrap = false;
+			// 
+			// txt_login_probateP
+			// 
+			this.txt_login_probateP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_probateP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_probateP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_probateP.Location = new System.Drawing.Point(313, 95);
+			this.txt_login_probateP.Name = "txt_login_probateP";
+			this.txt_login_probateP.ReadOnly = true;
+			this.txt_login_probateP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_probateP.TabIndex = 202;
+			this.txt_login_probateP.WordWrap = false;
+			// 
+			// txt_login_asrU
+			// 
+			this.txt_login_asrU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_asrU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_asrU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_asrU.Location = new System.Drawing.Point(240, 167);
+			this.txt_login_asrU.Name = "txt_login_asrU";
+			this.txt_login_asrU.ReadOnly = true;
+			this.txt_login_asrU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_asrU.TabIndex = 207;
+			this.txt_login_asrU.WordWrap = false;
+			// 
+			// txt_login_courtU
+			// 
+			this.txt_login_courtU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_courtU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_courtU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_courtU.Location = new System.Drawing.Point(240, 57);
+			this.txt_login_courtU.Name = "txt_login_courtU";
+			this.txt_login_courtU.ReadOnly = true;
+			this.txt_login_courtU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_courtU.TabIndex = 197;
+			this.txt_login_courtU.WordWrap = false;
+			// 
+			// txt_login_tax1P
+			// 
+			this.txt_login_tax1P.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_tax1P.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_tax1P.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_tax1P.Location = new System.Drawing.Point(313, 148);
+			this.txt_login_tax1P.Name = "txt_login_tax1P";
+			this.txt_login_tax1P.ReadOnly = true;
+			this.txt_login_tax1P.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_tax1P.TabIndex = 206;
+			this.txt_login_tax1P.WordWrap = false;
+			// 
+			// txt_login_muniP
+			// 
+			this.txt_login_muniP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_muniP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_muniP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_muniP.Location = new System.Drawing.Point(313, 114);
+			this.txt_login_muniP.Name = "txt_login_muniP";
+			this.txt_login_muniP.ReadOnly = true;
+			this.txt_login_muniP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_muniP.TabIndex = 204;
+			this.txt_login_muniP.WordWrap = false;
+			// 
+			// txt_login_tax1U
+			// 
+			this.txt_login_tax1U.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_tax1U.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_tax1U.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_tax1U.Location = new System.Drawing.Point(240, 148);
+			this.txt_login_tax1U.Name = "txt_login_tax1U";
+			this.txt_login_tax1U.ReadOnly = true;
+			this.txt_login_tax1U.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_tax1U.TabIndex = 205;
+			this.txt_login_tax1U.WordWrap = false;
+			// 
+			// txt_login_probateU
+			// 
+			this.txt_login_probateU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_probateU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_probateU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_probateU.Location = new System.Drawing.Point(240, 95);
+			this.txt_login_probateU.Name = "txt_login_probateU";
+			this.txt_login_probateU.ReadOnly = true;
+			this.txt_login_probateU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_probateU.TabIndex = 201;
+			this.txt_login_probateU.WordWrap = false;
+			// 
+			// txt_login_muniU
+			// 
+			this.txt_login_muniU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_muniU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_muniU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_muniU.Location = new System.Drawing.Point(240, 114);
+			this.txt_login_muniU.Name = "txt_login_muniU";
+			this.txt_login_muniU.ReadOnly = true;
+			this.txt_login_muniU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_muniU.TabIndex = 203;
+			this.txt_login_muniU.WordWrap = false;
+			// 
+			// txt_login_prothonP
+			// 
+			this.txt_login_prothonP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_prothonP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_prothonP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_prothonP.Location = new System.Drawing.Point(313, 76);
+			this.txt_login_prothonP.Name = "txt_login_prothonP";
+			this.txt_login_prothonP.ReadOnly = true;
+			this.txt_login_prothonP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_prothonP.TabIndex = 200;
+			this.txt_login_prothonP.WordWrap = false;
+			// 
+			// txt_login_landP
+			// 
+			this.txt_login_landP.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_landP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_landP.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_landP.Location = new System.Drawing.Point(313, 19);
+			this.txt_login_landP.Name = "txt_login_landP";
+			this.txt_login_landP.ReadOnly = true;
+			this.txt_login_landP.Size = new System.Drawing.Size(77, 13);
+			this.txt_login_landP.TabIndex = 196;
+			this.txt_login_landP.WordWrap = false;
+			// 
+			// txt_login_prothonU
+			// 
+			this.txt_login_prothonU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_prothonU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_prothonU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_prothonU.Location = new System.Drawing.Point(240, 76);
+			this.txt_login_prothonU.Name = "txt_login_prothonU";
+			this.txt_login_prothonU.ReadOnly = true;
+			this.txt_login_prothonU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_prothonU.TabIndex = 199;
+			this.txt_login_prothonU.WordWrap = false;
+			// 
+			// LabelOtherURL
+			// 
+			this.LabelOtherURL.AutoSize = true;
+			this.LabelOtherURL.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelOtherURL.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelOtherURL.Location = new System.Drawing.Point(4, 228);
+			this.LabelOtherURL.Name = "LabelOtherURL";
+			this.LabelOtherURL.Size = new System.Drawing.Size(82, 13);
+			this.LabelOtherURL.TabIndex = 61;
+			this.LabelOtherURL.Text = "Other Website";
+			// 
+			// txt_login_landU
+			// 
+			this.txt_login_landU.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_login_landU.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_login_landU.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_login_landU.Location = new System.Drawing.Point(240, 19);
+			this.txt_login_landU.Name = "txt_login_landU";
+			this.txt_login_landU.ReadOnly = true;
+			this.txt_login_landU.Size = new System.Drawing.Size(67, 13);
+			this.txt_login_landU.TabIndex = 195;
+			this.txt_login_landU.WordWrap = false;
+			// 
+			// LabelCountyURL
+			// 
+			this.LabelCountyURL.AutoSize = true;
+			this.LabelCountyURL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelCountyURL.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelCountyURL.Location = new System.Drawing.Point(4, 16);
+			this.LabelCountyURL.Name = "LabelCountyURL";
+			this.LabelCountyURL.Size = new System.Drawing.Size(65, 15);
+			this.LabelCountyURL.TabIndex = 11;
+			this.LabelCountyURL.Text = "Land Index";
+			// 
+			// LinkLabelOtherTax
+			// 
+			this.LinkLabelOtherTax.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelOtherTax.AutoSize = true;
+			this.LinkLabelOtherTax.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelOtherTax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelOtherTax.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelOtherTax.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelOtherTax.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelOtherTax.Location = new System.Drawing.Point(125, 247);
+			this.LinkLabelOtherTax.Name = "LinkLabelOtherTax";
+			this.LinkLabelOtherTax.Size = new System.Drawing.Size(39, 15);
+			this.LinkLabelOtherTax.TabIndex = 54;
+			this.LinkLabelOtherTax.TabStop = true;
+			this.LinkLabelOtherTax.Text = "TAXES";
+			this.LinkLabelOtherTax.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelOtherTax.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelOtherTax_LinkClicked);
+			// 
+			// LinkLabelSheriff
+			// 
+			this.LinkLabelSheriff.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelSheriff.AutoSize = true;
+			this.LinkLabelSheriff.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelSheriff.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelSheriff.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelSheriff.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelSheriff.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelSheriff.Location = new System.Drawing.Point(125, 198);
+			this.LinkLabelSheriff.Name = "LinkLabelSheriff";
+			this.LinkLabelSheriff.Size = new System.Drawing.Size(50, 15);
+			this.LinkLabelSheriff.TabIndex = 56;
+			this.LinkLabelSheriff.TabStop = true;
+			this.LinkLabelSheriff.Text = "SHERIFF";
+			this.LinkLabelSheriff.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelSheriff.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelSheriff_LinkClicked);
+			// 
+			// LabelUCC
+			// 
+			this.LabelUCC.AutoSize = true;
+			this.LabelUCC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUCC.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelUCC.Location = new System.Drawing.Point(4, 266);
+			this.LabelUCC.Name = "LabelUCC";
+			this.LabelUCC.Size = new System.Drawing.Size(68, 15);
+			this.LabelUCC.TabIndex = 194;
+			this.LabelUCC.Text = "UCC Filings";
+			// 
+			// txtComments
+			// 
+			this.txtComments.BackColor = System.Drawing.Color.GhostWhite;
+			this.txtComments.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.TableLayoutPanel2.SetColumnSpan(this.txtComments, 4);
+			this.txtComments.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtComments.ForeColor = System.Drawing.Color.Purple;
+			this.txtComments.Location = new System.Drawing.Point(4, 329);
+			this.txtComments.MaxLength = 100000;
+			this.txtComments.Multiline = true;
+			this.txtComments.Name = "txtComments";
+			this.txtComments.ReadOnly = true;
+			this.txtComments.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtComments.Size = new System.Drawing.Size(392, 75);
+			this.txtComments.TabIndex = 47;
+			this.txtComments.Text = "Comments";
+			// 
+			// LinkLabelCounty
+			// 
+			this.LinkLabelCounty.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelCounty.AutoSize = true;
+			this.LinkLabelCounty.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelCounty.DisabledLinkColor = System.Drawing.Color.Navy;
+			this.LinkLabelCounty.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelCounty.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelCounty.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelCounty.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelCounty.Location = new System.Drawing.Point(125, 16);
+			this.LinkLabelCounty.Name = "LinkLabelCounty";
+			this.LinkLabelCounty.Size = new System.Drawing.Size(38, 15);
+			this.LinkLabelCounty.TabIndex = 5;
+			this.LinkLabelCounty.TabStop = true;
+			this.LinkLabelCounty.Text = "LAND";
+			this.LinkLabelCounty.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelCounty.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelCounty_LinkClicked);
+			// 
+			// LabelOtherTax
+			// 
+			this.LabelOtherTax.AutoSize = true;
+			this.LabelOtherTax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelOtherTax.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelOtherTax.Location = new System.Drawing.Point(4, 247);
+			this.LabelOtherTax.Name = "LabelOtherTax";
+			this.LabelOtherTax.Size = new System.Drawing.Size(84, 15);
+			this.LabelOtherTax.TabIndex = 55;
+			this.LabelOtherTax.Text = "Other Tax Web";
+			// 
+			// LinkLabelForeclosure
+			// 
+			this.LinkLabelForeclosure.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelForeclosure.AutoSize = true;
+			this.LinkLabelForeclosure.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelForeclosure.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelForeclosure.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelForeclosure.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelForeclosure.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelForeclosure.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelForeclosure.Location = new System.Drawing.Point(125, 213);
+			this.LinkLabelForeclosure.Name = "LinkLabelForeclosure";
+			this.LinkLabelForeclosure.Size = new System.Drawing.Size(85, 15);
+			this.LinkLabelForeclosure.TabIndex = 48;
+			this.LinkLabelForeclosure.TabStop = true;
+			this.LinkLabelForeclosure.Text = "FORECLOSURE";
+			this.LinkLabelForeclosure.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelForeclosure.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelForeclosure_LinkClicked);
+			// 
+			// LabelCourt
+			// 
+			this.LabelCourt.AutoSize = true;
+			this.LabelCourt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelCourt.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelCourt.Location = new System.Drawing.Point(4, 54);
+			this.LabelCourt.Name = "LabelCourt";
+			this.LabelCourt.Size = new System.Drawing.Size(69, 15);
+			this.LabelCourt.TabIndex = 12;
+			this.LabelCourt.Text = "Court Index";
+			// 
+			// LinkLabelMuniCourt
+			// 
+			this.LinkLabelMuniCourt.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelMuniCourt.AutoSize = true;
+			this.LinkLabelMuniCourt.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelMuniCourt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelMuniCourt.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelMuniCourt.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelMuniCourt.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelMuniCourt.Location = new System.Drawing.Point(125, 111);
+			this.LinkLabelMuniCourt.Name = "LinkLabelMuniCourt";
+			this.LinkLabelMuniCourt.Size = new System.Drawing.Size(109, 15);
+			this.LinkLabelMuniCourt.TabIndex = 52;
+			this.LinkLabelMuniCourt.TabStop = true;
+			this.LinkLabelMuniCourt.Text = "MUNICIPAL COURT";
+			this.LinkLabelMuniCourt.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelMuniCourt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelTax2_LinkClicked);
+			// 
+			// LabelForeclosures
+			// 
+			this.LabelForeclosures.AutoSize = true;
+			this.LabelForeclosures.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelForeclosures.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelForeclosures.Location = new System.Drawing.Point(4, 213);
+			this.LabelForeclosures.Name = "LabelForeclosures";
+			this.LabelForeclosures.Size = new System.Drawing.Size(73, 15);
+			this.LabelForeclosures.TabIndex = 49;
+			this.LabelForeclosures.Text = "Foreclosures";
+			// 
+			// LinkLabelMaps
+			// 
+			this.LinkLabelMaps.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelMaps.AutoSize = true;
+			this.LinkLabelMaps.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelMaps.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelMaps.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelMaps.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelMaps.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelMaps.Location = new System.Drawing.Point(125, 183);
+			this.LinkLabelMaps.Name = "LinkLabelMaps";
+			this.LinkLabelMaps.Size = new System.Drawing.Size(39, 15);
+			this.LinkLabelMaps.TabIndex = 9;
+			this.LinkLabelMaps.TabStop = true;
+			this.LinkLabelMaps.Text = "MAPS";
+			this.LinkLabelMaps.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelMaps.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelMaps_LinkClicked);
+			// 
+			// LabelSheriff
+			// 
+			this.LabelSheriff.AutoSize = true;
+			this.LabelSheriff.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelSheriff.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelSheriff.Location = new System.Drawing.Point(4, 198);
+			this.LabelSheriff.Name = "LabelSheriff";
+			this.LabelSheriff.Size = new System.Drawing.Size(76, 15);
+			this.LabelSheriff.TabIndex = 51;
+			this.LabelSheriff.Text = "Sheriff\'s Web";
+			// 
+			// LinkLabelAssessor
+			// 
+			this.LinkLabelAssessor.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelAssessor.AutoSize = true;
+			this.LinkLabelAssessor.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelAssessor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelAssessor.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelAssessor.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelAssessor.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelAssessor.Location = new System.Drawing.Point(125, 164);
+			this.LinkLabelAssessor.Name = "LinkLabelAssessor";
+			this.LinkLabelAssessor.Size = new System.Drawing.Size(61, 15);
+			this.LinkLabelAssessor.TabIndex = 7;
+			this.LinkLabelAssessor.TabStop = true;
+			this.LinkLabelAssessor.Text = "ASSESSOR";
+			this.LinkLabelAssessor.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabelTax
+			// 
+			this.LinkLabelTax.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelTax.AutoSize = true;
+			this.LinkLabelTax.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelTax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelTax.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelTax.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelTax.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelTax.Location = new System.Drawing.Point(125, 145);
+			this.LinkLabelTax.Name = "LinkLabelTax";
+			this.LinkLabelTax.Size = new System.Drawing.Size(39, 15);
+			this.LinkLabelTax.TabIndex = 6;
+			this.LinkLabelTax.TabStop = true;
+			this.LinkLabelTax.Text = "TAXES";
+			this.LinkLabelTax.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelTax.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelTax_LinkClicked);
+			// 
+			// LabelMapsGIS
+			// 
+			this.LabelMapsGIS.AutoSize = true;
+			this.LabelMapsGIS.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelMapsGIS.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelMapsGIS.Location = new System.Drawing.Point(4, 183);
+			this.LabelMapsGIS.Name = "LabelMapsGIS";
+			this.LabelMapsGIS.Size = new System.Drawing.Size(58, 15);
+			this.LabelMapsGIS.TabIndex = 22;
+			this.LabelMapsGIS.Text = "Maps/GIS";
+			// 
+			// LinkLabelCoHome
+			// 
+			this.LinkLabelCoHome.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelCoHome.AutoSize = true;
+			this.LinkLabelCoHome.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelCoHome.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelCoHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelCoHome.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelCoHome.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelCoHome.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelCoHome.Location = new System.Drawing.Point(125, 130);
+			this.LinkLabelCoHome.Name = "LinkLabelCoHome";
+			this.LinkLabelCoHome.Size = new System.Drawing.Size(92, 15);
+			this.LinkLabelCoHome.TabIndex = 25;
+			this.LinkLabelCoHome.TabStop = true;
+			this.LinkLabelCoHome.Text = "COUNTY HOME";
+			this.LinkLabelCoHome.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelCoHome.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelCoHome_LinkClicked);
+			// 
+			// LinkLabelCourt
+			// 
+			this.LinkLabelCourt.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelCourt.AutoSize = true;
+			this.LinkLabelCourt.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelCourt.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelCourt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelCourt.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelCourt.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelCourt.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelCourt.Location = new System.Drawing.Point(125, 54);
+			this.LinkLabelCourt.Name = "LinkLabelCourt";
+			this.LinkLabelCourt.Size = new System.Drawing.Size(44, 15);
+			this.LinkLabelCourt.TabIndex = 10;
+			this.LinkLabelCourt.TabStop = true;
+			this.LinkLabelCourt.Text = "COURT";
+			this.LinkLabelCourt.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelCourt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelCourt_LinkClicked);
+			// 
+			// LabelProthon
+			// 
+			this.LabelProthon.AutoSize = true;
+			this.LabelProthon.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelProthon.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelProthon.Location = new System.Drawing.Point(4, 73);
+			this.LabelProthon.Name = "LabelProthon";
+			this.LabelProthon.Size = new System.Drawing.Size(50, 15);
+			this.LabelProthon.TabIndex = 15;
+			this.LabelProthon.Text = "Prothon";
+			// 
+			// LabelAssessor
+			// 
+			this.LabelAssessor.AutoSize = true;
+			this.LabelAssessor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelAssessor.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelAssessor.Location = new System.Drawing.Point(4, 164);
+			this.LabelAssessor.Name = "LabelAssessor";
+			this.LabelAssessor.Size = new System.Drawing.Size(52, 15);
+			this.LabelAssessor.TabIndex = 14;
+			this.LabelAssessor.Text = "Assessor";
+			// 
+			// LinkLabelProthon
+			// 
+			this.LinkLabelProthon.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelProthon.AutoSize = true;
+			this.LinkLabelProthon.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelProthon.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelProthon.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelProthon.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelProthon.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelProthon.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelProthon.Location = new System.Drawing.Point(125, 73);
+			this.LinkLabelProthon.Name = "LinkLabelProthon";
+			this.LinkLabelProthon.Size = new System.Drawing.Size(97, 15);
+			this.LinkLabelProthon.TabIndex = 8;
+			this.LinkLabelProthon.TabStop = true;
+			this.LinkLabelProthon.Text = "PROTHONOTARY";
+			this.LinkLabelProthon.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelProthon.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelPro_LinkClicked);
+			// 
+			// LabelCountyTax
+			// 
+			this.LabelCountyTax.AutoSize = true;
+			this.LabelCountyTax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelCountyTax.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelCountyTax.Location = new System.Drawing.Point(4, 145);
+			this.LabelCountyTax.Name = "LabelCountyTax";
+			this.LabelCountyTax.Size = new System.Drawing.Size(77, 15);
+			this.LabelCountyTax.TabIndex = 13;
+			this.LabelCountyTax.Text = "County Taxes";
+			// 
+			// LinkLabelProbate
+			// 
+			this.LinkLabelProbate.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelProbate.AutoSize = true;
+			this.LinkLabelProbate.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabelProbate.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelProbate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelProbate.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelProbate.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelProbate.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelProbate.Location = new System.Drawing.Point(125, 92);
+			this.LinkLabelProbate.Name = "LinkLabelProbate";
+			this.LinkLabelProbate.Size = new System.Drawing.Size(56, 15);
+			this.LinkLabelProbate.TabIndex = 23;
+			this.LinkLabelProbate.TabStop = true;
+			this.LinkLabelProbate.Text = "PROBATE";
+			this.LinkLabelProbate.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabelProbate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelProbate_LinkClicked);
+			// 
+			// LabelCountyHome
+			// 
+			this.LabelCountyHome.AutoSize = true;
+			this.LabelCountyHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelCountyHome.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelCountyHome.Location = new System.Drawing.Point(4, 130);
+			this.LabelCountyHome.Name = "LabelCountyHome";
+			this.LabelCountyHome.Size = new System.Drawing.Size(111, 15);
+			this.LabelCountyHome.TabIndex = 26;
+			this.LabelCountyHome.Text = "County Home Page";
+			// 
+			// LabelMuniCourt
+			// 
+			this.LabelMuniCourt.AutoSize = true;
+			this.LabelMuniCourt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelMuniCourt.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelMuniCourt.Location = new System.Drawing.Point(4, 111);
+			this.LabelMuniCourt.Name = "LabelMuniCourt";
+			this.LabelMuniCourt.Size = new System.Drawing.Size(93, 15);
+			this.LabelMuniCourt.TabIndex = 53;
+			this.LabelMuniCourt.Text = "Municipal Court";
+			// 
+			// LabelProbate
+			// 
+			this.LabelProbate.AutoSize = true;
+			this.LabelProbate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelProbate.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.LabelProbate.Location = new System.Drawing.Point(4, 92);
+			this.LabelProbate.Name = "LabelProbate";
+			this.LabelProbate.Size = new System.Drawing.Size(81, 15);
+			this.LabelProbate.TabIndex = 24;
+			this.LabelProbate.Text = "Probate Court";
+			// 
+			// Label_user
+			// 
+			this.Label_user.AutoSize = true;
+			this.Label_user.Location = new System.Drawing.Point(240, 1);
+			this.Label_user.Name = "Label_user";
+			this.Label_user.Size = new System.Drawing.Size(64, 15);
+			this.Label_user.TabIndex = 58;
+			this.Label_user.Text = "Username";
+			// 
+			// Label_pwd
+			// 
+			this.Label_pwd.AutoSize = true;
+			this.Label_pwd.Location = new System.Drawing.Point(313, 1);
+			this.Label_pwd.Name = "Label_pwd";
+			this.Label_pwd.Size = new System.Drawing.Size(59, 15);
+			this.Label_pwd.TabIndex = 59;
+			this.Label_pwd.Text = "Password";
+			// 
+			// LinkLabelPlats
+			// 
+			this.LinkLabelPlats.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabelPlats.AutoSize = true;
+			this.LinkLabelPlats.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabelPlats.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabelPlats.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabelPlats.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabelPlats.Location = new System.Drawing.Point(240, 183);
+			this.LinkLabelPlats.Name = "LinkLabelPlats";
+			this.LinkLabelPlats.Size = new System.Drawing.Size(39, 15);
+			this.LinkLabelPlats.TabIndex = 60;
+			this.LinkLabelPlats.TabStop = true;
+			this.LinkLabelPlats.Text = "PLATS";
+			this.LinkLabelPlats.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabel_OtherURL
+			// 
+			this.LinkLabel_OtherURL.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_OtherURL.AutoSize = true;
+			this.LinkLabel_OtherURL.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabel_OtherURL.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_OtherURL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_OtherURL.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_OtherURL.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_OtherURL.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_OtherURL.Location = new System.Drawing.Point(125, 228);
+			this.LinkLabel_OtherURL.Name = "LinkLabel_OtherURL";
+			this.LinkLabel_OtherURL.Size = new System.Drawing.Size(67, 15);
+			this.LinkLabel_OtherURL.TabIndex = 62;
+			this.LinkLabel_OtherURL.TabStop = true;
+			this.LinkLabel_OtherURL.Text = "OTHER URL";
+			this.LinkLabel_OtherURL.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabel_UCC
+			// 
+			this.LinkLabel_UCC.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_UCC.AutoSize = true;
+			this.LinkLabel_UCC.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabel_UCC.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_UCC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_UCC.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_UCC.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_UCC.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_UCC.Location = new System.Drawing.Point(125, 266);
+			this.LinkLabel_UCC.Name = "LinkLabel_UCC";
+			this.LinkLabel_UCC.Size = new System.Drawing.Size(78, 15);
+			this.LinkLabel_UCC.TabIndex = 190;
+			this.LinkLabel_UCC.TabStop = true;
+			this.LinkLabel_UCC.Text = "UCC SEARCH";
+			this.LinkLabel_UCC.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabel_SecState
+			// 
+			this.LinkLabel_SecState.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_SecState.AutoSize = true;
+			this.LinkLabel_SecState.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabel_SecState.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_SecState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_SecState.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_SecState.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_SecState.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_SecState.Location = new System.Drawing.Point(125, 281);
+			this.LinkLabel_SecState.Name = "LinkLabel_SecState";
+			this.LinkLabel_SecState.Size = new System.Drawing.Size(94, 15);
+			this.LinkLabel_SecState.TabIndex = 191;
+			this.LinkLabel_SecState.TabStop = true;
+			this.LinkLabel_SecState.Text = "SECT\'Y OF STATE";
+			this.LinkLabel_SecState.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabel_State_Code
+			// 
+			this.LinkLabel_State_Code.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_State_Code.AutoSize = true;
+			this.LinkLabel_State_Code.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabel_State_Code.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_State_Code.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_State_Code.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_State_Code.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_State_Code.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_State_Code.Location = new System.Drawing.Point(125, 296);
+			this.LinkLabel_State_Code.Name = "LinkLabel_State_Code";
+			this.LinkLabel_State_Code.Size = new System.Drawing.Size(71, 15);
+			this.LinkLabel_State_Code.TabIndex = 192;
+			this.LinkLabel_State_Code.TabStop = true;
+			this.LinkLabel_State_Code.Text = "STATE CODE";
+			this.LinkLabel_State_Code.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// LinkLabel_DeptIns
+			// 
+			this.LinkLabel_DeptIns.ActiveLinkColor = System.Drawing.Color.GhostWhite;
+			this.LinkLabel_DeptIns.AutoSize = true;
+			this.LinkLabel_DeptIns.BackColor = System.Drawing.Color.Transparent;
+			this.LinkLabel_DeptIns.DisabledLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.LinkLabel_DeptIns.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel_DeptIns.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel_DeptIns.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+			this.LinkLabel_DeptIns.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel_DeptIns.Location = new System.Drawing.Point(125, 311);
+			this.LinkLabel_DeptIns.Name = "LinkLabel_DeptIns";
+			this.LinkLabel_DeptIns.Size = new System.Drawing.Size(73, 15);
+			this.LinkLabel_DeptIns.TabIndex = 193;
+			this.LinkLabel_DeptIns.TabStop = true;
+			this.LinkLabel_DeptIns.Text = "DEPT OF INS";
+			this.LinkLabel_DeptIns.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			// 
+			// GroupBox4
+			// 
+			this.GroupBox4.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox4.Controls.Add(this.LabelUseIns);
+			this.GroupBox4.Controls.Add(this.LabelUseProps);
+			this.GroupBox4.Controls.Add(this.LabelUseCopy);
+			this.GroupBox4.Controls.Add(this.Label20);
+			this.GroupBox4.Controls.Add(this.Label15);
+			this.GroupBox4.Controls.Add(this.Label28);
+			this.GroupBox4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox4.Location = new System.Drawing.Point(438, 3);
+			this.GroupBox4.Name = "GroupBox4";
+			this.GroupBox4.Size = new System.Drawing.Size(143, 77);
+			this.GroupBox4.TabIndex = 182;
+			this.GroupBox4.TabStop = false;
+			this.GroupBox4.Text = "PRODUCTS ONLINE";
+			// 
+			// LabelUseIns
+			// 
+			this.LabelUseIns.AutoSize = true;
+			this.LabelUseIns.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseIns.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseIns.Location = new System.Drawing.Point(76, 22);
+			this.LabelUseIns.Name = "LabelUseIns";
+			this.LabelUseIns.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseIns.TabIndex = 67;
+			this.LabelUseIns.Text = "*";
+			// 
+			// LabelUseProps
+			// 
+			this.LabelUseProps.AutoSize = true;
+			this.LabelUseProps.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseProps.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseProps.Location = new System.Drawing.Point(76, 37);
+			this.LabelUseProps.Name = "LabelUseProps";
+			this.LabelUseProps.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseProps.TabIndex = 66;
+			this.LabelUseProps.Text = "*";
+			// 
+			// LabelUseCopy
+			// 
+			this.LabelUseCopy.AutoSize = true;
+			this.LabelUseCopy.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseCopy.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseCopy.Location = new System.Drawing.Point(76, 52);
+			this.LabelUseCopy.Name = "LabelUseCopy";
+			this.LabelUseCopy.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseCopy.TabIndex = 65;
+			this.LabelUseCopy.Text = "*";
+			// 
+			// Label20
+			// 
+			this.Label20.AutoSize = true;
+			this.Label20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label20.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label20.Location = new System.Drawing.Point(6, 37);
+			this.Label20.Name = "Label20";
+			this.Label20.Size = new System.Drawing.Size(64, 15);
+			this.Label20.TabIndex = 64;
+			this.Label20.Text = "Prop Repts";
+			// 
+			// Label15
+			// 
+			this.Label15.AutoSize = true;
+			this.Label15.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label15.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label15.Location = new System.Drawing.Point(6, 22);
+			this.Label15.Name = "Label15";
+			this.Label15.Size = new System.Drawing.Size(58, 15);
+			this.Label15.TabIndex = 63;
+			this.Label15.Text = "Insurance";
+			// 
+			// Label28
+			// 
+			this.Label28.AutoSize = true;
+			this.Label28.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label28.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label28.Location = new System.Drawing.Point(6, 52);
+			this.Label28.Name = "Label28";
+			this.Label28.Size = new System.Drawing.Size(67, 15);
+			this.Label28.TabIndex = 62;
+			this.Label28.Text = "Doc Copies";
+			// 
+			// GroupBox3
+			// 
+			this.GroupBox3.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox3.Controls.Add(this.Label4Tap);
+			this.GroupBox3.Controls.Add(this.Label5dtree);
+			this.GroupBox3.Controls.Add(this.Label6RV);
+			this.GroupBox3.Controls.Add(this.LinkLabel10);
+			this.GroupBox3.Controls.Add(this.LinkLabel9);
+			this.GroupBox3.Controls.Add(this.LinkLabel16);
+			this.GroupBox3.Controls.Add(this.LabelUseTap);
+			this.GroupBox3.Controls.Add(this.LabelUseDtree);
+			this.GroupBox3.Controls.Add(this.LabelUseRV);
+			this.GroupBox3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox3.Location = new System.Drawing.Point(592, 3);
+			this.GroupBox3.Name = "GroupBox3";
+			this.GroupBox3.Size = new System.Drawing.Size(225, 77);
+			this.GroupBox3.TabIndex = 181;
+			this.GroupBox3.TabStop = false;
+			this.GroupBox3.Text = "3rd PARTY VENDORS";
+			// 
+			// Label4Tap
+			// 
+			this.Label4Tap.AutoSize = true;
+			this.Label4Tap.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label4Tap.ForeColor = System.Drawing.Color.Black;
+			this.Label4Tap.Location = new System.Drawing.Point(138, 25);
+			this.Label4Tap.Name = "Label4Tap";
+			this.Label4Tap.Size = new System.Drawing.Size(59, 12);
+			this.Label4Tap.TabIndex = 65;
+			this.Label4Tap.Text = "MORE INFO";
+			this.Label4Tap.Click += new System.EventHandler(this.Label4Tap_Click);
+			this.Label4Tap.MouseLeave += new System.EventHandler(this.Label4Tap_Leave);
+			this.Label4Tap.MouseHover += new System.EventHandler(this.Label4Tap_Hover);
+			// 
+			// Label5dtree
+			// 
+			this.Label5dtree.AutoSize = true;
+			this.Label5dtree.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label5dtree.ForeColor = System.Drawing.Color.Black;
+			this.Label5dtree.Location = new System.Drawing.Point(138, 55);
+			this.Label5dtree.Name = "Label5dtree";
+			this.Label5dtree.Size = new System.Drawing.Size(59, 12);
+			this.Label5dtree.TabIndex = 66;
+			this.Label5dtree.Text = "MORE INFO";
+			this.Label5dtree.Click += new System.EventHandler(this.Label5dtree_Click);
+			this.Label5dtree.MouseLeave += new System.EventHandler(this.Label5dtree_Leave);
+			this.Label5dtree.MouseHover += new System.EventHandler(this.Label5dtree_Hover);
+			// 
+			// Label6RV
+			// 
+			this.Label6RV.AutoSize = true;
+			this.Label6RV.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label6RV.ForeColor = System.Drawing.Color.Black;
+			this.Label6RV.Location = new System.Drawing.Point(138, 40);
+			this.Label6RV.Name = "Label6RV";
+			this.Label6RV.Size = new System.Drawing.Size(59, 12);
+			this.Label6RV.TabIndex = 64;
+			this.Label6RV.Text = "MORE INFO";
+			this.Label6RV.Click += new System.EventHandler(this.Label6RV_Click);
+			this.Label6RV.MouseLeave += new System.EventHandler(this.Label6RV_Leave);
+			this.Label6RV.MouseHover += new System.EventHandler(this.Label6RV_Hover);
+			// 
+			// LinkLabel10
+			// 
+			this.LinkLabel10.ActiveLinkColor = System.Drawing.Color.Plum;
+			this.LinkLabel10.AutoSize = true;
+			this.LinkLabel10.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel10.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel10.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel10.Location = new System.Drawing.Point(6, 54);
+			this.LinkLabel10.Name = "LinkLabel10";
+			this.LinkLabel10.Size = new System.Drawing.Size(54, 15);
+			this.LinkLabel10.TabIndex = 25;
+			this.LinkLabel10.TabStop = true;
+			this.LinkLabel10.Text = "DocEdge";
+			this.LinkLabel10.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel10_LinkClicked);
+			// 
+			// LinkLabel9
+			// 
+			this.LinkLabel9.ActiveLinkColor = System.Drawing.Color.Plum;
+			this.LinkLabel9.AutoSize = true;
+			this.LinkLabel9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel9.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel9.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel9.Location = new System.Drawing.Point(6, 38);
+			this.LinkLabel9.Name = "LinkLabel9";
+			this.LinkLabel9.Size = new System.Drawing.Size(59, 15);
+			this.LinkLabel9.TabIndex = 26;
+			this.LinkLabel9.TabStop = true;
+			this.LinkLabel9.Text = "RedVision";
+			this.LinkLabel9.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel9_LinkClicked);
+			// 
+			// LinkLabel16
+			// 
+			this.LinkLabel16.ActiveLinkColor = System.Drawing.Color.Plum;
+			this.LinkLabel16.AutoSize = true;
+			this.LinkLabel16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel16.ForeColor = System.Drawing.Color.DarkViolet;
+			this.LinkLabel16.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(134)))), ((int)(((byte)(77)))));
+			this.LinkLabel16.Location = new System.Drawing.Point(6, 22);
+			this.LinkLabel16.Name = "LinkLabel16";
+			this.LinkLabel16.Size = new System.Drawing.Size(50, 15);
+			this.LinkLabel16.TabIndex = 27;
+			this.LinkLabel16.TabStop = true;
+			this.LinkLabel16.Text = "Tapestry";
+			this.LinkLabel16.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel16_LinkClicked);
+			// 
+			// LabelUseTap
+			// 
+			this.LabelUseTap.AutoSize = true;
+			this.LabelUseTap.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseTap.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseTap.Location = new System.Drawing.Point(71, 22);
+			this.LabelUseTap.Name = "LabelUseTap";
+			this.LabelUseTap.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseTap.TabIndex = 61;
+			this.LabelUseTap.Text = "*";
+			// 
+			// LabelUseDtree
+			// 
+			this.LabelUseDtree.AutoSize = true;
+			this.LabelUseDtree.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseDtree.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseDtree.Location = new System.Drawing.Point(71, 52);
+			this.LabelUseDtree.Name = "LabelUseDtree";
+			this.LabelUseDtree.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseDtree.TabIndex = 63;
+			this.LabelUseDtree.Text = "*";
+			// 
+			// LabelUseRV
+			// 
+			this.LabelUseRV.AutoSize = true;
+			this.LabelUseRV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LabelUseRV.ForeColor = System.Drawing.Color.Black;
+			this.LabelUseRV.Location = new System.Drawing.Point(71, 37);
+			this.LabelUseRV.Name = "LabelUseRV";
+			this.LabelUseRV.Size = new System.Drawing.Size(12, 15);
+			this.LabelUseRV.TabIndex = 60;
+			this.LabelUseRV.Text = "*";
+			// 
+			// GroupBox2
+			// 
+			this.GroupBox2.BackColor = System.Drawing.Color.GhostWhite;
+			this.GroupBox2.Controls.Add(this.lbl_courtImgDate);
+			this.GroupBox2.Controls.Add(this.lbl_courtIndexDate);
+			this.GroupBox2.Controls.Add(this.Label34);
+			this.GroupBox2.Controls.Add(this.Label35);
+			this.GroupBox2.Controls.Add(this.lbl_copyFeeAmt);
+			this.GroupBox2.Controls.Add(this.Label16);
+			this.GroupBox2.Controls.Add(this.Label27);
+			this.GroupBox2.Controls.Add(this.LabelIndex_source);
+			this.GroupBox2.Controls.Add(this.LabelCopyPmtType);
+			this.GroupBox2.Controls.Add(this.Label26);
+			this.GroupBox2.Controls.Add(this.LabelImage_date);
+			this.GroupBox2.Controls.Add(this.LabelIndex_date);
+			this.GroupBox2.Controls.Add(this.Label12);
+			this.GroupBox2.Controls.Add(this.Label10);
+			this.GroupBox2.Controls.Add(this.Label29);
+			this.GroupBox2.Controls.Add(this.LabelCopy_source);
+			this.GroupBox2.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GroupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.GroupBox2.Location = new System.Drawing.Point(438, 86);
+			this.GroupBox2.Name = "GroupBox2";
+			this.GroupBox2.Size = new System.Drawing.Size(219, 151);
+			this.GroupBox2.TabIndex = 180;
+			this.GroupBox2.TabStop = false;
+			this.GroupBox2.Text = "RESOURCE INFORMATION";
+			// 
+			// lbl_courtImgDate
+			// 
+			this.lbl_courtImgDate.AutoSize = true;
+			this.lbl_courtImgDate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_courtImgDate.ForeColor = System.Drawing.Color.Black;
+			this.lbl_courtImgDate.Location = new System.Drawing.Point(112, 84);
+			this.lbl_courtImgDate.Name = "lbl_courtImgDate";
+			this.lbl_courtImgDate.Size = new System.Drawing.Size(9, 12);
+			this.lbl_courtImgDate.TabIndex = 73;
+			this.lbl_courtImgDate.Text = "*";
+			// 
+			// lbl_courtIndexDate
+			// 
+			this.lbl_courtIndexDate.AutoSize = true;
+			this.lbl_courtIndexDate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_courtIndexDate.ForeColor = System.Drawing.Color.Black;
+			this.lbl_courtIndexDate.Location = new System.Drawing.Point(112, 68);
+			this.lbl_courtIndexDate.Name = "lbl_courtIndexDate";
+			this.lbl_courtIndexDate.Size = new System.Drawing.Size(9, 12);
+			this.lbl_courtIndexDate.TabIndex = 72;
+			this.lbl_courtIndexDate.Text = "*";
+			// 
+			// Label34
+			// 
+			this.Label34.AutoSize = true;
+			this.Label34.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label34.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label34.Location = new System.Drawing.Point(7, 84);
+			this.Label34.Name = "Label34";
+			this.Label34.Size = new System.Drawing.Size(88, 12);
+			this.Label34.TabIndex = 71;
+			this.Label34.Text = "Court Image Date: ";
+			// 
+			// Label35
+			// 
+			this.Label35.AutoSize = true;
+			this.Label35.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label35.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label35.Location = new System.Drawing.Point(7, 68);
+			this.Label35.Name = "Label35";
+			this.Label35.Size = new System.Drawing.Size(85, 12);
+			this.Label35.TabIndex = 70;
+			this.Label35.Text = "Court Index Date: ";
+			// 
+			// lbl_copyFeeAmt
+			// 
+			this.lbl_copyFeeAmt.AutoSize = true;
+			this.lbl_copyFeeAmt.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.lbl_copyFeeAmt.ForeColor = System.Drawing.Color.Black;
+			this.lbl_copyFeeAmt.Location = new System.Drawing.Point(112, 132);
+			this.lbl_copyFeeAmt.Name = "lbl_copyFeeAmt";
+			this.lbl_copyFeeAmt.Size = new System.Drawing.Size(9, 12);
+			this.lbl_copyFeeAmt.TabIndex = 69;
+			this.lbl_copyFeeAmt.Text = "*";
+			// 
+			// Label16
+			// 
+			this.Label16.AutoSize = true;
+			this.Label16.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label16.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label16.Location = new System.Drawing.Point(7, 132);
+			this.Label16.Name = "Label16";
+			this.Label16.Size = new System.Drawing.Size(90, 12);
+			this.Label16.TabIndex = 68;
+			this.Label16.Text = "Copy Fee Amount: ";
+			// 
+			// Label27
+			// 
+			this.Label27.AutoSize = true;
+			this.Label27.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label27.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label27.Location = new System.Drawing.Point(7, 20);
+			this.Label27.Name = "Label27";
+			this.Label27.Size = new System.Drawing.Size(78, 12);
+			this.Label27.TabIndex = 62;
+			this.Label27.Text = "INDEX SOURCE: ";
+			// 
+			// LabelIndex_source
+			// 
+			this.LabelIndex_source.AutoSize = true;
+			this.LabelIndex_source.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelIndex_source.ForeColor = System.Drawing.Color.Black;
+			this.LabelIndex_source.Location = new System.Drawing.Point(112, 20);
+			this.LabelIndex_source.Name = "LabelIndex_source";
+			this.LabelIndex_source.Size = new System.Drawing.Size(9, 12);
+			this.LabelIndex_source.TabIndex = 63;
+			this.LabelIndex_source.Text = "*";
+			// 
+			// LabelCopyPmtType
+			// 
+			this.LabelCopyPmtType.AutoSize = true;
+			this.LabelCopyPmtType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelCopyPmtType.ForeColor = System.Drawing.Color.Black;
+			this.LabelCopyPmtType.Location = new System.Drawing.Point(112, 116);
+			this.LabelCopyPmtType.Name = "LabelCopyPmtType";
+			this.LabelCopyPmtType.Size = new System.Drawing.Size(9, 12);
+			this.LabelCopyPmtType.TabIndex = 61;
+			this.LabelCopyPmtType.Text = "*";
+			// 
+			// Label26
+			// 
+			this.Label26.AutoSize = true;
+			this.Label26.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label26.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label26.Location = new System.Drawing.Point(7, 116);
+			this.Label26.Name = "Label26";
+			this.Label26.Size = new System.Drawing.Size(66, 12);
+			this.Label26.TabIndex = 60;
+			this.Label26.Text = "Copy Pay By: ";
+			// 
+			// LabelImage_date
+			// 
+			this.LabelImage_date.AutoSize = true;
+			this.LabelImage_date.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelImage_date.ForeColor = System.Drawing.Color.Black;
+			this.LabelImage_date.Location = new System.Drawing.Point(112, 52);
+			this.LabelImage_date.Name = "LabelImage_date";
+			this.LabelImage_date.Size = new System.Drawing.Size(9, 12);
+			this.LabelImage_date.TabIndex = 59;
+			this.LabelImage_date.Text = "*";
+			// 
+			// LabelIndex_date
+			// 
+			this.LabelIndex_date.AutoSize = true;
+			this.LabelIndex_date.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelIndex_date.ForeColor = System.Drawing.Color.Black;
+			this.LabelIndex_date.Location = new System.Drawing.Point(112, 36);
+			this.LabelIndex_date.Name = "LabelIndex_date";
+			this.LabelIndex_date.Size = new System.Drawing.Size(9, 12);
+			this.LabelIndex_date.TabIndex = 58;
+			this.LabelIndex_date.Text = "*";
+			// 
+			// Label12
+			// 
+			this.Label12.AutoSize = true;
+			this.Label12.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label12.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label12.Location = new System.Drawing.Point(7, 52);
+			this.Label12.Name = "Label12";
+			this.Label12.Size = new System.Drawing.Size(61, 12);
+			this.Label12.TabIndex = 57;
+			this.Label12.Text = "Image Date: ";
+			// 
+			// Label10
+			// 
+			this.Label10.AutoSize = true;
+			this.Label10.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label10.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label10.Location = new System.Drawing.Point(7, 36);
+			this.Label10.Name = "Label10";
+			this.Label10.Size = new System.Drawing.Size(83, 12);
+			this.Label10.TabIndex = 56;
+			this.Label10.Text = "Land Index Date: ";
+			// 
+			// Label29
+			// 
+			this.Label29.AutoSize = true;
+			this.Label29.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.Label29.ForeColor = System.Drawing.Color.DarkSlateBlue;
+			this.Label29.Location = new System.Drawing.Point(7, 100);
+			this.Label29.Name = "Label29";
+			this.Label29.Size = new System.Drawing.Size(76, 12);
+			this.Label29.TabIndex = 54;
+			this.Label29.Text = "COPY SOURCE: ";
+			// 
+			// LabelCopy_source
+			// 
+			this.LabelCopy_source.AutoSize = true;
+			this.LabelCopy_source.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+			this.LabelCopy_source.ForeColor = System.Drawing.Color.Black;
+			this.LabelCopy_source.Location = new System.Drawing.Point(112, 100);
+			this.LabelCopy_source.Name = "LabelCopy_source";
+			this.LabelCopy_source.Size = new System.Drawing.Size(9, 12);
+			this.LabelCopy_source.TabIndex = 55;
+			this.LabelCopy_source.Text = "*";
+			// 
+			// TabControl1
+			// 
+			this.TabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.TabControl1.Controls.Add(this.TabPg4Clearing);
+			this.TabControl1.Controls.Add(this.TabPg6OtherLogins);
+			this.TabControl1.Controls.Add(this.TabPg7Taxes);
+			this.TabControl1.Controls.Add(this.TabPg1Statistics);
+			this.TabControl1.Controls.Add(this.TabPg2Misc);
+			this.TabControl1.Location = new System.Drawing.Point(0, 387);
+			this.TabControl1.Name = "TabControl1";
+			this.TabControl1.SelectedIndex = 0;
+			this.TabControl1.Size = new System.Drawing.Size(874, 227);
+			this.TabControl1.TabIndex = 190;
+			this.TabControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TabPage1_Click);
+			// 
+			// TabPg4Clearing
+			// 
+			this.TabPg4Clearing.AutoScroll = true;
+			this.TabPg4Clearing.BackColor = System.Drawing.Color.Linen;
+			this.TabPg4Clearing.Controls.Add(this.TableLayoutPanel1);
+			this.TabPg4Clearing.Location = new System.Drawing.Point(4, 22);
+			this.TabPg4Clearing.Name = "TabPg4Clearing";
+			this.TabPg4Clearing.Padding = new System.Windows.Forms.Padding(3);
+			this.TabPg4Clearing.Size = new System.Drawing.Size(866, 201);
+			this.TabPg4Clearing.TabIndex = 4;
+			this.TabPg4Clearing.Text = "State Guidelines";
+			// 
+			// TableLayoutPanel1
+			// 
+			this.TableLayoutPanel1.AutoSize = true;
+			this.TableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.TableLayoutPanel1.ColumnCount = 3;
+			this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.TableLayoutPanel1.Controls.Add(this.txtSOL_notes, 0, 32);
+			this.TableLayoutPanel1.Controls.Add(this.Label_statutecomments, 0, 31);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Tax_RedemPer, 1, 21);
+			this.TableLayoutPanel1.Controls.Add(this.Label_forclRedem, 0, 20);
+			this.TableLayoutPanel1.Controls.Add(this.Label_taxTakRedem, 0, 21);
+			this.TableLayoutPanel1.Controls.Add(this.Label_mtg, 0, 0);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_forecl_redem_per, 1, 20);
+			this.TableLayoutPanel1.Controls.Add(this.Label73, 1, 16);
+			this.TableLayoutPanel1.Controls.Add(this.Label46, 1, 15);
+			this.TableLayoutPanel1.Controls.Add(this.Label74, 0, 16);
+			this.TableLayoutPanel1.Controls.Add(this.Label54, 1, 14);
+			this.TableLayoutPanel1.Controls.Add(this.Label52, 0, 15);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Mtg, 1, 0);
+			this.TableLayoutPanel1.Controls.Add(this.Label58, 0, 14);
+			this.TableLayoutPanel1.Controls.Add(this.Label_heloc, 0, 1);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Heloc, 1, 1);
+			this.TableLayoutPanel1.Controls.Add(this.Label_teRule, 0, 2);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_TERule, 1, 2);
+			this.TableLayoutPanel1.Controls.Add(this.Label_spousal, 0, 3);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_PersTax, 1, 13);
+			this.TableLayoutPanel1.Controls.Add(this.Label_persTax, 0, 13);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_ClaimLien, 1, 11);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_HOA, 1, 9);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Support, 1, 12);
+			this.TableLayoutPanel1.Controls.Add(this.Label_support, 0, 12);
+			this.TableLayoutPanel1.Controls.Add(this.Label_claimLien, 0, 11);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Notice, 1, 8);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Hosp, 1, 10);
+			this.TableLayoutPanel1.Controls.Add(this.Label_HOA, 0, 9);
+			this.TableLayoutPanel1.Controls.Add(this.Label_hospLien, 0, 10);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Mech, 1, 7);
+			this.TableLayoutPanel1.Controls.Add(this.Label_NOC, 0, 8);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_lispen, 1, 6);
+			this.TableLayoutPanel1.Controls.Add(this.Label_mechLien, 0, 7);
+			this.TableLayoutPanel1.Controls.Add(this.Label_lisPendens, 0, 6);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Jgmt, 1, 4);
+			this.TableLayoutPanel1.Controls.Add(this.Label_jgmt, 0, 4);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Spousal, 1, 3);
+			this.TableLayoutPanel1.Controls.Add(this.Label_stateJgmt, 0, 5);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_StateJgmt, 1, 5);
+			this.TableLayoutPanel1.Controls.Add(this.Label_fc, 0, 23);
+			this.TableLayoutPanel1.Controls.Add(this.txt_foreclosure_notes, 0, 24);
+			this.TableLayoutPanel1.Controls.Add(this.Label_credclaim, 0, 25);
+			this.TableLayoutPanel1.Controls.Add(this.Label_aftacq, 0, 26);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_Creditor_Claims, 1, 25);
+			this.TableLayoutPanel1.Controls.Add(this.lblSOL_AftAcq, 1, 26);
+			this.TableLayoutPanel1.Controls.Add(this.txt_ProbateInfo, 0, 29);
+			this.TableLayoutPanel1.Controls.Add(this.Label_probate, 0, 28);
+			this.TableLayoutPanel1.Location = new System.Drawing.Point(12, 6);
+			this.TableLayoutPanel1.Name = "TableLayoutPanel1";
+			this.TableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
+			this.TableLayoutPanel1.RowCount = 33;
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.TableLayoutPanel1.Size = new System.Drawing.Size(453, 568);
+			this.TableLayoutPanel1.TabIndex = 98;
+			// 
+			// txtSOL_notes
+			// 
+			this.txtSOL_notes.BackColor = System.Drawing.Color.Snow;
+			this.TableLayoutPanel1.SetColumnSpan(this.txtSOL_notes, 2);
+			this.txtSOL_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtSOL_notes.ForeColor = System.Drawing.Color.Purple;
+			this.txtSOL_notes.Location = new System.Drawing.Point(3, 505);
+			this.txtSOL_notes.Multiline = true;
+			this.txtSOL_notes.Name = "txtSOL_notes";
+			this.txtSOL_notes.ReadOnly = true;
+			this.txtSOL_notes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtSOL_notes.Size = new System.Drawing.Size(447, 59);
+			this.txtSOL_notes.TabIndex = 97;
+			// 
+			// Label_statutecomments
+			// 
+			this.Label_statutecomments.AutoSize = true;
+			this.Label_statutecomments.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_statutecomments.ForeColor = System.Drawing.Color.Black;
+			this.Label_statutecomments.Location = new System.Drawing.Point(3, 489);
+			this.Label_statutecomments.Name = "Label_statutecomments";
+			this.Label_statutecomments.Size = new System.Drawing.Size(114, 13);
+			this.Label_statutecomments.TabIndex = 107;
+			this.Label_statutecomments.Text = "Statutes Comments::";
+			// 
+			// lblSOL_Tax_RedemPer
+			// 
+			this.lblSOL_Tax_RedemPer.AutoSize = true;
+			this.lblSOL_Tax_RedemPer.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Tax_RedemPer.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Tax_RedemPer.Location = new System.Drawing.Point(152, 235);
+			this.lblSOL_Tax_RedemPer.Name = "lblSOL_Tax_RedemPer";
+			this.lblSOL_Tax_RedemPer.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Tax_RedemPer.TabIndex = 61;
+			this.lblSOL_Tax_RedemPer.Text = "Label58";
+			// 
+			// Label_forclRedem
+			// 
+			this.Label_forclRedem.AutoSize = true;
+			this.Label_forclRedem.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_forclRedem.ForeColor = System.Drawing.Color.Black;
+			this.Label_forclRedem.Location = new System.Drawing.Point(3, 222);
+			this.Label_forclRedem.Name = "Label_forclRedem";
+			this.Label_forclRedem.Size = new System.Drawing.Size(143, 13);
+			this.Label_forclRedem.TabIndex = 68;
+			this.Label_forclRedem.Text = "Forclosure Redem. Period:";
+			// 
+			// Label_taxTakRedem
+			// 
+			this.Label_taxTakRedem.AutoSize = true;
+			this.Label_taxTakRedem.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_taxTakRedem.ForeColor = System.Drawing.Color.Black;
+			this.Label_taxTakRedem.Location = new System.Drawing.Point(3, 235);
+			this.Label_taxTakRedem.Name = "Label_taxTakRedem";
+			this.Label_taxTakRedem.Size = new System.Drawing.Size(143, 13);
+			this.Label_taxTakRedem.TabIndex = 62;
+			this.Label_taxTakRedem.Text = "Tax Taking Redem. Period:";
+			// 
+			// Label_mtg
+			// 
+			this.Label_mtg.AutoSize = true;
+			this.Label_mtg.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_mtg.Location = new System.Drawing.Point(3, 1);
+			this.Label_mtg.Name = "Label_mtg";
+			this.Label_mtg.Size = new System.Drawing.Size(59, 13);
+			this.Label_mtg.TabIndex = 0;
+			this.Label_mtg.Text = "Mtg/DOT:";
+			// 
+			// lblSOL_forecl_redem_per
+			// 
+			this.lblSOL_forecl_redem_per.AutoSize = true;
+			this.lblSOL_forecl_redem_per.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_forecl_redem_per.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_forecl_redem_per.Location = new System.Drawing.Point(152, 222);
+			this.lblSOL_forecl_redem_per.Name = "lblSOL_forecl_redem_per";
+			this.lblSOL_forecl_redem_per.Size = new System.Drawing.Size(20, 13);
+			this.lblSOL_forecl_redem_per.TabIndex = 67;
+			this.lblSOL_forecl_redem_per.Text = "lbl";
+			// 
+			// Label73
+			// 
+			this.Label73.AutoSize = true;
+			this.Label73.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label73.ForeColor = System.Drawing.Color.Black;
+			this.Label73.Location = new System.Drawing.Point(152, 209);
+			this.Label73.Name = "Label73";
+			this.Label73.Size = new System.Drawing.Size(36, 13);
+			this.Label73.TabIndex = 101;
+			this.Label73.Text = "20 yrs";
+			// 
+			// Label46
+			// 
+			this.Label46.AutoSize = true;
+			this.Label46.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label46.ForeColor = System.Drawing.Color.Black;
+			this.Label46.Location = new System.Drawing.Point(152, 196);
+			this.Label46.Name = "Label46";
+			this.Label46.Size = new System.Drawing.Size(30, 13);
+			this.Label46.TabIndex = 103;
+			this.Label46.Text = "5 yrs";
+			// 
+			// Label74
+			// 
+			this.Label74.AutoSize = true;
+			this.Label74.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label74.ForeColor = System.Drawing.Color.Black;
+			this.Label74.Location = new System.Drawing.Point(3, 209);
+			this.Label74.Name = "Label74";
+			this.Label74.Size = new System.Drawing.Size(66, 13);
+			this.Label74.TabIndex = 100;
+			this.Label74.Text = "USA Jgmts:";
+			// 
+			// Label54
+			// 
+			this.Label54.AutoSize = true;
+			this.Label54.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label54.ForeColor = System.Drawing.Color.Black;
+			this.Label54.Location = new System.Drawing.Point(152, 183);
+			this.Label54.Name = "Label54";
+			this.Label54.Size = new System.Drawing.Size(82, 13);
+			this.Label54.TabIndex = 105;
+			this.Label54.Text = "10 yrs+30 days";
+			// 
+			// Label52
+			// 
+			this.Label52.AutoSize = true;
+			this.Label52.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label52.ForeColor = System.Drawing.Color.Black;
+			this.Label52.Location = new System.Drawing.Point(3, 196);
+			this.Label52.Name = "Label52";
+			this.Label52.Size = new System.Drawing.Size(37, 13);
+			this.Label52.TabIndex = 102;
+			this.Label52.Text = "UCCs:";
+			// 
+			// lblSOL_Mtg
+			// 
+			this.lblSOL_Mtg.AutoSize = true;
+			this.lblSOL_Mtg.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Mtg.Location = new System.Drawing.Point(152, 1);
+			this.lblSOL_Mtg.Name = "lblSOL_Mtg";
+			this.lblSOL_Mtg.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Mtg.TabIndex = 1;
+			this.lblSOL_Mtg.Text = "Label46";
+			this.lblSOL_Mtg.MouseLeave += new System.EventHandler(this.lblSOL_Mtg_mouseLeave);
+			this.lblSOL_Mtg.MouseHover += new System.EventHandler(this.lblSOL_Mtg_mouseHover);
+			// 
+			// Label58
+			// 
+			this.Label58.AutoSize = true;
+			this.Label58.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label58.ForeColor = System.Drawing.Color.Black;
+			this.Label58.Location = new System.Drawing.Point(3, 183);
+			this.Label58.Name = "Label58";
+			this.Label58.Size = new System.Drawing.Size(74, 13);
+			this.Label58.TabIndex = 104;
+			this.Label58.Text = "Fed Tax Lien:";
+			// 
+			// Label_heloc
+			// 
+			this.Label_heloc.AutoSize = true;
+			this.Label_heloc.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_heloc.Location = new System.Drawing.Point(3, 14);
+			this.Label_heloc.Name = "Label_heloc";
+			this.Label_heloc.Size = new System.Drawing.Size(45, 13);
+			this.Label_heloc.TabIndex = 2;
+			this.Label_heloc.Text = "HELOC:";
+			// 
+			// lblSOL_Heloc
+			// 
+			this.lblSOL_Heloc.AutoSize = true;
+			this.lblSOL_Heloc.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Heloc.Location = new System.Drawing.Point(152, 14);
+			this.lblSOL_Heloc.Name = "lblSOL_Heloc";
+			this.lblSOL_Heloc.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Heloc.TabIndex = 3;
+			this.lblSOL_Heloc.Text = "Label52";
+			this.lblSOL_Heloc.MouseLeave += new System.EventHandler(this.lblSOL_heloc_mouseLeave);
+			this.lblSOL_Heloc.MouseHover += new System.EventHandler(this.lblSOL_heloc_mouseHover);
+			// 
+			// Label_teRule
+			// 
+			this.Label_teRule.AutoSize = true;
+			this.Label_teRule.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_teRule.Location = new System.Drawing.Point(3, 27);
+			this.Label_teRule.Name = "Label_teRule";
+			this.Label_teRule.Size = new System.Drawing.Size(48, 13);
+			this.Label_teRule.TabIndex = 55;
+			this.Label_teRule.Text = "TE Rule:";
+			// 
+			// lblSOL_TERule
+			// 
+			this.lblSOL_TERule.AutoSize = true;
+			this.lblSOL_TERule.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_TERule.Location = new System.Drawing.Point(152, 27);
+			this.lblSOL_TERule.Name = "lblSOL_TERule";
+			this.lblSOL_TERule.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_TERule.TabIndex = 56;
+			this.lblSOL_TERule.Text = "Label52";
+			// 
+			// Label_spousal
+			// 
+			this.Label_spousal.AutoSize = true;
+			this.Label_spousal.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_spousal.Location = new System.Drawing.Point(3, 40);
+			this.Label_spousal.Name = "Label_spousal";
+			this.Label_spousal.Size = new System.Drawing.Size(80, 13);
+			this.Label_spousal.TabIndex = 66;
+			this.Label_spousal.Text = "Spousal State:";
+			// 
+			// lblSOL_PersTax
+			// 
+			this.lblSOL_PersTax.AutoSize = true;
+			this.lblSOL_PersTax.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_PersTax.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_PersTax.Location = new System.Drawing.Point(152, 170);
+			this.lblSOL_PersTax.Name = "lblSOL_PersTax";
+			this.lblSOL_PersTax.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_PersTax.TabIndex = 98;
+			this.lblSOL_PersTax.Text = "Label60";
+			// 
+			// Label_persTax
+			// 
+			this.Label_persTax.AutoSize = true;
+			this.Label_persTax.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_persTax.ForeColor = System.Drawing.Color.Black;
+			this.Label_persTax.Location = new System.Drawing.Point(3, 170);
+			this.Label_persTax.Name = "Label_persTax";
+			this.Label_persTax.Size = new System.Drawing.Size(75, 13);
+			this.Label_persTax.TabIndex = 99;
+			this.Label_persTax.Text = "Personal Tax:";
+			// 
+			// lblSOL_ClaimLien
+			// 
+			this.lblSOL_ClaimLien.AutoSize = true;
+			this.lblSOL_ClaimLien.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_ClaimLien.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_ClaimLien.Location = new System.Drawing.Point(152, 144);
+			this.lblSOL_ClaimLien.Name = "lblSOL_ClaimLien";
+			this.lblSOL_ClaimLien.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_ClaimLien.TabIndex = 91;
+			this.lblSOL_ClaimLien.Text = "Label68";
+			// 
+			// lblSOL_HOA
+			// 
+			this.lblSOL_HOA.AutoSize = true;
+			this.lblSOL_HOA.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_HOA.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_HOA.Location = new System.Drawing.Point(152, 118);
+			this.lblSOL_HOA.Name = "lblSOL_HOA";
+			this.lblSOL_HOA.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_HOA.TabIndex = 89;
+			this.lblSOL_HOA.Text = "Label66";
+			// 
+			// lblSOL_Support
+			// 
+			this.lblSOL_Support.AutoSize = true;
+			this.lblSOL_Support.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Support.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Support.Location = new System.Drawing.Point(152, 157);
+			this.lblSOL_Support.Name = "lblSOL_Support";
+			this.lblSOL_Support.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Support.TabIndex = 81;
+			this.lblSOL_Support.Text = "Label64";
+			// 
+			// Label_support
+			// 
+			this.Label_support.AutoSize = true;
+			this.Label_support.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_support.ForeColor = System.Drawing.Color.Black;
+			this.Label_support.Location = new System.Drawing.Point(3, 157);
+			this.Label_support.Name = "Label_support";
+			this.Label_support.Size = new System.Drawing.Size(73, 13);
+			this.Label_support.TabIndex = 82;
+			this.Label_support.Text = "Support Obl:";
+			// 
+			// Label_claimLien
+			// 
+			this.Label_claimLien.AutoSize = true;
+			this.Label_claimLien.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_claimLien.ForeColor = System.Drawing.Color.Black;
+			this.Label_claimLien.Location = new System.Drawing.Point(3, 144);
+			this.Label_claimLien.Name = "Label_claimLien";
+			this.Label_claimLien.Size = new System.Drawing.Size(78, 13);
+			this.Label_claimLien.TabIndex = 92;
+			this.Label_claimLien.Text = "Claim of Lien:";
+			// 
+			// lblSOL_Notice
+			// 
+			this.lblSOL_Notice.AutoSize = true;
+			this.lblSOL_Notice.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Notice.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Notice.Location = new System.Drawing.Point(152, 105);
+			this.lblSOL_Notice.Name = "lblSOL_Notice";
+			this.lblSOL_Notice.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Notice.TabIndex = 87;
+			this.lblSOL_Notice.Text = "Label58";
+			// 
+			// lblSOL_Hosp
+			// 
+			this.lblSOL_Hosp.AutoSize = true;
+			this.lblSOL_Hosp.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Hosp.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Hosp.Location = new System.Drawing.Point(152, 131);
+			this.lblSOL_Hosp.Name = "lblSOL_Hosp";
+			this.lblSOL_Hosp.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Hosp.TabIndex = 95;
+			this.lblSOL_Hosp.Text = "Label72";
+			// 
+			// Label_HOA
+			// 
+			this.Label_HOA.AutoSize = true;
+			this.Label_HOA.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_HOA.ForeColor = System.Drawing.Color.Black;
+			this.Label_HOA.Location = new System.Drawing.Point(3, 118);
+			this.Label_HOA.Name = "Label_HOA";
+			this.Label_HOA.Size = new System.Drawing.Size(59, 13);
+			this.Label_HOA.TabIndex = 90;
+			this.Label_HOA.Text = "HOA Lien:";
+			// 
+			// Label_hospLien
+			// 
+			this.Label_hospLien.AutoSize = true;
+			this.Label_hospLien.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_hospLien.ForeColor = System.Drawing.Color.Black;
+			this.Label_hospLien.Location = new System.Drawing.Point(3, 131);
+			this.Label_hospLien.Name = "Label_hospLien";
+			this.Label_hospLien.Size = new System.Drawing.Size(65, 13);
+			this.Label_hospLien.TabIndex = 96;
+			this.Label_hospLien.Text = "Hosp. Lien:";
+			// 
+			// lblSOL_Mech
+			// 
+			this.lblSOL_Mech.AutoSize = true;
+			this.lblSOL_Mech.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Mech.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Mech.Location = new System.Drawing.Point(152, 92);
+			this.lblSOL_Mech.Name = "lblSOL_Mech";
+			this.lblSOL_Mech.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Mech.TabIndex = 85;
+			this.lblSOL_Mech.Text = "Label60";
+			// 
+			// Label_NOC
+			// 
+			this.Label_NOC.AutoSize = true;
+			this.Label_NOC.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_NOC.ForeColor = System.Drawing.Color.Black;
+			this.Label_NOC.Location = new System.Drawing.Point(3, 105);
+			this.Label_NOC.Name = "Label_NOC";
+			this.Label_NOC.Size = new System.Drawing.Size(107, 13);
+			this.Label_NOC.TabIndex = 88;
+			this.Label_NOC.Text = "Notice/Commence:";
+			// 
+			// lblSOL_lispen
+			// 
+			this.lblSOL_lispen.AutoSize = true;
+			this.lblSOL_lispen.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_lispen.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_lispen.Location = new System.Drawing.Point(152, 79);
+			this.lblSOL_lispen.Name = "lblSOL_lispen";
+			this.lblSOL_lispen.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_lispen.TabIndex = 80;
+			this.lblSOL_lispen.Text = "Label54";
+			// 
+			// Label_mechLien
+			// 
+			this.Label_mechLien.AutoSize = true;
+			this.Label_mechLien.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_mechLien.ForeColor = System.Drawing.Color.Black;
+			this.Label_mechLien.Location = new System.Drawing.Point(3, 92);
+			this.Label_mechLien.Name = "Label_mechLien";
+			this.Label_mechLien.Size = new System.Drawing.Size(64, 13);
+			this.Label_mechLien.TabIndex = 86;
+			this.Label_mechLien.Text = "Mech.Lien:";
+			// 
+			// Label_lisPendens
+			// 
+			this.Label_lisPendens.AutoSize = true;
+			this.Label_lisPendens.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_lisPendens.ForeColor = System.Drawing.Color.Black;
+			this.Label_lisPendens.Location = new System.Drawing.Point(3, 79);
+			this.Label_lisPendens.Name = "Label_lisPendens";
+			this.Label_lisPendens.Size = new System.Drawing.Size(69, 13);
+			this.Label_lisPendens.TabIndex = 79;
+			this.Label_lisPendens.Text = "LisPendens:";
+			// 
+			// lblSOL_Jgmt
+			// 
+			this.lblSOL_Jgmt.AutoSize = true;
+			this.lblSOL_Jgmt.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Jgmt.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Jgmt.Location = new System.Drawing.Point(152, 53);
+			this.lblSOL_Jgmt.Name = "lblSOL_Jgmt";
+			this.lblSOL_Jgmt.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Jgmt.TabIndex = 93;
+			this.lblSOL_Jgmt.Text = "Label70";
+			// 
+			// Label_jgmt
+			// 
+			this.Label_jgmt.AutoSize = true;
+			this.Label_jgmt.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_jgmt.ForeColor = System.Drawing.Color.Black;
+			this.Label_jgmt.Location = new System.Drawing.Point(3, 53);
+			this.Label_jgmt.Name = "Label_jgmt";
+			this.Label_jgmt.Size = new System.Drawing.Size(63, 13);
+			this.Label_jgmt.TabIndex = 94;
+			this.Label_jgmt.Text = "Judgment:";
+			// 
+			// lblSOL_Spousal
+			// 
+			this.lblSOL_Spousal.AutoSize = true;
+			this.lblSOL_Spousal.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Spousal.Location = new System.Drawing.Point(152, 40);
+			this.lblSOL_Spousal.Name = "lblSOL_Spousal";
+			this.lblSOL_Spousal.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Spousal.TabIndex = 65;
+			this.lblSOL_Spousal.Text = "Label72";
+			// 
+			// Label_stateJgmt
+			// 
+			this.Label_stateJgmt.AutoSize = true;
+			this.Label_stateJgmt.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_stateJgmt.ForeColor = System.Drawing.Color.Black;
+			this.Label_stateJgmt.Location = new System.Drawing.Point(3, 66);
+			this.Label_stateJgmt.Name = "Label_stateJgmt";
+			this.Label_stateJgmt.Size = new System.Drawing.Size(65, 13);
+			this.Label_stateJgmt.TabIndex = 84;
+			this.Label_stateJgmt.Text = "State Jgmt:";
+			// 
+			// lblSOL_StateJgmt
+			// 
+			this.lblSOL_StateJgmt.AutoSize = true;
+			this.lblSOL_StateJgmt.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_StateJgmt.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_StateJgmt.Location = new System.Drawing.Point(152, 66);
+			this.lblSOL_StateJgmt.Name = "lblSOL_StateJgmt";
+			this.lblSOL_StateJgmt.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_StateJgmt.TabIndex = 83;
+			this.lblSOL_StateJgmt.Text = "Label62";
+			// 
+			// Label_fc
+			// 
+			this.Label_fc.AutoSize = true;
+			this.Label_fc.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_fc.ForeColor = System.Drawing.Color.Black;
+			this.Label_fc.Location = new System.Drawing.Point(3, 268);
+			this.Label_fc.Name = "Label_fc";
+			this.Label_fc.Size = new System.Drawing.Size(94, 13);
+			this.Label_fc.TabIndex = 106;
+			this.Label_fc.Text = "Foreclosure Info:";
+			// 
+			// txt_foreclosure_notes
+			// 
+			this.txt_foreclosure_notes.BackColor = System.Drawing.Color.Snow;
+			this.TableLayoutPanel1.SetColumnSpan(this.txt_foreclosure_notes, 2);
+			this.txt_foreclosure_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_foreclosure_notes.ForeColor = System.Drawing.Color.Purple;
+			this.txt_foreclosure_notes.Location = new System.Drawing.Point(3, 284);
+			this.txt_foreclosure_notes.Multiline = true;
+			this.txt_foreclosure_notes.Name = "txt_foreclosure_notes";
+			this.txt_foreclosure_notes.ReadOnly = true;
+			this.txt_foreclosure_notes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_foreclosure_notes.Size = new System.Drawing.Size(447, 58);
+			this.txt_foreclosure_notes.TabIndex = 69;
+			// 
+			// Label_credclaim
+			// 
+			this.Label_credclaim.AutoSize = true;
+			this.Label_credclaim.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_credclaim.ForeColor = System.Drawing.Color.Black;
+			this.Label_credclaim.Location = new System.Drawing.Point(3, 345);
+			this.Label_credclaim.Name = "Label_credclaim";
+			this.Label_credclaim.Size = new System.Drawing.Size(89, 13);
+			this.Label_credclaim.TabIndex = 57;
+			this.Label_credclaim.Text = "Creditor Claims:";
+			// 
+			// Label_aftacq
+			// 
+			this.Label_aftacq.AutoSize = true;
+			this.Label_aftacq.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_aftacq.ForeColor = System.Drawing.Color.Black;
+			this.Label_aftacq.Location = new System.Drawing.Point(3, 358);
+			this.Label_aftacq.Name = "Label_aftacq";
+			this.Label_aftacq.Size = new System.Drawing.Size(111, 13);
+			this.Label_aftacq.TabIndex = 53;
+			this.Label_aftacq.Text = "After Acquired Lien:";
+			// 
+			// lblSOL_Creditor_Claims
+			// 
+			this.lblSOL_Creditor_Claims.AutoSize = true;
+			this.lblSOL_Creditor_Claims.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_Creditor_Claims.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_Creditor_Claims.Location = new System.Drawing.Point(152, 345);
+			this.lblSOL_Creditor_Claims.Name = "lblSOL_Creditor_Claims";
+			this.lblSOL_Creditor_Claims.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_Creditor_Claims.TabIndex = 58;
+			this.lblSOL_Creditor_Claims.Text = "Label54";
+			// 
+			// lblSOL_AftAcq
+			// 
+			this.lblSOL_AftAcq.AutoSize = true;
+			this.lblSOL_AftAcq.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_AftAcq.ForeColor = System.Drawing.Color.Black;
+			this.lblSOL_AftAcq.Location = new System.Drawing.Point(152, 358);
+			this.lblSOL_AftAcq.Name = "lblSOL_AftAcq";
+			this.lblSOL_AftAcq.Size = new System.Drawing.Size(46, 13);
+			this.lblSOL_AftAcq.TabIndex = 54;
+			this.lblSOL_AftAcq.Text = "Label46";
+			// 
+			// txt_ProbateInfo
+			// 
+			this.txt_ProbateInfo.BackColor = System.Drawing.Color.Snow;
+			this.TableLayoutPanel1.SetColumnSpan(this.txt_ProbateInfo, 2);
+			this.txt_ProbateInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_ProbateInfo.ForeColor = System.Drawing.Color.Purple;
+			this.txt_ProbateInfo.Location = new System.Drawing.Point(3, 407);
+			this.txt_ProbateInfo.Multiline = true;
+			this.txt_ProbateInfo.Name = "txt_ProbateInfo";
+			this.txt_ProbateInfo.ReadOnly = true;
+			this.txt_ProbateInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_ProbateInfo.Size = new System.Drawing.Size(447, 59);
+			this.txt_ProbateInfo.TabIndex = 74;
+			// 
+			// Label_probate
+			// 
+			this.Label_probate.AutoSize = true;
+			this.Label_probate.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label_probate.ForeColor = System.Drawing.Color.Black;
+			this.Label_probate.Location = new System.Drawing.Point(3, 391);
+			this.Label_probate.Name = "Label_probate";
+			this.Label_probate.Size = new System.Drawing.Size(75, 13);
+			this.Label_probate.TabIndex = 107;
+			this.Label_probate.Text = "Probate Info:";
+			// 
+			// TabPg6OtherLogins
+			// 
+			this.TabPg6OtherLogins.BackColor = System.Drawing.Color.GhostWhite;
+			this.TabPg6OtherLogins.Controls.Add(this.DataGridView2);
+			this.TabPg6OtherLogins.Location = new System.Drawing.Point(4, 22);
+			this.TabPg6OtherLogins.Name = "TabPg6OtherLogins";
+			this.TabPg6OtherLogins.Padding = new System.Windows.Forms.Padding(3);
+			this.TabPg6OtherLogins.Size = new System.Drawing.Size(866, 201);
+			this.TabPg6OtherLogins.TabIndex = 6;
+			this.TabPg6OtherLogins.Text = "Other Login Info";
+			// 
+			// DataGridView2
+			// 
+			dataGridViewCellStyle5.BackColor = System.Drawing.Color.Thistle;
+			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Indigo;
+			this.DataGridView2.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+			this.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+			this.DataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+			this.DataGridView2.BackgroundColor = System.Drawing.Color.Linen;
+			this.DataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.DataGridView2.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle6.BackColor = System.Drawing.Color.WhiteSmoke;
+			dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Aquamarine;
+			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+			this.DataGridView2.Cursor = System.Windows.Forms.Cursors.Default;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White;
+			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.DataGridView2.DefaultCellStyle = dataGridViewCellStyle7;
+			this.DataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DataGridView2.GridColor = System.Drawing.Color.MediumOrchid;
+			this.DataGridView2.Location = new System.Drawing.Point(3, 3);
+			this.DataGridView2.Name = "DataGridView2";
+			this.DataGridView2.RowHeadersWidth = 20;
+			dataGridViewCellStyle8.BackColor = System.Drawing.Color.LavenderBlush;
+			dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Indigo;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.MediumPurple;
+			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle8;
+			this.DataGridView2.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.DataGridView2.Size = new System.Drawing.Size(860, 195);
+			this.DataGridView2.TabIndex = 74;
+			// 
+			// TabPg7Taxes
+			// 
+			this.TabPg7Taxes.AutoScroll = true;
+			this.TabPg7Taxes.BackColor = System.Drawing.Color.GhostWhite;
+			this.TabPg7Taxes.Controls.Add(this.lbl_verifDate5);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff5);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verifDate4);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff4);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verifDate3);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff3);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verifDate2);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff2);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verifDate1);
+			this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff1);
+			this.TabPg7Taxes.Controls.Add(this.Label39);
+			this.TabPg7Taxes.Controls.Add(this.txtTaxOffice1);
+			this.TabPg7Taxes.Controls.Add(this.txtTaxOffice2);
+			this.TabPg7Taxes.Controls.Add(this.txtTaxOffice3);
+			this.TabPg7Taxes.Controls.Add(this.txtTaxOffice4);
+			this.TabPg7Taxes.Controls.Add(this.txtTaxOffice5);
+			this.TabPg7Taxes.Controls.Add(this.lblTxAuth1);
+			this.TabPg7Taxes.Controls.Add(this.linkLocTax1);
+			this.TabPg7Taxes.Controls.Add(this.linkLocTax5);
+			this.TabPg7Taxes.Controls.Add(this.lblTxAuth5);
+			this.TabPg7Taxes.Controls.Add(this.lblTxAuth2);
+			this.TabPg7Taxes.Controls.Add(this.linkLocTax2);
+			this.TabPg7Taxes.Controls.Add(this.linkLocTax4);
+			this.TabPg7Taxes.Controls.Add(this.lblTxAuth4);
+			this.TabPg7Taxes.Controls.Add(this.lblTxAuth3);
+			this.TabPg7Taxes.Controls.Add(this.linkLocTax3);
+			this.TabPg7Taxes.Controls.Add(this.pbxExport);
+			this.TabPg7Taxes.Controls.Add(this.pbxCopy5);
+			this.TabPg7Taxes.Controls.Add(this.pbxCopy4);
+			this.TabPg7Taxes.Controls.Add(this.pbxCopy3);
+			this.TabPg7Taxes.Controls.Add(this.pbxCopy2);
+			this.TabPg7Taxes.Controls.Add(this.pbxCopy1);
+			this.TabPg7Taxes.Location = new System.Drawing.Point(4, 22);
+			this.TabPg7Taxes.Name = "TabPg7Taxes";
+			this.TabPg7Taxes.Padding = new System.Windows.Forms.Padding(3);
+			this.TabPg7Taxes.Size = new System.Drawing.Size(866, 201);
+			this.TabPg7Taxes.TabIndex = 7;
+			this.TabPg7Taxes.Text = "Taxes";
+			// 
+			// lbl_verifDate5
+			// 
+			this.lbl_verifDate5.AutoSize = true;
+			this.lbl_verifDate5.Location = new System.Drawing.Point(438, 383);
+			this.lbl_verifDate5.Name = "lbl_verifDate5";
+			this.lbl_verifDate5.Size = new System.Drawing.Size(30, 13);
+			this.lbl_verifDate5.TabIndex = 209;
+			this.lbl_verifDate5.Text = "Date";
+			// 
+			// lbl_verified_taxoff5
+			// 
+			this.lbl_verified_taxoff5.AutoSize = true;
+			this.lbl_verified_taxoff5.Location = new System.Drawing.Point(438, 357);
+			this.lbl_verified_taxoff5.Name = "lbl_verified_taxoff5";
+			this.lbl_verified_taxoff5.Size = new System.Drawing.Size(48, 13);
+			this.lbl_verified_taxoff5.TabIndex = 208;
+			this.lbl_verified_taxoff5.Text = "Verified?";
+			// 
+			// lbl_verifDate4
+			// 
+			this.lbl_verifDate4.AutoSize = true;
+			this.lbl_verifDate4.Location = new System.Drawing.Point(438, 304);
+			this.lbl_verifDate4.Name = "lbl_verifDate4";
+			this.lbl_verifDate4.Size = new System.Drawing.Size(30, 13);
+			this.lbl_verifDate4.TabIndex = 207;
+			this.lbl_verifDate4.Text = "Date";
+			// 
+			// lbl_verified_taxoff4
+			// 
+			this.lbl_verified_taxoff4.AutoSize = true;
+			this.lbl_verified_taxoff4.Location = new System.Drawing.Point(438, 278);
+			this.lbl_verified_taxoff4.Name = "lbl_verified_taxoff4";
+			this.lbl_verified_taxoff4.Size = new System.Drawing.Size(48, 13);
+			this.lbl_verified_taxoff4.TabIndex = 206;
+			this.lbl_verified_taxoff4.Text = "Verified?";
+			// 
+			// lbl_verifDate3
+			// 
+			this.lbl_verifDate3.AutoSize = true;
+			this.lbl_verifDate3.Location = new System.Drawing.Point(438, 229);
+			this.lbl_verifDate3.Name = "lbl_verifDate3";
+			this.lbl_verifDate3.Size = new System.Drawing.Size(30, 13);
+			this.lbl_verifDate3.TabIndex = 205;
+			this.lbl_verifDate3.Text = "Date";
+			// 
+			// lbl_verified_taxoff3
+			// 
+			this.lbl_verified_taxoff3.AutoSize = true;
+			this.lbl_verified_taxoff3.Location = new System.Drawing.Point(438, 203);
+			this.lbl_verified_taxoff3.Name = "lbl_verified_taxoff3";
+			this.lbl_verified_taxoff3.Size = new System.Drawing.Size(48, 13);
+			this.lbl_verified_taxoff3.TabIndex = 204;
+			this.lbl_verified_taxoff3.Text = "Verified?";
+			// 
+			// lbl_verifDate2
+			// 
+			this.lbl_verifDate2.AutoSize = true;
+			this.lbl_verifDate2.Location = new System.Drawing.Point(438, 146);
+			this.lbl_verifDate2.Name = "lbl_verifDate2";
+			this.lbl_verifDate2.Size = new System.Drawing.Size(30, 13);
+			this.lbl_verifDate2.TabIndex = 203;
+			this.lbl_verifDate2.Text = "Date";
+			// 
+			// lbl_verified_taxoff2
+			// 
+			this.lbl_verified_taxoff2.AutoSize = true;
+			this.lbl_verified_taxoff2.Location = new System.Drawing.Point(438, 120);
+			this.lbl_verified_taxoff2.Name = "lbl_verified_taxoff2";
+			this.lbl_verified_taxoff2.Size = new System.Drawing.Size(48, 13);
+			this.lbl_verified_taxoff2.TabIndex = 202;
+			this.lbl_verified_taxoff2.Text = "Verified?";
+			// 
+			// lbl_verifDate1
+			// 
+			this.lbl_verifDate1.AutoSize = true;
+			this.lbl_verifDate1.Location = new System.Drawing.Point(438, 64);
+			this.lbl_verifDate1.Name = "lbl_verifDate1";
+			this.lbl_verifDate1.Size = new System.Drawing.Size(30, 13);
+			this.lbl_verifDate1.TabIndex = 201;
+			this.lbl_verifDate1.Text = "Date";
+			// 
+			// lbl_verified_taxoff1
+			// 
+			this.lbl_verified_taxoff1.AutoSize = true;
+			this.lbl_verified_taxoff1.Location = new System.Drawing.Point(438, 38);
+			this.lbl_verified_taxoff1.Name = "lbl_verified_taxoff1";
+			this.lbl_verified_taxoff1.Size = new System.Drawing.Size(48, 13);
+			this.lbl_verified_taxoff1.TabIndex = 200;
+			this.lbl_verified_taxoff1.Text = "Verified?";
+			// 
+			// Label39
+			// 
+			this.Label39.AutoSize = true;
+			this.Label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label39.Location = new System.Drawing.Point(573, 27);
+			this.Label39.Name = "Label39";
+			this.Label39.Size = new System.Drawing.Size(158, 18);
+			this.Label39.TabIndex = 199;
+			this.Label39.Text = "Export Taxes To Word";
+			// 
+			// txtTaxOffice1
+			// 
+			this.txtTaxOffice1.BackColor = System.Drawing.Color.MintCream;
+			this.txtTaxOffice1.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTaxOffice1.ForeColor = System.Drawing.Color.Purple;
+			this.txtTaxOffice1.Location = new System.Drawing.Point(49, 28);
+			this.txtTaxOffice1.Multiline = true;
+			this.txtTaxOffice1.Name = "txtTaxOffice1";
+			this.txtTaxOffice1.ReadOnly = true;
+			this.txtTaxOffice1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtTaxOffice1.Size = new System.Drawing.Size(373, 60);
+			this.txtTaxOffice1.TabIndex = 178;
+			this.txtTaxOffice1.Text = "no data";
+			// 
+			// txtTaxOffice2
+			// 
+			this.txtTaxOffice2.BackColor = System.Drawing.Color.MintCream;
+			this.txtTaxOffice2.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTaxOffice2.ForeColor = System.Drawing.Color.Purple;
+			this.txtTaxOffice2.Location = new System.Drawing.Point(49, 107);
+			this.txtTaxOffice2.Multiline = true;
+			this.txtTaxOffice2.Name = "txtTaxOffice2";
+			this.txtTaxOffice2.ReadOnly = true;
+			this.txtTaxOffice2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtTaxOffice2.Size = new System.Drawing.Size(373, 60);
+			this.txtTaxOffice2.TabIndex = 179;
+			this.txtTaxOffice2.Text = "no data";
+			// 
+			// txtTaxOffice3
+			// 
+			this.txtTaxOffice3.BackColor = System.Drawing.Color.MintCream;
+			this.txtTaxOffice3.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTaxOffice3.ForeColor = System.Drawing.Color.Purple;
+			this.txtTaxOffice3.Location = new System.Drawing.Point(49, 190);
+			this.txtTaxOffice3.Multiline = true;
+			this.txtTaxOffice3.Name = "txtTaxOffice3";
+			this.txtTaxOffice3.ReadOnly = true;
+			this.txtTaxOffice3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtTaxOffice3.Size = new System.Drawing.Size(373, 60);
+			this.txtTaxOffice3.TabIndex = 180;
+			this.txtTaxOffice3.Text = "no data";
+			// 
+			// txtTaxOffice4
+			// 
+			this.txtTaxOffice4.BackColor = System.Drawing.Color.MintCream;
+			this.txtTaxOffice4.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTaxOffice4.ForeColor = System.Drawing.Color.Purple;
+			this.txtTaxOffice4.Location = new System.Drawing.Point(49, 268);
+			this.txtTaxOffice4.Multiline = true;
+			this.txtTaxOffice4.Name = "txtTaxOffice4";
+			this.txtTaxOffice4.ReadOnly = true;
+			this.txtTaxOffice4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtTaxOffice4.Size = new System.Drawing.Size(373, 60);
+			this.txtTaxOffice4.TabIndex = 181;
+			this.txtTaxOffice4.Text = "no data";
+			// 
+			// txtTaxOffice5
+			// 
+			this.txtTaxOffice5.BackColor = System.Drawing.Color.MintCream;
+			this.txtTaxOffice5.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTaxOffice5.ForeColor = System.Drawing.Color.Purple;
+			this.txtTaxOffice5.Location = new System.Drawing.Point(48, 347);
+			this.txtTaxOffice5.Multiline = true;
+			this.txtTaxOffice5.Name = "txtTaxOffice5";
+			this.txtTaxOffice5.ReadOnly = true;
+			this.txtTaxOffice5.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtTaxOffice5.Size = new System.Drawing.Size(373, 60);
+			this.txtTaxOffice5.TabIndex = 182;
+			this.txtTaxOffice5.Text = "no data";
+			// 
+			// lblTxAuth1
+			// 
+			this.lblTxAuth1.AutoSize = true;
+			this.lblTxAuth1.Location = new System.Drawing.Point(51, 12);
+			this.lblTxAuth1.Name = "lblTxAuth1";
+			this.lblTxAuth1.Size = new System.Drawing.Size(62, 13);
+			this.lblTxAuth1.TabIndex = 183;
+			this.lblTxAuth1.Text = "Tax Office1";
+			// 
+			// linkLocTax1
+			// 
+			this.linkLocTax1.ActiveLinkColor = System.Drawing.Color.MediumOrchid;
+			this.linkLocTax1.AutoSize = true;
+			this.linkLocTax1.LinkColor = System.Drawing.Color.Purple;
+			this.linkLocTax1.Location = new System.Drawing.Point(345, 12);
+			this.linkLocTax1.Name = "linkLocTax1";
+			this.linkLocTax1.Size = new System.Drawing.Size(57, 13);
+			this.linkLocTax1.TabIndex = 188;
+			this.linkLocTax1.TabStop = true;
+			this.linkLocTax1.Text = "Tax Web1";
+			this.linkLocTax1.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.linkLocTax1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelLocTx1_LinkClicked);
+			// 
+			// linkLocTax5
+			// 
+			this.linkLocTax5.ActiveLinkColor = System.Drawing.Color.MediumOrchid;
+			this.linkLocTax5.AutoSize = true;
+			this.linkLocTax5.LinkColor = System.Drawing.Color.Purple;
+			this.linkLocTax5.Location = new System.Drawing.Point(344, 331);
+			this.linkLocTax5.Name = "linkLocTax5";
+			this.linkLocTax5.Size = new System.Drawing.Size(57, 13);
+			this.linkLocTax5.TabIndex = 192;
+			this.linkLocTax5.TabStop = true;
+			this.linkLocTax5.Text = "Tax Web5";
+			this.linkLocTax5.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.linkLocTax5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelLocTx5_LinkClicked);
+			// 
+			// lblTxAuth5
+			// 
+			this.lblTxAuth5.AutoSize = true;
+			this.lblTxAuth5.Location = new System.Drawing.Point(50, 331);
+			this.lblTxAuth5.Name = "lblTxAuth5";
+			this.lblTxAuth5.Size = new System.Drawing.Size(62, 13);
+			this.lblTxAuth5.TabIndex = 187;
+			this.lblTxAuth5.Text = "Tax Office5";
+			// 
+			// lblTxAuth2
+			// 
+			this.lblTxAuth2.AutoSize = true;
+			this.lblTxAuth2.Location = new System.Drawing.Point(51, 91);
+			this.lblTxAuth2.Name = "lblTxAuth2";
+			this.lblTxAuth2.Size = new System.Drawing.Size(62, 13);
+			this.lblTxAuth2.TabIndex = 184;
+			this.lblTxAuth2.Text = "Tax Office2";
+			// 
+			// linkLocTax2
+			// 
+			this.linkLocTax2.ActiveLinkColor = System.Drawing.Color.MediumOrchid;
+			this.linkLocTax2.AutoSize = true;
+			this.linkLocTax2.LinkColor = System.Drawing.Color.Purple;
+			this.linkLocTax2.Location = new System.Drawing.Point(345, 91);
+			this.linkLocTax2.Name = "linkLocTax2";
+			this.linkLocTax2.Size = new System.Drawing.Size(57, 13);
+			this.linkLocTax2.TabIndex = 189;
+			this.linkLocTax2.TabStop = true;
+			this.linkLocTax2.Text = "Tax Web2";
+			this.linkLocTax2.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.linkLocTax2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelLocTx2_LinkClicked);
+			// 
+			// linkLocTax4
+			// 
+			this.linkLocTax4.ActiveLinkColor = System.Drawing.Color.MediumOrchid;
+			this.linkLocTax4.AutoSize = true;
+			this.linkLocTax4.LinkColor = System.Drawing.Color.Purple;
+			this.linkLocTax4.Location = new System.Drawing.Point(345, 252);
+			this.linkLocTax4.Name = "linkLocTax4";
+			this.linkLocTax4.Size = new System.Drawing.Size(57, 13);
+			this.linkLocTax4.TabIndex = 191;
+			this.linkLocTax4.TabStop = true;
+			this.linkLocTax4.Text = "Tax Web4";
+			this.linkLocTax4.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.linkLocTax4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelLocTx4_LinkClicked);
+			// 
+			// lblTxAuth4
+			// 
+			this.lblTxAuth4.AutoSize = true;
+			this.lblTxAuth4.Location = new System.Drawing.Point(51, 252);
+			this.lblTxAuth4.Name = "lblTxAuth4";
+			this.lblTxAuth4.Size = new System.Drawing.Size(62, 13);
+			this.lblTxAuth4.TabIndex = 186;
+			this.lblTxAuth4.Text = "Tax Office4";
+			// 
+			// lblTxAuth3
+			// 
+			this.lblTxAuth3.AutoSize = true;
+			this.lblTxAuth3.Location = new System.Drawing.Point(51, 174);
+			this.lblTxAuth3.Name = "lblTxAuth3";
+			this.lblTxAuth3.Size = new System.Drawing.Size(62, 13);
+			this.lblTxAuth3.TabIndex = 185;
+			this.lblTxAuth3.Text = "Tax Office3";
+			// 
+			// linkLocTax3
+			// 
+			this.linkLocTax3.ActiveLinkColor = System.Drawing.Color.MediumOrchid;
+			this.linkLocTax3.AutoSize = true;
+			this.linkLocTax3.LinkColor = System.Drawing.Color.Purple;
+			this.linkLocTax3.Location = new System.Drawing.Point(345, 174);
+			this.linkLocTax3.Name = "linkLocTax3";
+			this.linkLocTax3.Size = new System.Drawing.Size(57, 13);
+			this.linkLocTax3.TabIndex = 190;
+			this.linkLocTax3.TabStop = true;
+			this.linkLocTax3.Text = "Tax Web3";
+			this.linkLocTax3.VisitedLinkColor = System.Drawing.Color.DarkSlateBlue;
+			this.linkLocTax3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelLocTx3_LinkClicked);
+			// 
+			// pbxExport
+			// 
+			this.pbxExport.Image = global::WindowsApplication1.Resources.doc_icon;
+			this.pbxExport.Location = new System.Drawing.Point(542, 22);
+			this.pbxExport.Name = "pbxExport";
+			this.pbxExport.Size = new System.Drawing.Size(23, 25);
+			this.pbxExport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxExport.TabIndex = 198;
+			this.pbxExport.TabStop = false;
+			this.pbxExport.Tag = "clipboard";
+			this.pbxExport.Click += new System.EventHandler(this.pbxExport_Click);
+			// 
+			// pbxCopy5
+			// 
+			this.pbxCopy5.Image = global::WindowsApplication1.Resources.clipboard;
+			this.pbxCopy5.Location = new System.Drawing.Point(21, 347);
+			this.pbxCopy5.Name = "pbxCopy5";
+			this.pbxCopy5.Size = new System.Drawing.Size(21, 23);
+			this.pbxCopy5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxCopy5.TabIndex = 197;
+			this.pbxCopy5.TabStop = false;
+			this.pbxCopy5.Tag = "clipboard";
+			this.pbxCopy5.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pboxCopy5_MouseClick);
+			// 
+			// pbxCopy4
+			// 
+			this.pbxCopy4.Image = global::WindowsApplication1.Resources.clipboard;
+			this.pbxCopy4.Location = new System.Drawing.Point(22, 268);
+			this.pbxCopy4.Name = "pbxCopy4";
+			this.pbxCopy4.Size = new System.Drawing.Size(21, 23);
+			this.pbxCopy4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxCopy4.TabIndex = 196;
+			this.pbxCopy4.TabStop = false;
+			this.pbxCopy4.Tag = "clipboard";
+			this.pbxCopy4.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pboxCopy4_MouseClick);
+			// 
+			// pbxCopy3
+			// 
+			this.pbxCopy3.Image = global::WindowsApplication1.Resources.clipboard;
+			this.pbxCopy3.Location = new System.Drawing.Point(22, 190);
+			this.pbxCopy3.Name = "pbxCopy3";
+			this.pbxCopy3.Size = new System.Drawing.Size(21, 23);
+			this.pbxCopy3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxCopy3.TabIndex = 195;
+			this.pbxCopy3.TabStop = false;
+			this.pbxCopy3.Tag = "clipboard";
+			this.pbxCopy3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pboxCopy3_MouseClick);
+			// 
+			// pbxCopy2
+			// 
+			this.pbxCopy2.Image = global::WindowsApplication1.Resources.clipboard;
+			this.pbxCopy2.Location = new System.Drawing.Point(22, 107);
+			this.pbxCopy2.Name = "pbxCopy2";
+			this.pbxCopy2.Size = new System.Drawing.Size(21, 23);
+			this.pbxCopy2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxCopy2.TabIndex = 194;
+			this.pbxCopy2.TabStop = false;
+			this.pbxCopy2.Tag = "clipboard";
+			this.pbxCopy2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbxCopy2_Mouseclick);
+			// 
+			// pbxCopy1
+			// 
+			this.pbxCopy1.Image = global::WindowsApplication1.Resources.clipboard;
+			this.pbxCopy1.Location = new System.Drawing.Point(22, 28);
+			this.pbxCopy1.Name = "pbxCopy1";
+			this.pbxCopy1.Size = new System.Drawing.Size(21, 23);
+			this.pbxCopy1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbxCopy1.TabIndex = 193;
+			this.pbxCopy1.TabStop = false;
+			this.pbxCopy1.Tag = "clipboard";
+			this.pbxCopy1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pboxCopy1_MouseClick);
+			// 
+			// TabPg1Statistics
+			// 
+			this.TabPg1Statistics.AutoScroll = true;
+			this.TabPg1Statistics.BackColor = System.Drawing.Color.AliceBlue;
+			this.TabPg1Statistics.Controls.Add(this.GroupBox1);
+			this.TabPg1Statistics.Controls.Add(this.Label121);
+			this.TabPg1Statistics.Controls.Add(this.Label118);
+			this.TabPg1Statistics.Controls.Add(this.Label21);
+			this.TabPg1Statistics.Controls.Add(this.cbox_StatsTaxCounties);
+			this.TabPg1Statistics.Controls.Add(this.txt_StatsTaxOffices);
+			this.TabPg1Statistics.Controls.Add(this.lbl_TaxOnlineStats);
+			this.TabPg1Statistics.Controls.Add(this.Label14);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat6);
+			this.TabPg1Statistics.Controls.Add(this.Label37);
+			this.TabPg1Statistics.Controls.Add(this.cbox_StatsStates);
+			this.TabPg1Statistics.Controls.Add(this.Label25);
+			this.TabPg1Statistics.Controls.Add(this.Label23);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStats);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat5);
+			this.TabPg1Statistics.Controls.Add(this.txt_StatsCounties);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat4);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat3);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat2);
+			this.TabPg1Statistics.Controls.Add(this.lbl_OrbStat1);
+			this.TabPg1Statistics.Controls.Add(this.lbl_CoOnlineStats);
+			this.TabPg1Statistics.Controls.Add(this.Label120);
+			this.TabPg1Statistics.Controls.Add(this.Label119);
+			this.TabPg1Statistics.Controls.Add(this.Label116);
+			this.TabPg1Statistics.Controls.Add(this.Label115);
+			this.TabPg1Statistics.Location = new System.Drawing.Point(4, 22);
+			this.TabPg1Statistics.Name = "TabPg1Statistics";
+			this.TabPg1Statistics.Padding = new System.Windows.Forms.Padding(3);
+			this.TabPg1Statistics.Size = new System.Drawing.Size(866, 201);
+			this.TabPg1Statistics.TabIndex = 9;
+			this.TabPg1Statistics.Text = "Statistics";
+			// 
+			// GroupBox1
+			// 
+			this.GroupBox1.Controls.Add(this.lbl_vstats_YTD);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Jan);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Dec);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Feb);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Nov);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Mar);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Oct);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Apr);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Sep);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_May);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Aug);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Jun);
+			this.GroupBox1.Controls.Add(this.lbl_vstats_Jul);
+			this.GroupBox1.Location = new System.Drawing.Point(15, 19);
+			this.GroupBox1.Name = "GroupBox1";
+			this.GroupBox1.Size = new System.Drawing.Size(237, 161);
+			this.GroupBox1.TabIndex = 36;
+			this.GroupBox1.TabStop = false;
+			this.GroupBox1.Text = "Online Searches Completed - 2008";
+			// 
+			// lbl_vstats_YTD
+			// 
+			this.lbl_vstats_YTD.AutoSize = true;
+			this.lbl_vstats_YTD.Location = new System.Drawing.Point(23, 22);
+			this.lbl_vstats_YTD.Name = "lbl_vstats_YTD";
+			this.lbl_vstats_YTD.Size = new System.Drawing.Size(83, 13);
+			this.lbl_vstats_YTD.TabIndex = 36;
+			this.lbl_vstats_YTD.Text = "YTD #Inhouse: ";
+			// 
+			// lbl_vstats_Jan
+			// 
+			this.lbl_vstats_Jan.AutoSize = true;
+			this.lbl_vstats_Jan.Location = new System.Drawing.Point(24, 46);
+			this.lbl_vstats_Jan.Name = "lbl_vstats_Jan";
+			this.lbl_vstats_Jan.Size = new System.Drawing.Size(30, 13);
+			this.lbl_vstats_Jan.TabIndex = 24;
+			this.lbl_vstats_Jan.Text = "Jan: ";
+			// 
+			// lbl_vstats_Dec
+			// 
+			this.lbl_vstats_Dec.AutoSize = true;
+			this.lbl_vstats_Dec.Location = new System.Drawing.Point(125, 136);
+			this.lbl_vstats_Dec.Name = "lbl_vstats_Dec";
+			this.lbl_vstats_Dec.Size = new System.Drawing.Size(33, 13);
+			this.lbl_vstats_Dec.TabIndex = 35;
+			this.lbl_vstats_Dec.Text = "Dec: ";
+			// 
+			// lbl_vstats_Feb
+			// 
+			this.lbl_vstats_Feb.AutoSize = true;
+			this.lbl_vstats_Feb.Location = new System.Drawing.Point(24, 64);
+			this.lbl_vstats_Feb.Name = "lbl_vstats_Feb";
+			this.lbl_vstats_Feb.Size = new System.Drawing.Size(31, 13);
+			this.lbl_vstats_Feb.TabIndex = 25;
+			this.lbl_vstats_Feb.Text = "Feb: ";
+			// 
+			// lbl_vstats_Nov
+			// 
+			this.lbl_vstats_Nov.AutoSize = true;
+			this.lbl_vstats_Nov.Location = new System.Drawing.Point(125, 118);
+			this.lbl_vstats_Nov.Name = "lbl_vstats_Nov";
+			this.lbl_vstats_Nov.Size = new System.Drawing.Size(33, 13);
+			this.lbl_vstats_Nov.TabIndex = 34;
+			this.lbl_vstats_Nov.Text = "Nov: ";
+			// 
+			// lbl_vstats_Mar
+			// 
+			this.lbl_vstats_Mar.AutoSize = true;
+			this.lbl_vstats_Mar.Location = new System.Drawing.Point(24, 82);
+			this.lbl_vstats_Mar.Name = "lbl_vstats_Mar";
+			this.lbl_vstats_Mar.Size = new System.Drawing.Size(31, 13);
+			this.lbl_vstats_Mar.TabIndex = 26;
+			this.lbl_vstats_Mar.Text = "Mar: ";
+			// 
+			// lbl_vstats_Oct
+			// 
+			this.lbl_vstats_Oct.AutoSize = true;
+			this.lbl_vstats_Oct.Location = new System.Drawing.Point(125, 100);
+			this.lbl_vstats_Oct.Name = "lbl_vstats_Oct";
+			this.lbl_vstats_Oct.Size = new System.Drawing.Size(30, 13);
+			this.lbl_vstats_Oct.TabIndex = 33;
+			this.lbl_vstats_Oct.Text = "Oct: ";
+			// 
+			// lbl_vstats_Apr
+			// 
+			this.lbl_vstats_Apr.AutoSize = true;
+			this.lbl_vstats_Apr.Location = new System.Drawing.Point(24, 100);
+			this.lbl_vstats_Apr.Name = "lbl_vstats_Apr";
+			this.lbl_vstats_Apr.Size = new System.Drawing.Size(29, 13);
+			this.lbl_vstats_Apr.TabIndex = 27;
+			this.lbl_vstats_Apr.Text = "Apr: ";
+			// 
+			// lbl_vstats_Sep
+			// 
+			this.lbl_vstats_Sep.AutoSize = true;
+			this.lbl_vstats_Sep.Location = new System.Drawing.Point(125, 82);
+			this.lbl_vstats_Sep.Name = "lbl_vstats_Sep";
+			this.lbl_vstats_Sep.Size = new System.Drawing.Size(32, 13);
+			this.lbl_vstats_Sep.TabIndex = 32;
+			this.lbl_vstats_Sep.Text = "Sep: ";
+			// 
+			// lbl_vstats_May
+			// 
+			this.lbl_vstats_May.AutoSize = true;
+			this.lbl_vstats_May.Location = new System.Drawing.Point(24, 118);
+			this.lbl_vstats_May.Name = "lbl_vstats_May";
+			this.lbl_vstats_May.Size = new System.Drawing.Size(33, 13);
+			this.lbl_vstats_May.TabIndex = 28;
+			this.lbl_vstats_May.Text = "May: ";
+			// 
+			// lbl_vstats_Aug
+			// 
+			this.lbl_vstats_Aug.AutoSize = true;
+			this.lbl_vstats_Aug.Location = new System.Drawing.Point(125, 64);
+			this.lbl_vstats_Aug.Name = "lbl_vstats_Aug";
+			this.lbl_vstats_Aug.Size = new System.Drawing.Size(32, 13);
+			this.lbl_vstats_Aug.TabIndex = 31;
+			this.lbl_vstats_Aug.Text = "Aug: ";
+			// 
+			// lbl_vstats_Jun
+			// 
+			this.lbl_vstats_Jun.AutoSize = true;
+			this.lbl_vstats_Jun.Location = new System.Drawing.Point(24, 136);
+			this.lbl_vstats_Jun.Name = "lbl_vstats_Jun";
+			this.lbl_vstats_Jun.Size = new System.Drawing.Size(30, 13);
+			this.lbl_vstats_Jun.TabIndex = 29;
+			this.lbl_vstats_Jun.Text = "Jun: ";
+			// 
+			// lbl_vstats_Jul
+			// 
+			this.lbl_vstats_Jul.AutoSize = true;
+			this.lbl_vstats_Jul.Location = new System.Drawing.Point(125, 46);
+			this.lbl_vstats_Jul.Name = "lbl_vstats_Jul";
+			this.lbl_vstats_Jul.Size = new System.Drawing.Size(26, 13);
+			this.lbl_vstats_Jul.TabIndex = 30;
+			this.lbl_vstats_Jul.Text = "Jul: ";
+			// 
+			// Label121
+			// 
+			this.Label121.AutoSize = true;
+			this.Label121.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label121.Location = new System.Drawing.Point(578, 183);
+			this.Label121.Name = "Label121";
+			this.Label121.Size = new System.Drawing.Size(122, 17);
+			this.Label121.TabIndex = 23;
+			this.Label121.Text = "Tax Offices By State";
+			// 
+			// Label118
+			// 
+			this.Label118.AutoSize = true;
+			this.Label118.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label118.Location = new System.Drawing.Point(578, 8);
+			this.Label118.Name = "Label118";
+			this.Label118.Size = new System.Drawing.Size(198, 17);
+			this.Label118.TabIndex = 22;
+			this.Label118.Text = "InHouse Coverage Area By State";
+			// 
+			// Label21
+			// 
+			this.Label21.AutoSize = true;
+			this.Label21.Location = new System.Drawing.Point(576, 200);
+			this.Label21.Name = "Label21";
+			this.Label21.Size = new System.Drawing.Size(43, 13);
+			this.Label21.TabIndex = 21;
+			this.Label21.Text = "County:";
+			// 
+			// cbox_StatsTaxCounties
+			// 
+			this.cbox_StatsTaxCounties.FormattingEnabled = true;
+			this.cbox_StatsTaxCounties.Location = new System.Drawing.Point(579, 216);
+			this.cbox_StatsTaxCounties.Name = "cbox_StatsTaxCounties";
+			this.cbox_StatsTaxCounties.Size = new System.Drawing.Size(60, 21);
+			this.cbox_StatsTaxCounties.TabIndex = 20;
+			this.cbox_StatsTaxCounties.SelectedIndexChanged += new System.EventHandler(this.cbox_StatsTaxCounties_SelectedIndexChanged);
+			// 
+			// txt_StatsTaxOffices
+			// 
+			this.txt_StatsTaxOffices.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_StatsTaxOffices.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.txt_StatsTaxOffices.Font = new System.Drawing.Font("Calibri", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_StatsTaxOffices.ForeColor = System.Drawing.Color.DarkBlue;
+			this.txt_StatsTaxOffices.Location = new System.Drawing.Point(581, 256);
+			this.txt_StatsTaxOffices.Multiline = true;
+			this.txt_StatsTaxOffices.Name = "txt_StatsTaxOffices";
+			this.txt_StatsTaxOffices.ReadOnly = true;
+			this.txt_StatsTaxOffices.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_StatsTaxOffices.Size = new System.Drawing.Size(259, 92);
+			this.txt_StatsTaxOffices.TabIndex = 19;
+			// 
+			// lbl_TaxOnlineStats
+			// 
+			this.lbl_TaxOnlineStats.AutoSize = true;
+			this.lbl_TaxOnlineStats.Location = new System.Drawing.Point(578, 240);
+			this.lbl_TaxOnlineStats.Name = "lbl_TaxOnlineStats";
+			this.lbl_TaxOnlineStats.Size = new System.Drawing.Size(64, 13);
+			this.lbl_TaxOnlineStats.TabIndex = 18;
+			this.lbl_TaxOnlineStats.Text = "Tax Offices:";
+			// 
+			// Label14
+			// 
+			this.Label14.AutoSize = true;
+			this.Label14.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label14.Location = new System.Drawing.Point(298, 113);
+			this.Label14.Name = "Label14";
+			this.Label14.Size = new System.Drawing.Size(179, 14);
+			this.Label14.TabIndex = 17;
+			this.Label14.Text = "Total# Records in Tax Database:";
+			// 
+			// lbl_OrbStat6
+			// 
+			this.lbl_OrbStat6.AutoSize = true;
+			this.lbl_OrbStat6.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat6.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat6.Location = new System.Drawing.Point(505, 113);
+			this.lbl_OrbStat6.Name = "lbl_OrbStat6";
+			this.lbl_OrbStat6.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat6.TabIndex = 16;
+			this.lbl_OrbStat6.Text = "#";
+			// 
+			// Label37
+			// 
+			this.Label37.AutoSize = true;
+			this.Label37.Location = new System.Drawing.Point(578, 25);
+			this.Label37.Name = "Label37";
+			this.Label37.Size = new System.Drawing.Size(35, 13);
+			this.Label37.TabIndex = 15;
+			this.Label37.Text = "State:";
+			// 
+			// cbox_StatsStates
+			// 
+			this.cbox_StatsStates.FormattingEnabled = true;
+			this.cbox_StatsStates.Items.AddRange(new object[] {
+            "ALL",
+            "",
+            "AK",
+            "AL",
+            "AR",
+            "AZ",
+            "CA",
+            "CO",
+            "CT",
+            "DC",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "IA",
+            "ID",
+            "IL",
+            "IN",
+            "KS",
+            "KY",
+            "LA",
+            "MA",
+            "MD",
+            "ME",
+            "MI",
+            "MN",
+            "MO",
+            "MS",
+            "MT",
+            "NC",
+            "ND",
+            "NE",
+            "NH",
+            "NJ",
+            "NM",
+            "NV",
+            "NY",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VA",
+            "VT",
+            "WA",
+            "WI",
+            "WV",
+            "WY"});
+			this.cbox_StatsStates.Location = new System.Drawing.Point(581, 41);
+			this.cbox_StatsStates.Name = "cbox_StatsStates";
+			this.cbox_StatsStates.Size = new System.Drawing.Size(60, 21);
+			this.cbox_StatsStates.TabIndex = 14;
+			this.cbox_StatsStates.TextChanged += new System.EventHandler(this.cbox_StatsStates_SelectedIndexChanged);
+			// 
+			// Label25
+			// 
+			this.Label25.AutoSize = true;
+			this.Label25.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label25.Location = new System.Drawing.Point(298, 157);
+			this.Label25.Name = "Label25";
+			this.Label25.Size = new System.Drawing.Size(169, 14);
+			this.Label25.TabIndex = 13;
+			this.Label25.Text = "Total# Tax Offices Researched:";
+			// 
+			// Label23
+			// 
+			this.Label23.AutoSize = true;
+			this.Label23.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label23.Location = new System.Drawing.Point(298, 25);
+			this.Label23.Name = "Label23";
+			this.Label23.Size = new System.Drawing.Size(181, 14);
+			this.Label23.TabIndex = 12;
+			this.Label23.Text = "Total# Records in Orb Database:";
+			// 
+			// lbl_OrbStats
+			// 
+			this.lbl_OrbStats.AutoSize = true;
+			this.lbl_OrbStats.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStats.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStats.Location = new System.Drawing.Point(505, 25);
+			this.lbl_OrbStats.Name = "lbl_OrbStats";
+			this.lbl_OrbStats.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStats.TabIndex = 11;
+			this.lbl_OrbStats.Text = "#";
+			// 
+			// lbl_OrbStat5
+			// 
+			this.lbl_OrbStat5.AutoSize = true;
+			this.lbl_OrbStat5.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat5.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat5.Location = new System.Drawing.Point(505, 157);
+			this.lbl_OrbStat5.Name = "lbl_OrbStat5";
+			this.lbl_OrbStat5.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat5.TabIndex = 10;
+			this.lbl_OrbStat5.Text = "#";
+			// 
+			// txt_StatsCounties
+			// 
+			this.txt_StatsCounties.BackColor = System.Drawing.Color.GhostWhite;
+			this.txt_StatsCounties.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.txt_StatsCounties.Font = new System.Drawing.Font("Calibri", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_StatsCounties.ForeColor = System.Drawing.Color.DarkBlue;
+			this.txt_StatsCounties.Location = new System.Drawing.Point(581, 81);
+			this.txt_StatsCounties.Multiline = true;
+			this.txt_StatsCounties.Name = "txt_StatsCounties";
+			this.txt_StatsCounties.ReadOnly = true;
+			this.txt_StatsCounties.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_StatsCounties.Size = new System.Drawing.Size(182, 92);
+			this.txt_StatsCounties.TabIndex = 9;
+			// 
+			// lbl_OrbStat4
+			// 
+			this.lbl_OrbStat4.AutoSize = true;
+			this.lbl_OrbStat4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat4.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat4.Location = new System.Drawing.Point(505, 135);
+			this.lbl_OrbStat4.Name = "lbl_OrbStat4";
+			this.lbl_OrbStat4.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat4.TabIndex = 8;
+			this.lbl_OrbStat4.Text = "#";
+			// 
+			// lbl_OrbStat3
+			// 
+			this.lbl_OrbStat3.AutoSize = true;
+			this.lbl_OrbStat3.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat3.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat3.Location = new System.Drawing.Point(505, 91);
+			this.lbl_OrbStat3.Name = "lbl_OrbStat3";
+			this.lbl_OrbStat3.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat3.TabIndex = 7;
+			this.lbl_OrbStat3.Text = "#";
+			// 
+			// lbl_OrbStat2
+			// 
+			this.lbl_OrbStat2.AutoSize = true;
+			this.lbl_OrbStat2.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat2.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat2.Location = new System.Drawing.Point(505, 69);
+			this.lbl_OrbStat2.Name = "lbl_OrbStat2";
+			this.lbl_OrbStat2.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat2.TabIndex = 6;
+			this.lbl_OrbStat2.Text = "#";
+			// 
+			// lbl_OrbStat1
+			// 
+			this.lbl_OrbStat1.AutoSize = true;
+			this.lbl_OrbStat1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_OrbStat1.ForeColor = System.Drawing.Color.DarkBlue;
+			this.lbl_OrbStat1.Location = new System.Drawing.Point(505, 47);
+			this.lbl_OrbStat1.Name = "lbl_OrbStat1";
+			this.lbl_OrbStat1.Size = new System.Drawing.Size(13, 14);
+			this.lbl_OrbStat1.TabIndex = 5;
+			this.lbl_OrbStat1.Text = "#";
+			// 
+			// lbl_CoOnlineStats
+			// 
+			this.lbl_CoOnlineStats.AutoSize = true;
+			this.lbl_CoOnlineStats.Location = new System.Drawing.Point(578, 65);
+			this.lbl_CoOnlineStats.Name = "lbl_CoOnlineStats";
+			this.lbl_CoOnlineStats.Size = new System.Drawing.Size(84, 13);
+			this.lbl_CoOnlineStats.TabIndex = 4;
+			this.lbl_CoOnlineStats.Text = "Online Counties:";
+			// 
+			// Label120
+			// 
+			this.Label120.AutoSize = true;
+			this.Label120.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label120.Location = new System.Drawing.Point(298, 91);
+			this.Label120.Name = "Label120";
+			this.Label120.Size = new System.Drawing.Size(120, 14);
+			this.Label120.TabIndex = 3;
+			this.Label120.Text = "Total# Courts Online:";
+			// 
+			// Label119
+			// 
+			this.Label119.AutoSize = true;
+			this.Label119.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label119.Location = new System.Drawing.Point(298, 69);
+			this.Label119.Name = "Label119";
+			this.Label119.Size = new System.Drawing.Size(194, 14);
+			this.Label119.TabIndex = 2;
+			this.Label119.Text = "Total# InHouse Coverage Counties:";
+			// 
+			// Label116
+			// 
+			this.Label116.AutoSize = true;
+			this.Label116.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label116.Location = new System.Drawing.Point(298, 135);
+			this.Label116.Name = "Label116";
+			this.Label116.Size = new System.Drawing.Size(142, 14);
+			this.Label116.TabIndex = 1;
+			this.Label116.Text = "Total# Tax Offices Online:";
+			// 
+			// Label115
+			// 
+			this.Label115.AutoSize = true;
+			this.Label115.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label115.Location = new System.Drawing.Point(298, 47);
+			this.Label115.Name = "Label115";
+			this.Label115.Size = new System.Drawing.Size(165, 14);
+			this.Label115.TabIndex = 0;
+			this.Label115.Text = "Total# of Land Indexs Online:";
+			// 
+			// TabPg2Misc
+			// 
+			this.TabPg2Misc.AutoScroll = true;
+			this.TabPg2Misc.BackColor = System.Drawing.Color.GhostWhite;
+			this.TabPg2Misc.Controls.Add(this.lblSOL_being_Clause);
+			this.TabPg2Misc.Controls.Add(this.lbl_homestead);
+			this.TabPg2Misc.Controls.Add(this.txt_homestead_notes);
+			this.TabPg2Misc.Controls.Add(this.lbl_deed_prep);
+			this.TabPg2Misc.Controls.Add(this.lbl_attyClose);
+			this.TabPg2Misc.Controls.Add(this.txt_AttyNotes);
+			this.TabPg2Misc.Controls.Add(this.txt_DeedNotes);
+			this.TabPg2Misc.Controls.Add(this.CheckBox1);
+			this.TabPg2Misc.Controls.Add(this.Label123);
+			this.TabPg2Misc.Controls.Add(this.txt_PolicyNotes);
+			this.TabPg2Misc.Location = new System.Drawing.Point(4, 22);
+			this.TabPg2Misc.Name = "TabPg2Misc";
+			this.TabPg2Misc.Padding = new System.Windows.Forms.Padding(3);
+			this.TabPg2Misc.Size = new System.Drawing.Size(866, 201);
+			this.TabPg2Misc.TabIndex = 10;
+			this.TabPg2Misc.Text = "Misc";
+			// 
+			// lblSOL_being_Clause
+			// 
+			this.lblSOL_being_Clause.AutoSize = true;
+			this.lblSOL_being_Clause.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSOL_being_Clause.Location = new System.Drawing.Point(8, 157);
+			this.lblSOL_being_Clause.Name = "lblSOL_being_Clause";
+			this.lblSOL_being_Clause.Size = new System.Drawing.Size(124, 13);
+			this.lblSOL_being_Clause.TabIndex = 89;
+			this.lblSOL_being_Clause.Text = "Being Clause Required";
+			// 
+			// lbl_homestead
+			// 
+			this.lbl_homestead.AutoSize = true;
+			this.lbl_homestead.Location = new System.Drawing.Point(4, 12);
+			this.lbl_homestead.Name = "lbl_homestead";
+			this.lbl_homestead.Size = new System.Drawing.Size(64, 13);
+			this.lbl_homestead.TabIndex = 88;
+			this.lbl_homestead.Text = "Homestead:";
+			// 
+			// txt_homestead_notes
+			// 
+			this.txt_homestead_notes.BackColor = System.Drawing.Color.Snow;
+			this.txt_homestead_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_homestead_notes.ForeColor = System.Drawing.Color.Purple;
+			this.txt_homestead_notes.Location = new System.Drawing.Point(4, 28);
+			this.txt_homestead_notes.Multiline = true;
+			this.txt_homestead_notes.Name = "txt_homestead_notes";
+			this.txt_homestead_notes.ReadOnly = true;
+			this.txt_homestead_notes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_homestead_notes.Size = new System.Drawing.Size(262, 48);
+			this.txt_homestead_notes.TabIndex = 87;
+			// 
+			// lbl_deed_prep
+			// 
+			this.lbl_deed_prep.AutoSize = true;
+			this.lbl_deed_prep.Location = new System.Drawing.Point(8, 90);
+			this.lbl_deed_prep.Name = "lbl_deed_prep";
+			this.lbl_deed_prep.Size = new System.Drawing.Size(64, 13);
+			this.lbl_deed_prep.TabIndex = 86;
+			this.lbl_deed_prep.Text = "Deed Prep: ";
+			this.lbl_deed_prep.Click += new System.EventHandler(this.lblDeedPrep_Click);
+			this.lbl_deed_prep.MouseLeave += new System.EventHandler(this.lblDeedPrep_mouseLeave);
+			this.lbl_deed_prep.MouseHover += new System.EventHandler(this.lblDeedPrep_mouseHover);
+			// 
+			// lbl_attyClose
+			// 
+			this.lbl_attyClose.AutoSize = true;
+			this.lbl_attyClose.Location = new System.Drawing.Point(287, 12);
+			this.lbl_attyClose.Name = "lbl_attyClose";
+			this.lbl_attyClose.Size = new System.Drawing.Size(108, 13);
+			this.lbl_attyClose.TabIndex = 77;
+			this.lbl_attyClose.Text = "Attorney State Notes:";
+			// 
+			// txt_AttyNotes
+			// 
+			this.txt_AttyNotes.BackColor = System.Drawing.Color.Snow;
+			this.txt_AttyNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_AttyNotes.ForeColor = System.Drawing.Color.Purple;
+			this.txt_AttyNotes.Location = new System.Drawing.Point(287, 28);
+			this.txt_AttyNotes.Multiline = true;
+			this.txt_AttyNotes.Name = "txt_AttyNotes";
+			this.txt_AttyNotes.ReadOnly = true;
+			this.txt_AttyNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_AttyNotes.Size = new System.Drawing.Size(262, 48);
+			this.txt_AttyNotes.TabIndex = 76;
+			// 
+			// txt_DeedNotes
+			// 
+			this.txt_DeedNotes.BackColor = System.Drawing.Color.Snow;
+			this.txt_DeedNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_DeedNotes.ForeColor = System.Drawing.Color.Purple;
+			this.txt_DeedNotes.Location = new System.Drawing.Point(6, 106);
+			this.txt_DeedNotes.Multiline = true;
+			this.txt_DeedNotes.Name = "txt_DeedNotes";
+			this.txt_DeedNotes.ReadOnly = true;
+			this.txt_DeedNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_DeedNotes.Size = new System.Drawing.Size(262, 48);
+			this.txt_DeedNotes.TabIndex = 74;
+			// 
+			// CheckBox1
+			// 
+			this.CheckBox1.AutoSize = true;
+			this.CheckBox1.Location = new System.Drawing.Point(207, 355);
+			this.CheckBox1.Name = "CheckBox1";
+			this.CheckBox1.Size = new System.Drawing.Size(141, 17);
+			this.CheckBox1.TabIndex = 257;
+			this.CheckBox1.Text = "Attorney must close loan";
+			this.CheckBox1.UseVisualStyleBackColor = true;
+			// 
+			// Label123
+			// 
+			this.Label123.AutoSize = true;
+			this.Label123.Location = new System.Drawing.Point(577, 12);
+			this.Label123.Name = "Label123";
+			this.Label123.Size = new System.Drawing.Size(69, 13);
+			this.Label123.TabIndex = 73;
+			this.Label123.Text = "Policy Notes:";
+			// 
+			// txt_PolicyNotes
+			// 
+			this.txt_PolicyNotes.BackColor = System.Drawing.Color.Snow;
+			this.txt_PolicyNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txt_PolicyNotes.ForeColor = System.Drawing.Color.Purple;
+			this.txt_PolicyNotes.Location = new System.Drawing.Point(577, 28);
+			this.txt_PolicyNotes.Multiline = true;
+			this.txt_PolicyNotes.Name = "txt_PolicyNotes";
+			this.txt_PolicyNotes.ReadOnly = true;
+			this.txt_PolicyNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txt_PolicyNotes.Size = new System.Drawing.Size(262, 48);
+			this.txt_PolicyNotes.TabIndex = 72;
+			// 
+			// LinkLabel4
+			// 
+			this.LinkLabel4.AutoSize = true;
+			this.LinkLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LinkLabel4.Location = new System.Drawing.Point(492, 617);
+			this.LinkLabel4.Name = "LinkLabel4";
+			this.LinkLabel4.Size = new System.Drawing.Size(236, 15);
+			this.LinkLabel4.TabIndex = 191;
+			this.LinkLabel4.TabStop = true;
+			this.LinkLabel4.Text = "Report suggestions or problems with ORB";
+			this.LinkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel4_LinkClicked);
+			// 
+			// Label56
+			// 
+			this.Label56.AutoSize = true;
+			this.Label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label56.ForeColor = System.Drawing.Color.SteelBlue;
+			this.Label56.Location = new System.Drawing.Point(18, 617);
+			this.Label56.Name = "Label56";
+			this.Label56.Size = new System.Drawing.Size(396, 15);
+			this.Label56.TabIndex = 193;
+			this.Label56.Text = "iMortgage Services Online Resource Bank  Updated through 9-29-2008";
+			// 
+			// Label55
+			// 
+			this.Label55.AutoSize = true;
+			this.Label55.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label55.Location = new System.Drawing.Point(324, 60);
+			this.Label55.Name = "Label55";
+			this.Label55.Size = new System.Drawing.Size(80, 13);
+			this.Label55.TabIndex = 66;
+			this.Label55.Text = "Spousal State:";
+			// 
+			// Label62
+			// 
+			this.Label62.AutoSize = true;
+			this.Label62.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label62.Location = new System.Drawing.Point(408, 60);
+			this.Label62.Name = "Label62";
+			this.Label62.Size = new System.Drawing.Size(46, 13);
+			this.Label62.TabIndex = 65;
+			this.Label62.Text = "Label72";
+			// 
+			// Label64
+			// 
+			this.Label64.AutoSize = true;
+			this.Label64.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label64.Location = new System.Drawing.Point(12, 267);
+			this.Label64.Name = "Label64";
+			this.Label64.Size = new System.Drawing.Size(86, 13);
+			this.Label64.TabIndex = 62;
+			this.Label64.Text = "Redem. Period:";
+			// 
+			// Label66
+			// 
+			this.Label66.AutoSize = true;
+			this.Label66.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label66.Location = new System.Drawing.Point(132, 267);
+			this.Label66.Name = "Label66";
+			this.Label66.Size = new System.Drawing.Size(46, 13);
+			this.Label66.TabIndex = 61;
+			this.Label66.Text = "Label58";
+			// 
+			// Label70
+			// 
+			this.Label70.AutoSize = true;
+			this.Label70.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label70.Location = new System.Drawing.Point(12, 233);
+			this.Label70.Name = "Label70";
+			this.Label70.Size = new System.Drawing.Size(76, 13);
+			this.Label70.TabIndex = 60;
+			this.Label70.Text = "Personal Tax:";
+			// 
+			// Label75
+			// 
+			this.Label75.AutoSize = true;
+			this.Label75.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label75.Location = new System.Drawing.Point(132, 233);
+			this.Label75.Name = "Label75";
+			this.Label75.Size = new System.Drawing.Size(46, 13);
+			this.Label75.TabIndex = 59;
+			this.Label75.Text = "Label60";
+			// 
+			// Label76
+			// 
+			this.Label76.AutoSize = true;
+			this.Label76.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label76.Location = new System.Drawing.Point(132, 196);
+			this.Label76.Name = "Label76";
+			this.Label76.Size = new System.Drawing.Size(46, 13);
+			this.Label76.TabIndex = 58;
+			this.Label76.Text = "Label54";
+			// 
+			// Label77
+			// 
+			this.Label77.AutoSize = true;
+			this.Label77.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label77.Location = new System.Drawing.Point(12, 216);
+			this.Label77.Name = "Label77";
+			this.Label77.Size = new System.Drawing.Size(89, 13);
+			this.Label77.TabIndex = 57;
+			this.Label77.Text = "Creditor Claims:";
+			// 
+			// Label78
+			// 
+			this.Label78.AutoSize = true;
+			this.Label78.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label78.Location = new System.Drawing.Point(408, 77);
+			this.Label78.Name = "Label78";
+			this.Label78.Size = new System.Drawing.Size(46, 13);
+			this.Label78.TabIndex = 56;
+			this.Label78.Text = "Label52";
+			// 
+			// Label80
+			// 
+			this.Label80.AutoSize = true;
+			this.Label80.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label80.Location = new System.Drawing.Point(324, 77);
+			this.Label80.Name = "Label80";
+			this.Label80.Size = new System.Drawing.Size(48, 13);
+			this.Label80.TabIndex = 55;
+			this.Label80.Text = "TE Rule:";
+			// 
+			// Label82
+			// 
+			this.Label82.AutoSize = true;
+			this.Label82.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label82.Location = new System.Drawing.Point(132, 301);
+			this.Label82.Name = "Label82";
+			this.Label82.Size = new System.Drawing.Size(46, 13);
+			this.Label82.TabIndex = 54;
+			this.Label82.Text = "Label46";
+			// 
+			// Label84
+			// 
+			this.Label84.AutoSize = true;
+			this.Label84.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label84.Location = new System.Drawing.Point(12, 301);
+			this.Label84.Name = "Label84";
+			this.Label84.Size = new System.Drawing.Size(111, 13);
+			this.Label84.TabIndex = 53;
+			this.Label84.Text = "After Acquired Lien:";
+			// 
+			// Label85
+			// 
+			this.Label85.AutoSize = true;
+			this.Label85.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label85.Location = new System.Drawing.Point(132, 43);
+			this.Label85.Name = "Label85";
+			this.Label85.Size = new System.Drawing.Size(82, 13);
+			this.Label85.TabIndex = 52;
+			this.Label85.Text = "10 yrs+30 days";
+			// 
+			// Label86
+			// 
+			this.Label86.AutoSize = true;
+			this.Label86.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label86.Location = new System.Drawing.Point(12, 43);
+			this.Label86.Name = "Label86";
+			this.Label86.Size = new System.Drawing.Size(75, 13);
+			this.Label86.TabIndex = 51;
+			this.Label86.Text = "Fed Tax Lien:";
+			// 
+			// Label87
+			// 
+			this.Label87.AutoSize = true;
+			this.Label87.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label87.Location = new System.Drawing.Point(132, 60);
+			this.Label87.Name = "Label87";
+			this.Label87.Size = new System.Drawing.Size(30, 13);
+			this.Label87.TabIndex = 50;
+			this.Label87.Text = "5 yrs";
+			// 
+			// Label88
+			// 
+			this.Label88.AutoSize = true;
+			this.Label88.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label88.Location = new System.Drawing.Point(12, 60);
+			this.Label88.Name = "Label88";
+			this.Label88.Size = new System.Drawing.Size(37, 13);
+			this.Label88.TabIndex = 49;
+			this.Label88.Text = "UCCs:";
+			// 
+			// TextBox1
+			// 
+			this.TextBox1.BackColor = System.Drawing.Color.Snow;
+			this.TextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TextBox1.ForeColor = System.Drawing.Color.Purple;
+			this.TextBox1.Location = new System.Drawing.Point(327, 9);
+			this.TextBox1.Multiline = true;
+			this.TextBox1.Name = "TextBox1";
+			this.TextBox1.ReadOnly = true;
+			this.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.TextBox1.Size = new System.Drawing.Size(395, 47);
+			this.TextBox1.TabIndex = 48;
+			this.TextBox1.Text = "Comments";
+			// 
+			// Label89
+			// 
+			this.Label89.AutoSize = true;
+			this.Label89.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label89.Location = new System.Drawing.Point(12, 162);
+			this.Label89.Name = "Label89";
+			this.Label89.Size = new System.Drawing.Size(65, 13);
+			this.Label89.TabIndex = 23;
+			this.Label89.Text = "Hosp. Lien:";
+			// 
+			// Label90
+			// 
+			this.Label90.AutoSize = true;
+			this.Label90.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label90.Location = new System.Drawing.Point(132, 162);
+			this.Label90.Name = "Label90";
+			this.Label90.Size = new System.Drawing.Size(46, 13);
+			this.Label90.TabIndex = 22;
+			this.Label90.Text = "Label72";
+			// 
+			// Label91
+			// 
+			this.Label91.AutoSize = true;
+			this.Label91.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label91.Location = new System.Drawing.Point(12, 196);
+			this.Label91.Name = "Label91";
+			this.Label91.Size = new System.Drawing.Size(63, 13);
+			this.Label91.TabIndex = 21;
+			this.Label91.Text = "Judgment:";
+			// 
+			// Label92
+			// 
+			this.Label92.AutoSize = true;
+			this.Label92.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label92.Location = new System.Drawing.Point(132, 216);
+			this.Label92.Name = "Label92";
+			this.Label92.Size = new System.Drawing.Size(46, 13);
+			this.Label92.TabIndex = 20;
+			this.Label92.Text = "Label70";
+			// 
+			// Label93
+			// 
+			this.Label93.AutoSize = true;
+			this.Label93.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label93.Location = new System.Drawing.Point(132, 77);
+			this.Label93.Name = "Label93";
+			this.Label93.Size = new System.Drawing.Size(36, 13);
+			this.Label93.TabIndex = 25;
+			this.Label93.Text = "20 yrs";
+			// 
+			// Label94
+			// 
+			this.Label94.AutoSize = true;
+			this.Label94.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label94.Location = new System.Drawing.Point(12, 179);
+			this.Label94.Name = "Label94";
+			this.Label94.Size = new System.Drawing.Size(78, 13);
+			this.Label94.TabIndex = 19;
+			this.Label94.Text = "Claim of Lien:";
+			// 
+			// Label95
+			// 
+			this.Label95.AutoSize = true;
+			this.Label95.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label95.Location = new System.Drawing.Point(12, 77);
+			this.Label95.Name = "Label95";
+			this.Label95.Size = new System.Drawing.Size(66, 13);
+			this.Label95.TabIndex = 24;
+			this.Label95.Text = "USA Jgmts:";
+			// 
+			// Label96
+			// 
+			this.Label96.AutoSize = true;
+			this.Label96.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label96.Location = new System.Drawing.Point(132, 179);
+			this.Label96.Name = "Label96";
+			this.Label96.Size = new System.Drawing.Size(46, 13);
+			this.Label96.TabIndex = 18;
+			this.Label96.Text = "Label68";
+			// 
+			// Label97
+			// 
+			this.Label97.AutoSize = true;
+			this.Label97.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label97.Location = new System.Drawing.Point(12, 145);
+			this.Label97.Name = "Label97";
+			this.Label97.Size = new System.Drawing.Size(59, 13);
+			this.Label97.TabIndex = 17;
+			this.Label97.Text = "HOA Lien:";
+			// 
+			// Label98
+			// 
+			this.Label98.AutoSize = true;
+			this.Label98.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label98.Location = new System.Drawing.Point(132, 145);
+			this.Label98.Name = "Label98";
+			this.Label98.Size = new System.Drawing.Size(46, 13);
+			this.Label98.TabIndex = 16;
+			this.Label98.Text = "Label66";
+			// 
+			// Label99
+			// 
+			this.Label99.AutoSize = true;
+			this.Label99.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label99.Location = new System.Drawing.Point(12, 128);
+			this.Label99.Name = "Label99";
+			this.Label99.Size = new System.Drawing.Size(107, 13);
+			this.Label99.TabIndex = 15;
+			this.Label99.Text = "Notice/Commence:";
+			// 
+			// Label100
+			// 
+			this.Label100.AutoSize = true;
+			this.Label100.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label100.Location = new System.Drawing.Point(132, 128);
+			this.Label100.Name = "Label100";
+			this.Label100.Size = new System.Drawing.Size(46, 13);
+			this.Label100.TabIndex = 14;
+			this.Label100.Text = "Label58";
+			// 
+			// Label101
+			// 
+			this.Label101.AutoSize = true;
+			this.Label101.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label101.Location = new System.Drawing.Point(12, 111);
+			this.Label101.Name = "Label101";
+			this.Label101.Size = new System.Drawing.Size(64, 13);
+			this.Label101.TabIndex = 13;
+			this.Label101.Text = "Mech.Lien:";
+			// 
+			// Label102
+			// 
+			this.Label102.AutoSize = true;
+			this.Label102.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label102.Location = new System.Drawing.Point(132, 111);
+			this.Label102.Name = "Label102";
+			this.Label102.Size = new System.Drawing.Size(46, 13);
+			this.Label102.TabIndex = 12;
+			this.Label102.Text = "Label60";
+			// 
+			// Label103
+			// 
+			this.Label103.AutoSize = true;
+			this.Label103.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label103.Location = new System.Drawing.Point(12, 284);
+			this.Label103.Name = "Label103";
+			this.Label103.Size = new System.Drawing.Size(65, 13);
+			this.Label103.TabIndex = 11;
+			this.Label103.Text = "State Jgmt:";
+			// 
+			// Label104
+			// 
+			this.Label104.AutoSize = true;
+			this.Label104.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label104.Location = new System.Drawing.Point(132, 284);
+			this.Label104.Name = "Label104";
+			this.Label104.Size = new System.Drawing.Size(46, 13);
+			this.Label104.TabIndex = 10;
+			this.Label104.Text = "Label62";
+			// 
+			// Label105
+			// 
+			this.Label105.AutoSize = true;
+			this.Label105.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label105.Location = new System.Drawing.Point(12, 250);
+			this.Label105.Name = "Label105";
+			this.Label105.Size = new System.Drawing.Size(73, 13);
+			this.Label105.TabIndex = 9;
+			this.Label105.Text = "Support Obl:";
+			// 
+			// Label106
+			// 
+			this.Label106.AutoSize = true;
+			this.Label106.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label106.Location = new System.Drawing.Point(132, 250);
+			this.Label106.Name = "Label106";
+			this.Label106.Size = new System.Drawing.Size(46, 13);
+			this.Label106.TabIndex = 8;
+			this.Label106.Text = "Label64";
+			// 
+			// Label107
+			// 
+			this.Label107.AutoSize = true;
+			this.Label107.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label107.Location = new System.Drawing.Point(132, 94);
+			this.Label107.Name = "Label107";
+			this.Label107.Size = new System.Drawing.Size(46, 13);
+			this.Label107.TabIndex = 5;
+			this.Label107.Text = "Label54";
+			// 
+			// Label108
+			// 
+			this.Label108.AutoSize = true;
+			this.Label108.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label108.Location = new System.Drawing.Point(12, 94);
+			this.Label108.Name = "Label108";
+			this.Label108.Size = new System.Drawing.Size(69, 13);
+			this.Label108.TabIndex = 4;
+			this.Label108.Text = "LisPendens:";
+			// 
+			// Label109
+			// 
+			this.Label109.AutoSize = true;
+			this.Label109.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label109.Location = new System.Drawing.Point(132, 26);
+			this.Label109.Name = "Label109";
+			this.Label109.Size = new System.Drawing.Size(46, 13);
+			this.Label109.TabIndex = 3;
+			this.Label109.Text = "Label52";
+			// 
+			// Label110
+			// 
+			this.Label110.AutoSize = true;
+			this.Label110.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label110.Location = new System.Drawing.Point(12, 26);
+			this.Label110.Name = "Label110";
+			this.Label110.Size = new System.Drawing.Size(45, 13);
+			this.Label110.TabIndex = 2;
+			this.Label110.Text = "HELOC:";
+			// 
+			// Label111
+			// 
+			this.Label111.AutoSize = true;
+			this.Label111.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label111.Location = new System.Drawing.Point(132, 9);
+			this.Label111.Name = "Label111";
+			this.Label111.Size = new System.Drawing.Size(46, 13);
+			this.Label111.TabIndex = 1;
+			this.Label111.Text = "Label46";
+			// 
+			// Label112
+			// 
+			this.Label112.AutoSize = true;
+			this.Label112.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Label112.Location = new System.Drawing.Point(12, 9);
+			this.Label112.Name = "Label112";
+			this.Label112.Size = new System.Drawing.Size(59, 13);
+			this.Label112.TabIndex = 0;
+			this.Label112.Text = "Mtg/DOT:";
+			// 
+			// Panel2
+			// 
+			this.Panel2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.Panel2.BackColor = System.Drawing.Color.Gainsboro;
+			this.Panel2.Location = new System.Drawing.Point(0, 3);
+			this.Panel2.Name = "Panel2";
+			this.Panel2.Size = new System.Drawing.Size(860, 520);
+			this.Panel2.TabIndex = 198;
+			// 
+			// Form1
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.Honeydew;
+			this.ClientSize = new System.Drawing.Size(858, 600);
+			this.Controls.Add(this.TabControl1);
+			this.Controls.Add(this.SplitContainer1);
+			this.Controls.Add(this.Label56);
+			this.Controls.Add(this.LinkLabel4);
+			this.Controls.Add(this.Panel2);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Name = "Form1";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "ORB - iMS Online Resource Bank";
+			this.SplitContainer1.Panel1.ResumeLayout(false);
+			this.SplitContainer1.Panel1.PerformLayout();
+			this.SplitContainer1.Panel2.ResumeLayout(false);
+			this.SplitContainer1.Panel2.PerformLayout();
+			this.SplitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).EndInit();
+			this.Panel1.ResumeLayout(false);
+			this.Panel1.PerformLayout();
+			this.GroupBox6.ResumeLayout(false);
+			this.GroupBox10.ResumeLayout(false);
+			this.GroupBox10.PerformLayout();
+			this.GroupBox8.ResumeLayout(false);
+			this.GroupBox8.PerformLayout();
+			this.GroupBox7.ResumeLayout(false);
+			this.GroupBox7.PerformLayout();
+			this.TableLayoutPanel2.ResumeLayout(false);
+			this.TableLayoutPanel2.PerformLayout();
+			this.GroupBox4.ResumeLayout(false);
+			this.GroupBox4.PerformLayout();
+			this.GroupBox3.ResumeLayout(false);
+			this.GroupBox3.PerformLayout();
+			this.GroupBox2.ResumeLayout(false);
+			this.GroupBox2.PerformLayout();
+			this.TabControl1.ResumeLayout(false);
+			this.TabPg4Clearing.ResumeLayout(false);
+			this.TabPg4Clearing.PerformLayout();
+			this.TableLayoutPanel1.ResumeLayout(false);
+			this.TableLayoutPanel1.PerformLayout();
+			this.TabPg6OtherLogins.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.DataGridView2)).EndInit();
+			this.TabPg7Taxes.ResumeLayout(false);
+			this.TabPg7Taxes.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbxExport)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy5)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy4)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy3)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxCopy1)).EndInit();
+			this.TabPg1Statistics.ResumeLayout(false);
+			this.TabPg1Statistics.PerformLayout();
+			this.GroupBox1.ResumeLayout(false);
+			this.GroupBox1.PerformLayout();
+			this.TabPg2Misc.ResumeLayout(false);
+			this.TabPg2Misc.PerformLayout();
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
-            this.txt_myfl_P.Name = "txt_myfl_P";
-            this.txt_myfl_P.ReadOnly = true;
-            this.txt_myfl_P.Size = new System.Drawing.Size(77, 13);
-            this.txt_myfl_P.TabIndex = 201;
-            this.txt_myfl_P.WordWrap = false;
-            //
-            // LinkLabel_MyFlCountiesURL
-            //
-            this.LinkLabel_MyFlCountiesURL.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_MyFlCountiesURL.AutoSize = true;
-            this.LinkLabel_MyFlCountiesURL.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_MyFlCountiesURL.ForeColor = Color.DarkViolet;
-            this.LinkLabel_MyFlCountiesURL.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_MyFlCountiesURL.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_MyFlCountiesURL.Location = new Point(125, 31);
-            this.LinkLabel_MyFlCountiesURL.Name = "LinkLabel_MyFlCountiesURL";
-            this.LinkLabel_MyFlCountiesURL.Size = new System.Drawing.Size(103, 15);
-            this.LinkLabel_MyFlCountiesURL.TabIndex = 214;
-            this.LinkLabel_MyFlCountiesURL.TabStop = true;
-            this.LinkLabel_MyFlCountiesURL.Text = "MYFLORIDA.COM";
-            this.LinkLabel_MyFlCountiesURL.VisitedLinkColor = Color.DarkSlateBlue;
-            //
-            // txt_myfl_U
-            //
-            this.txt_myfl_U.BackColor = Color.GhostWhite;
-            this.txt_myfl_U.BorderStyle = BorderStyle.None;
-            this.txt_myfl_U.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_myfl_U.Location = new Point(246, 31);
-            this.txt_myfl_U.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_myfl_U.Name = "txt_myfl_U";
-            this.txt_myfl_U.ReadOnly = true;
-            this.txt_myfl_U.Size = new System.Drawing.Size(67, 13);
-            this.txt_myfl_U.TabIndex = 198;
-            this.txt_myfl_U.WordWrap = false;
-            //
-            // txt_login_tax2P
-            //
-            this.txt_login_tax2P.BackColor = Color.GhostWhite;
-            this.txt_login_tax2P.BorderStyle = BorderStyle.None;
-            this.txt_login_tax2P.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_tax2P.Location = new Point(319, 211);
-            this.txt_login_tax2P.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_tax2P.Name = "txt_login_tax2P";
-            this.txt_login_tax2P.ReadOnly = true;
-            this.txt_login_tax2P.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_tax2P.TabIndex = 212;
-            this.txt_login_tax2P.WordWrap = false;
-            //
-            // lbl_MyFlaCounties
-            //
-            this.lbl_MyFlaCounties.AutoSize = true;
-            this.lbl_MyFlaCounties.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_MyFlaCounties.ForeColor = Color.DarkSlateBlue;
-            this.lbl_MyFlaCounties.Location = new Point(4, 31);
-            this.lbl_MyFlaCounties.Name = "lbl_MyFlaCounties";
-            this.lbl_MyFlaCounties.Size = new System.Drawing.Size(87,15);
-            this.lbl_MyFlaCounties.TabIndex = 213;
-            this.lbl_MyFlaCounties.Text = "MyFlorida.com";
-            //
-            // Label_DOI
-            //
-            this.Label_DOI.AutoSize = true;
-            this.Label_DOI.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label_DOI.ForeColor = Color.DarkSlateBlue;
-            this.Label_DOI.Location = new Point(4, 271);
-            this.Label_DOI.Name = "Label_DOI"; 
-            this.Label_DOI.Size = new System.Drawing.Size(92, 15);
-            this.Label_DOI.TabIndex = 190;
-            this.Label_DOI.Text = "Agent Licensing";
-            //
-            // txt_login_tax2U
-            //
-            this.txt_login_tax2U.BackColor = Color.GhostWhite;
-            this.txt_login_tax2U.BorderStyle = BorderStyle.None;
-            this.txt_login_tax2U.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_tax2U.Location = new Point(246, 211);
-            this.txt_login_tax2U.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_tax2U.Name = "txt_login_tax2U";
-            this.txt_login_tax2U.ReadOnly = true;
-            this.txt_login_tax2U.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_tax2U.TabIndex = 211;
-            this.txt_login_tax2U.WordWrap = false;
-            //
-            // Label_stCode
-            //
-            this.Label_stCode.AutoSize = true;
-            this.Label_stCode.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label_stCode.ForeColor = Color.DarkSlateBlue;
-            this.Label_stCode.Location = new Point(4, 256);
-            this.Label_stCode.Name = "Label_stCode";
-            this.Label_stCode.Size = new System.Drawing.Size(115, 15);
-            this.Label_stCode.TabIndex = 190;
-            this.Label_stCode.Text = "Administrative Code";
-            //
-            // txt_login_otherP
-            //
-            this.txt_login_otherP.BackColor = Color.GhostWhite;
-            this.txt_login_otherP.BorderStyle = BorderStyle.None;
-            this.txt_login_otherP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_otherP.Location = new Point(319, 196);
-            this.txt_login_otherP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_otherP.Name = "txt_login_otherP";
-            this.txt_login_otherP.ReadOnly = true;
-            this.txt_login_otherP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_otherP.TabIndex = 210;
-            this.txt_login_otherP.WordWrap = false;
-            this.txt_login_courtP.BackColor = Color.GhostWhite;
-            this.txt_login_courtP.BorderStyle = BorderStyle.None;
-            this.txt_login_courtP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            //
-            // txtLoginCourtP
-            //
-            this.txt_login_courtP.Location = new Point(319, 46);
-            this.txt_login_courtP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_courtP.Name = "txt_login_courtP";
-            this.txt_login_courtP.ReadOnly = true;
-            this.txt_login_courtP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_courtP.TabIndex = 198;
-            this.txt_login_courtP.WordWrap = false;
-            //
-            // txt_login_otherU
-            //
-            this.txt_login_otherU.BackColor = Color.GhostWhite;
-            this.txt_login_otherU.BorderStyle = BorderStyle.None;
-            this.txt_login_otherU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_otherU.Location = new Point(246, 196);
-            this.txt_login_otherU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_otherU.Name = "txt_login_otherU";
-            this.txt_login_otherU.ReadOnly = true;
-            this.txt_login_otherU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_otherU.TabIndex = 209;
-            this.txt_login_otherU.WordWrap = false;
-            this.Label_secState.AutoSize = true;
-            this.Label_secState.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label_secState.ForeColor = Color.DarkSlateBlue;
-            this.Label_secState.Location = new Point(4, 241);
-            this.Label_secState.Name = "Label_secState";
-            this.Label_secState.Size = new System.Drawing.Size(96, 15);
-            this.Label_secState.TabIndex = 190;
-            this.Label_secState.Text = "LLC/Corp Search";
-            this.txt_login_asrP.BackColor = Color.GhostWhite;
-            this.txt_login_asrP.BorderStyle = BorderStyle.None;
-            this.txt_login_asrP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_asrP.Location = new Point(319, 136);
-            this.txt_login_asrP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_asrP.Name = "txt_login_asrP";
-            this.txt_login_asrP.ReadOnly = true;
-            this.txt_login_asrP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_asrP.TabIndex = 208;
-            this.txt_login_asrP.WordWrap = false;
-            this.txt_login_probateP.BackColor = Color.GhostWhite;
-            this.txt_login_probateP.BorderStyle = BorderStyle.None;
-            this.txt_login_probateP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_probateP.Location = new Point(319, 76);
-            this.txt_login_probateP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_probateP.Name = "txt_login_probateP";
-            this.txt_login_probateP.ReadOnly = true;
-            this.txt_login_probateP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_probateP.TabIndex = 202;
-            this.txt_login_probateP.WordWrap = false;
-            this.txt_login_asrU.BackColor = Color.GhostWhite;
-            this.txt_login_asrU.BorderStyle = BorderStyle.None;
-            this.txt_login_asrU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_asrU.Location = new Point(246, 136);
-            this.txt_login_asrU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_asrU.Name = "txt_login_asrU";
-            this.txt_login_asrU.ReadOnly = true;
-            this.txt_login_asrU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_asrU.TabIndex = 207;
-            this.txt_login_asrU.WordWrap = false;
-            this.txt_login_courtU.BackColor = Color.GhostWhite;
-            this.txt_login_courtU.BorderStyle = BorderStyle.None;
-            this.txt_login_courtU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_courtU.Location = new Point(246, 46);
-            this.txt_login_courtU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_courtU.Name = "txt_login_courtU";
-            this.txt_login_courtU.ReadOnly = true;
-            this.txt_login_courtU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_courtU.TabIndex = 197;
-            this.txt_login_courtU.WordWrap = false;
-            this.txt_login_tax1P.BackColor = Color.GhostWhite;
-            this.txt_login_tax1P.BorderStyle = BorderStyle.None;
-            this.txt_login_tax1P.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_tax1P.Location = new Point(319, 121);
-            this.txt_login_tax1P.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_tax1P.Name = "txt_login_tax1P";
-            this.txt_login_tax1P.ReadOnly = true;
-            this.txt_login_tax1P.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_tax1P.TabIndex = 206;
-            this.txt_login_tax1P.WordWrap = false;
-            this.txt_login_muniP.BackColor = Color.GhostWhite;
-            this.txt_login_muniP.BorderStyle = BorderStyle.None;
-            this.txt_login_muniP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_muniP.Location = new Point(319, 91);
-            this.txt_login_muniP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_muniP.Name = "txt_login_muniP";
-            this.txt_login_muniP.ReadOnly = true;
-            this.txt_login_muniP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_muniP.TabIndex = 204;
-            this.txt_login_muniP.WordWrap = false;
-            this.txt_login_tax1U.BackColor = Color.GhostWhite;
-            this.txt_login_tax1U.BorderStyle = BorderStyle.None;
-            this.txt_login_tax1U.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_tax1U.Location = new Point(246, 121);
-            this.txt_login_tax1U.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_tax1U.Name = "txt_login_tax1U";
-            this.txt_login_tax1U.ReadOnly = true;
-            this.txt_login_tax1U.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_tax1U.TabIndex = 205;
-            this.txt_login_tax1U.WordWrap = false;
-            this.txt_login_probateU.BackColor = Color.GhostWhite;
-            this.txt_login_probateU.BorderStyle = BorderStyle.None;
-            this.txt_login_probateU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_probateU.Location = new Point(246, 76);
-            this.txt_login_probateU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_probateU.Name = "txt_login_probateU";
-            this.txt_login_probateU.ReadOnly = true;
-            this.txt_login_probateU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_probateU.TabIndex = 201;
-            this.txt_login_probateU.WordWrap = false;
-            this.txt_login_muniU.BackColor = Color.GhostWhite;
-            this.txt_login_muniU.BorderStyle = BorderStyle.None;
-            this.txt_login_muniU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_muniU.Location = new Point(246, 91);
-            this.txt_login_muniU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_muniU.Name = "txt_login_muniU";
-            this.txt_login_muniU.ReadOnly = true;
-            this.txt_login_muniU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_muniU.TabIndex = 203;
-            this.txt_login_muniU.WordWrap = false;
-            this.txt_login_prothonP.BackColor = Color.GhostWhite;
-            this.txt_login_prothonP.BorderStyle = BorderStyle.None;
-            this.txt_login_prothonP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_prothonP.Location = new Point(319, 61);
-            this.txt_login_prothonP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_prothonP.Name = "txt_login_prothonP";
-            this.txt_login_prothonP.ReadOnly = true;
-            this.txt_login_prothonP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_prothonP.TabIndex = 200;
-            this.txt_login_prothonP.WordWrap = false;
-            this.txt_login_landP.BackColor = Color.GhostWhite;
-            this.txt_login_landP.BorderStyle = BorderStyle.None;
-            this.txt_login_landP.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_landP.Location = new Point(319, 16);
-            this.txt_login_landP.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_landP.Name = "txt_login_landP";
-            this.txt_login_landP.ReadOnly = true;
-            this.txt_login_landP.Size = new System.Drawing.Size(77, 13);
-            this.txt_login_landP.TabIndex = 196;
-            this.txt_login_landP.WordWrap = false;
-            this.txt_login_prothonU.BackColor = Color.GhostWhite;
-            this.txt_login_prothonU.BorderStyle = BorderStyle.None;
-            this.txt_login_prothonU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_prothonU.Location = new Point(246, 61);
-            this.txt_login_prothonU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_prothonU.Name = "txt_login_prothonU";
-            this.txt_login_prothonU.ReadOnly = true;
-            this.txt_login_prothonU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_prothonU.TabIndex = 199;
-            this.txt_login_prothonU.WordWrap = false;
-            this.LabelOtherURL.AutoSize = true;
-            this.LabelOtherURL.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelOtherURL.ForeColor = Color.DarkSlateBlue;
-            this.LabelOtherURL.Location = new Point(4, 196);
-            this.LabelOtherURL.Name = "LabelOtherURL";
-            this.LabelOtherURL.Size = new System.Drawing.Size(82, 13);
-            this.LabelOtherURL.TabIndex = 61;
-            this.LabelOtherURL.Text = "Other Website";
-            this.txt_login_landU.BackColor = Color.GhostWhite;
-            this.txt_login_landU.BorderStyle = BorderStyle.None;
-            this.txt_login_landU.Font = new System.Drawing.Font("Arial", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_login_landU.Location = new Point(246, 16);
-            this.txt_login_landU.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.txt_login_landU.Name = "txt_login_landU";
-            this.txt_login_landU.ReadOnly = true;
-            this.txt_login_landU.Size = new System.Drawing.Size(67, 13);
-            this.txt_login_landU.TabIndex = 195;
-            this.txt_login_landU.WordWrap = false;
-            this.LabelCountyURL.AutoSize = true;
-            this.LabelCountyURL.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelCountyURL.ForeColor = Color.DarkSlateBlue;
-            this.LabelCountyURL.Location = new Point(4, 16);
-            this.LabelCountyURL.Name = "LabelCountyURL";
-            this.LabelCountyURL.Size = new System.Drawing.Size(64, 15);
-            this.LabelCountyURL.TabIndex = 11;
-            this.LabelCountyURL.Text = "Land Index";
-            this.LinkLabelOtherTax.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelOtherTax.AutoSize = true;
-            this.LinkLabelOtherTax.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelOtherTax.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelOtherTax.ForeColor = Color.DarkViolet;
-            this.LinkLabelOtherTax.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelOtherTax.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelOtherTax.Location = new Point(125, 211);
-            this.LinkLabelOtherTax.Name = "LinkLabelOtherTax";
-            this.LinkLabelOtherTax.Size = new System.Drawing.Size(41, 15);
-            this.LinkLabelOtherTax.TabIndex = 54;
-            this.LinkLabelOtherTax.TabStop = true;
-            this.LinkLabelOtherTax.Text = "TAXES";
-            this.LinkLabelOtherTax.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelSheriff.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelSheriff.AutoSize = true;
-            this.LinkLabelSheriff.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelSheriff.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelSheriff.ForeColor = Color.DarkViolet;
-            this.LinkLabelSheriff.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelSheriff.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelSheriff.Location = new Point(125, 166);
-            this.LinkLabelSheriff.Name = "LinkLabelSheriff";
-            this.LinkLabelSheriff.Size = new System.Drawing.Size(50, 15);
-            this.LinkLabelSheriff.TabIndex = 56;
-            this.LinkLabelSheriff.TabStop = true;
-            this.LinkLabelSheriff.Text = "SHERIFF";
-            this.LinkLabelSheriff.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelUCC.AutoSize = true;
-            this.LabelUCC.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUCC.ForeColor = Color.DarkSlateBlue;
-            this.LabelUCC.Location = new Point(4, 226);
-            this.LabelUCC.Name = "LabelUCC";
-            this.LabelUCC.Size = new System.Drawing.Size(68, 15);
-            this.LabelUCC.TabIndex = 194;
-            this.LabelUCC.Text = "UCC Filings";
-            this.txtComments.BackColor = Color.GhostWhite;
-            this.txtComments.BorderStyle = BorderStyle.None;
-            this.TableLayoutPanel2.SetColumnSpan(this.txtComments, 4);
-            this.txtComments.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtComments.ForeColor = Color.Purple;
-            this.txtComments.Location = new Point(4, 289);
-            this.txtComments.MaxLength = 100000;
-            this.txtComments.Multiline = true;
-            this.txtComments.Name = "txtComments";
-            this.txtComments.ReadOnly = true;
-            this.txtComments.ScrollBars = ScrollBars.Vertical;
-            this.txtComments.Size = new System.Drawing.Size(392, 75);
-            this.txtComments.TabIndex = 47;
-            this.txtComments.Text = "Comments";
-            this.LinkLabelCounty.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelCounty.AutoSize = true;
-            this.LinkLabelCounty.BackColor = Color.Transparent;
-            this.LinkLabelCounty.DisabledLinkColor = Color.Navy;
-            this.LinkLabelCounty.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelCounty.ForeColor = Color.DarkViolet;
-            this.LinkLabelCounty.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelCounty.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelCounty.Location = new Point(125, 16);
-            this.LinkLabelCounty.Name = "LinkLabelCounty";
-            this.LinkLabelCounty.Size = new System.Drawing.Size(38, 15);
-            this.LinkLabelCounty.TabIndex = 5;
-            this.LinkLabelCounty.TabStop = true;
-            this.LinkLabelCounty.Text = "LAND";
-            this.LinkLabelCounty.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelOtherTax.AutoSize = true;
-            this.LabelOtherTax.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelOtherTax.ForeColor = Color.DarkSlateBlue;
-            this.LabelOtherTax.Location = new Point(4, 211);
-            this.LabelOtherTax.Name = "LabelOtherTax";
-            this.LabelOtherTax.Size = new System.Drawing.Size(85, 15);
-            this.LabelOtherTax.TabIndex = 55;
-            this.LabelOtherTax.Text = "Other Tax Web";
-            this.LinkLabelForeclosure.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelForeclosure.AutoSize = true;
-            this.LinkLabelForeclosure.BackColor = Color.Transparent;
-            this.LinkLabelForeclosure.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelForeclosure.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelForeclosure.ForeColor = Color.DarkViolet;
-            this.LinkLabelForeclosure.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelForeclosure.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelForeclosure.Location = new Point(125, 181);
-            this.LinkLabelForeclosure.Name = "LinkLabelForeclosure";
-            this.LinkLabelForeclosure.Size = new System.Drawing.Size(85, 15);
-            this.LinkLabelForeclosure.TabIndex = 48;
-            this.LinkLabelForeclosure.TabStop = true;
-            this.LinkLabelForeclosure.Text = "FORECLOSURE";
-            this.LinkLabelForeclosure.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelCourt.AutoSize = true;
-            this.LabelCourt.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelCourt.ForeColor = Color.DarkSlateBlue;
-            this.LabelCourt.Location = new Point(4, 46);
-            this.LabelCourt.Name = "LabelCourt";
-            this.LabelCourt.Size = new System.Drawing.Size(68, 15);
-            this.LabelCourt.TabIndex = 12;
-            this.LabelCourt.Text = "Court Index";
-            this.LinkLabelMuniCourt.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelMuniCourt.AutoSize = true;
-            this.LinkLabelMuniCourt.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelMuniCourt.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelMuniCourt.ForeColor = Color.DarkViolet;
-            this.LinkLabelMuniCourt.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelMuniCourt.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelMuniCourt.Location = new Point(125, 91);
-            this.LinkLabelMuniCourt.Name = "LinkLabelMuniCourt";
-            this.LinkLabelMuniCourt.Size = new System.Drawing.Size(112, 15);
-            this.LinkLabelMuniCourt.TabIndex = 52;
-            this.LinkLabelMuniCourt.TabStop = true;
-            this.LinkLabelMuniCourt.Text = "MUNICIPAL COURT";
-            this.LinkLabelMuniCourt.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelForeclosures.AutoSize = true;
-            this.LabelForeclosures.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelForeclosures.ForeColor = Color.DarkSlateBlue;
-            this.LabelForeclosures.Location = new Point(4, 181);
-            this.LabelForeclosures.Name = "LabelForeclosures";
-            this.LabelForeclosures.Size = new System.Drawing.Size(73, 15);
-            this.LabelForeclosures.TabIndex = 49;
-            this.LabelForeclosures.Text = "Foreclosures";
-            this.LinkLabelMaps.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelMaps.AutoSize = true;
-            this.LinkLabelMaps.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelMaps.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelMaps.ForeColor = Color.DarkViolet;
-            this.LinkLabelMaps.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelMaps.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelMaps.Location = new Point(125, 151);
-            this.LinkLabelMaps.Name = "LinkLabelMaps";
-            this.LinkLabelMaps.Size = new System.Drawing.Size(39, 15);
-            this.LinkLabelMaps.TabIndex = 9;
-            this.LinkLabelMaps.TabStop = true;
-            this.LinkLabelMaps.Text = "MAPS";
-            this.LinkLabelMaps.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelSheriff.AutoSize = true;
-            this.LabelSheriff.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelSheriff.ForeColor = Color.DarkSlateBlue;
-            this.LabelSheriff.Location = new Point(4, 166);
-            this.LabelSheriff.Name = "LabelSheriff";
-            this.LabelSheriff.Size = new System.Drawing.Size(76, 15);
-            this.LabelSheriff.TabIndex = 51;
-            this.LabelSheriff.Text = "Sheriff's Web";
-            this.LinkLabelAssessor.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelAssessor.AutoSize = true;
-            this.LinkLabelAssessor.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelAssessor.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelAssessor.ForeColor = Color.DarkViolet;
-            this.LinkLabelAssessor.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelAssessor.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelAssessor.Location = new Point(125, 136);
-            this.LinkLabelAssessor.Name = "LinkLabelAssessor";
-            this.LinkLabelAssessor.Size = new System.Drawing.Size(61, 15);
-            this.LinkLabelAssessor.TabIndex = 7;
-            this.LinkLabelAssessor.TabStop = true;
-            this.LinkLabelAssessor.Text = "ASSESSOR";
-            this.LinkLabelAssessor.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelTax.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelTax.AutoSize = true;
-            this.LinkLabelTax.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelTax.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelTax.ForeColor = Color.DarkViolet;
-            this.LinkLabelTax.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelTax.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelTax.Location = new Point(125, 121);
-            this.LinkLabelTax.Name = "LinkLabelTax";
-            this.LinkLabelTax.Size = new System.Drawing.Size(41, 15);
-            this.LinkLabelTax.TabIndex = 6;
-            this.LinkLabelTax.TabStop = true;
-            this.LinkLabelTax.Text = "TAXES";
-            this.LinkLabelTax.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelMapsGIS.AutoSize = true;
-            this.LabelMapsGIS.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelMapsGIS.ForeColor = Color.DarkSlateBlue;
-            this.LabelMapsGIS.Location = new Point(4, 151);
-            this.LabelMapsGIS.Name = "LabelMapsGIS";
-            this.LabelMapsGIS.Size = new System.Drawing.Size(58, 15);
-            this.LabelMapsGIS.TabIndex = 22;
-            this.LabelMapsGIS.Text = "Maps/GIS";
-            this.LinkLabelCoHome.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelCoHome.AutoSize = true;
-            this.LinkLabelCoHome.BackColor = Color.Transparent;
-            this.LinkLabelCoHome.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelCoHome.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelCoHome.ForeColor = Color.DarkViolet;
-            this.LinkLabelCoHome.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelCoHome.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelCoHome.Location = new Point(125, 106);
-            this.LinkLabelCoHome.Name = "LinkLabelCoHome";
-            this.LinkLabelCoHome.Size = new System.Drawing.Size(93, 15);
-            this.LinkLabelCoHome.TabIndex = 25;
-            this.LinkLabelCoHome.TabStop = true;
-            this.LinkLabelCoHome.Text = "COUNTY HOME";
-            this.LinkLabelCoHome.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelCourt.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelCourt.AutoSize = true;
-            this.LinkLabelCourt.BackColor = Color.Transparent;
-            this.LinkLabelCourt.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelCourt.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelCourt.ForeColor = Color.DarkViolet;
-            this.LinkLabelCourt.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelCourt.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelCourt.Location = new Point(125, 46);
-            this.LinkLabelCourt.Name = "LinkLabelCourt";
-            this.LinkLabelCourt.Size = new System.Drawing.Size(46, 15);
-            this.LinkLabelCourt.TabIndex = 10;
-            this.LinkLabelCourt.TabStop = true;
-            this.LinkLabelCourt.Text = "COURT";
-            this.LinkLabelCourt.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelProthon.AutoSize = true;
-            this.LabelProthon.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelProthon.ForeColor = Color.DarkSlateBlue;
-            this.LabelProthon.Location = new Point(4, 61);
-            this.LabelProthon.Name = "LabelProthon";
-            this.LabelProthon.Size = new System.Drawing.Size(50, 15);
-            this.LabelProthon.TabIndex = 15;
-            this.LabelProthon.Text = "Prothon";
-            this.LabelAssessor.AutoSize = true;
-            this.LabelAssessor.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelAssessor.ForeColor = Color.DarkSlateBlue;
-            this.LabelAssessor.Location = new Point(4, 136);
-            this.LabelAssessor.Name = "LabelAssessor";
-            this.LabelAssessor.Size = new System.Drawing.Size(52, 15);
-            this.LabelAssessor.TabIndex = 14;
-            this.LabelAssessor.Text = "Assessor";
-            this.LinkLabelProthon.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelProthon.AutoSize = true;
-            this.LinkLabelProthon.BackColor = Color.Transparent;
-            this.LinkLabelProthon.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelProthon.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelProthon.ForeColor = Color.DarkViolet;
-            this.LinkLabelProthon.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelProthon.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelProthon.Location = new Point(125, 61);
-            this.LinkLabelProthon.Name = "LinkLabelProthon";
-            this.LinkLabelProthon.Size = new System.Drawing.Size(102, 15);
-            this.LinkLabelProthon.TabIndex = 8;
-            this.LinkLabelProthon.TabStop = true;
-            this.LinkLabelProthon.Text = "PROTHONOTARY";
-            this.LinkLabelProthon.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelCountyTax.AutoSize = true;
-            this.LabelCountyTax.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelCountyTax.ForeColor = Color.DarkSlateBlue;
-            this.LabelCountyTax.Location = new Point(4, 121);
-            this.LabelCountyTax.Name = "LabelCountyTax";
-            this.LabelCountyTax.Size = new System.Drawing.Size(78, 15);
-            this.LabelCountyTax.TabIndex = 13;
-            this.LabelCountyTax.Text = "County Taxes";
-            this.LinkLabelProbate.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelProbate.AutoSize = true;
-            this.LinkLabelProbate.BackColor = Color.Transparent;
-            this.LinkLabelProbate.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabelProbate.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelProbate.ForeColor = Color.DarkViolet;
-            this.LinkLabelProbate.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelProbate.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelProbate.Location = new Point(125, 76);
-            this.LinkLabelProbate.Name = "LinkLabelProbate";
-            this.LinkLabelProbate.Size = new System.Drawing.Size(58, 15);
-            this.LinkLabelProbate.TabIndex = 23;
-            this.LinkLabelProbate.TabStop = true;
-            this.LinkLabelProbate.Text = "PROBATE";
-            this.LinkLabelProbate.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LabelCountyHome.AutoSize = true;
-            this.LabelCountyHome.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelCountyHome.ForeColor = Color.DarkSlateBlue;
-            this.LabelCountyHome.Location = new Point(4, 106);
-            this.LabelCountyHome.Name = "LabelCountyHome";
-            this.LabelCountyHome.Size = new System.Drawing.Size(111, 15);
-            this.LabelCountyHome.TabIndex = 26;
-            this.LabelCountyHome.Text = "County Home Page";
-            this.LabelMuniCourt.AutoSize = true;
-            this.LabelMuniCourt.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelMuniCourt.ForeColor = Color.DarkSlateBlue;
-            this.LabelMuniCourt.Location = new Point(4, 91);
-            this.LabelMuniCourt.Name = "LabelMuniCourt";
-            this.LabelMuniCourt.Size = new System.Drawing.Size(93, 15);
-            this.LabelMuniCourt.TabIndex = 53;
-            this.LabelMuniCourt.Text = "Municipal Court";
-            this.LabelProbate.AutoSize = true;
-            this.LabelProbate.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelProbate.ForeColor = Color.DarkSlateBlue;
-            this.LabelProbate.Location = new Point(4, 76);
-            this.LabelProbate.Name = "LabelProbate";
-            this.LabelProbate.Size = new System.Drawing.Size(81, 15);
-            this.LabelProbate.TabIndex = 24;
-            this.LabelProbate.Text = "Probate Court";
-            this.Label_user.AutoSize = true;
-            this.Label_user.Location = new Point(243, 1);
-            this.Label_user.Name = "Label_user";
-            this.Label_user.Size = new System.Drawing.Size(64, 15);
-            this.Label_user.TabIndex = 58;
-            this.Label_user.Text = "Username";
-            this.Label_pwd.AutoSize = true;
-            this.Label_pwd.Location = new Point(316, 1);
-            this.Label_pwd.Name = "Label_pwd";
-            this.Label_pwd.Size = new System.Drawing.Size(59, 15);
-            this.Label_pwd.TabIndex = 59;
-            this.Label_pwd.Text = "Password";
-            this.LinkLabelPlats.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabelPlats.AutoSize = true;
-            this.LinkLabelPlats.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabelPlats.ForeColor = Color.DarkViolet;
-            this.LinkLabelPlats.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabelPlats.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabelPlats.Location = new Point(243, 151);
-            this.LinkLabelPlats.Name = "LinkLabelPlats";
-            this.LinkLabelPlats.Size = new System.Drawing.Size(41, 15);
-            this.LinkLabelPlats.TabIndex = 60;
-            this.LinkLabelPlats.TabStop = true;
-            this.LinkLabelPlats.Text = "PLATS";
-            this.LinkLabelPlats.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_OtherURL.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_OtherURL.AutoSize = true;
-            this.LinkLabel_OtherURL.BackColor = Color.Transparent;
-            this.LinkLabel_OtherURL.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_OtherURL.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_OtherURL.ForeColor = Color.DarkViolet;
-            this.LinkLabel_OtherURL.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_OtherURL.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_OtherURL.Location = new Point(125, 196);
-            this.LinkLabel_OtherURL.Name = "LinkLabel_OtherURL";
-            this.LinkLabel_OtherURL.Size = new System.Drawing.Size(69, 15);
-            this.LinkLabel_OtherURL.TabIndex = 62;
-            this.LinkLabel_OtherURL.TabStop = true;
-            this.LinkLabel_OtherURL.Text = "OTHER URL";
-            this.LinkLabel_OtherURL.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_UCC.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_UCC.AutoSize = true;
-            this.LinkLabel_UCC.BackColor = Color.Transparent;
-            this.LinkLabel_UCC.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_UCC.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_UCC.ForeColor = Color.DarkViolet;
-            this.LinkLabel_UCC.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_UCC.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_UCC.Location = new Point(125, 226);
-            this.LinkLabel_UCC.Name = "LinkLabel_UCC";
-            this.LinkLabel_UCC.Size = new System.Drawing.Size(78, 15);
-            this.LinkLabel_UCC.TabIndex = 190;
-            this.LinkLabel_UCC.TabStop = true;
-            this.LinkLabel_UCC.Text = "UCC SEARCH";
-            this.LinkLabel_UCC.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_SecState.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_SecState.AutoSize = true;
-            this.LinkLabel_SecState.BackColor = Color.Transparent;
-            this.LinkLabel_SecState.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_SecState.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_SecState.ForeColor = Color.DarkViolet;
-            this.LinkLabel_SecState.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_SecState.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_SecState.Location = new Point(125, 241);
-            this.LinkLabel_SecState.Name = "LinkLabel_SecState";
-            this.LinkLabel_SecState.Size = new System.Drawing.Size(99, 15);
-            this.LinkLabel_SecState.TabIndex = 191;
-            this.LinkLabel_SecState.TabStop = true;
-            this.LinkLabel_SecState.Text = "SECT'Y OF STATE";
-            this.LinkLabel_SecState.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_State_Code.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_State_Code.AutoSize = true;
-            this.LinkLabel_State_Code.BackColor = Color.Transparent;
-            this.LinkLabel_State_Code.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_State_Code.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_State_Code.ForeColor = Color.DarkViolet;
-            this.LinkLabel_State_Code.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_State_Code.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_State_Code.Location = new Point(125, 256);
-            this.LinkLabel_State_Code.Name = "LinkLabel_State_Code";
-            this.LinkLabel_State_Code.Size = new System.Drawing.Size(75, 15);
-            this.LinkLabel_State_Code.TabIndex = 192;
-            this.LinkLabel_State_Code.TabStop = true;
-            this.LinkLabel_State_Code.Text = "STATE CODE";
-            this.LinkLabel_State_Code.VisitedLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_DeptIns.ActiveLinkColor = Color.GhostWhite;
-            this.LinkLabel_DeptIns.AutoSize = true;
-            this.LinkLabel_DeptIns.BackColor = Color.Transparent;
-            this.LinkLabel_DeptIns.DisabledLinkColor = Color.DarkSlateBlue;
-            this.LinkLabel_DeptIns.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel_DeptIns.ForeColor = Color.DarkViolet;
-            this.LinkLabel_DeptIns.LinkBehavior = LinkBehavior.HoverUnderline;
-            this.LinkLabel_DeptIns.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel_DeptIns.Location = new Point(125, 271);
-            this.LinkLabel_DeptIns.Name = "LinkLabel_DeptIns";
-            this.LinkLabel_DeptIns.Size = new System.Drawing.Size(74, 15);
-            this.LinkLabel_DeptIns.TabIndex = 193;
-            this.LinkLabel_DeptIns.TabStop = true;
-            this.LinkLabel_DeptIns.Text = "DEPT OF INS";
-            this.LinkLabel_DeptIns.VisitedLinkColor = Color.DarkSlateBlue;
-            this.GroupBox4.BackColor = Color.GhostWhite;
-            this.GroupBox4.Controls.Add(this.LabelUseIns);
-            this.GroupBox4.Controls.Add(this.LabelUseProps);
-            this.GroupBox4.Controls.Add(this.LabelUseCopy);
-            this.GroupBox4.Controls.Add(this.Label20);
-            this.GroupBox4.Controls.Add(this.Label15);
-            this.GroupBox4.Controls.Add(this.Label28);
-            this.GroupBox4.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox4.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox4.Location = new Point(438, 3);
-            this.GroupBox4.Name = "GroupBox4";
-            this.GroupBox4.Size = new System.Drawing.Size(143, 77);
-            this.GroupBox4.TabIndex = 182;
-            this.GroupBox4.TabStop = false;
-            this.GroupBox4.Text = "PRODUCTS ONLINE";
-            this.LabelUseIns.AutoSize = true;
-            this.LabelUseIns.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseIns.ForeColor = Color.Black;
-            this.LabelUseIns.Location = new Point(76, 22);
-            this.LabelUseIns.Name = "LabelUseIns";
-            this.LabelUseIns.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseIns.TabIndex = 67;
-            this.LabelUseIns.Text = "*";
-            this.LabelUseProps.AutoSize = true;
-            this.LabelUseProps.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseProps.ForeColor = Color.Black;
-            this.LabelUseProps.Location = new Point(76, 37);
-            this.LabelUseProps.Name = "LabelUseProps";
-            this.LabelUseProps.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseProps.TabIndex = 66;
-            this.LabelUseProps.Text = "*";
-            this.LabelUseCopy.AutoSize = true;
-            this.LabelUseCopy.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseCopy.ForeColor = Color.Black;
-            this.LabelUseCopy.Location = new Point(76, 52);
-            this.LabelUseCopy.Name = "LabelUseCopy";
-            this.LabelUseCopy.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseCopy.TabIndex = 65;
-            this.LabelUseCopy.Text = "*";
-            this.Label20.AutoSize = true;
-            this.Label20.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label20.ForeColor = Color.DarkSlateBlue;
-            this.Label20.Location = new Point(6, 37);
-            this.Label20.Name = "Label20";
-            this.Label20.Size = new System.Drawing.Size(64, 15);
-            this.Label20.TabIndex = 64;
-            this.Label20.Text = "Prop Repts";
-            this.Label15.AutoSize = true;
-            this.Label15.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label15.ForeColor = Color.DarkSlateBlue;
-            this.Label15.Location = new Point(6, 22);
-            this.Label15.Name = "Label15";
-            this.Label15.Size = new System.Drawing.Size(58, 15);
-            this.Label15.TabIndex = 63;
-            this.Label15.Text = "Insurance";
-            this.Label28.AutoSize = true;
-            this.Label28.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label28.ForeColor = Color.DarkSlateBlue;
-            this.Label28.Location = new Point(6, 52);
-            this.Label28.Name = "Label28";
-            this.Label28.Size = new System.Drawing.Size(67, 15);
-            this.Label28.TabIndex = 62;
-            this.Label28.Text = "Doc Copies";
-            this.GroupBox3.BackColor = Color.GhostWhite;
-            this.GroupBox3.Controls.Add(this.Label4Tap);
-            this.GroupBox3.Controls.Add(this.Label5dtree);
-            this.GroupBox3.Controls.Add(this.Label6RV);
-            this.GroupBox3.Controls.Add(this.LinkLabel10);
-            this.GroupBox3.Controls.Add(this.LinkLabel9);
-            this.GroupBox3.Controls.Add(this.LinkLabel16);
-            this.GroupBox3.Controls.Add(this.LabelUseTap);
-            this.GroupBox3.Controls.Add(this.LabelUseDtree);
-            this.GroupBox3.Controls.Add(this.LabelUseRV);
-            this.GroupBox3.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox3.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox3.Location = new Point(592, 3);
-            this.GroupBox3.Name = "GroupBox3";
-            this.GroupBox3.Size = new System.Drawing.Size(225, 77);
-            this.GroupBox3.TabIndex = 181;
-            this.GroupBox3.TabStop = false;
-            this.GroupBox3.Text = "3rd PARTY VENDORS";
-            this.Label4Tap.AutoSize = true;
-            this.Label4Tap.Font = new System.Drawing.Font("Segoe UI", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label4Tap.ForeColor = Color.Black;
-            this.Label4Tap.Location = new Point(138, 25);
-            this.Label4Tap.Name = "Label4Tap";
-            this.Label4Tap.Size = new System.Drawing.Size(59, 12);
-            this.Label4Tap.TabIndex = 65;
-            this.Label4Tap.Text = "MORE INFO";
-            this.Label5dtree.AutoSize = true;
-            this.Label5dtree.Font = new System.Drawing.Font("Segoe UI", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label5dtree.ForeColor = Color.Black;
-            this.Label5dtree.Location = new Point(138, 55);
-            this.Label5dtree.Name = "Label5dtree";
-            this.Label5dtree.Size = new System.Drawing.Size(59, 12);
-            this.Label5dtree.TabIndex = 66;
-            this.Label5dtree.Text = "MORE INFO";
-            this.Label6RV.AutoSize = true;
-            this.Label6RV.Font = new System.Drawing.Font("Segoe UI", 7f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label6RV.ForeColor = Color.Black;
-            this.Label6RV.Location = new Point(138, 40);
-            this.Label6RV.Name = "Label6RV";
-            this.Label6RV.Size = new System.Drawing.Size(59, 12);
-            this.Label6RV.TabIndex = 64;
-            this.Label6RV.Text = "MORE INFO";
-            this.LinkLabel10.ActiveLinkColor = Color.Plum;
-            this.LinkLabel10.AutoSize = true;
-            this.LinkLabel10.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel10.ForeColor = Color.DarkViolet;
-            this.LinkLabel10.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel10.Location = new Point(6, 54);
-            this.LinkLabel10.Name = "LinkLabel10";
-            this.LinkLabel10.Size = new System.Drawing.Size(54, 15);
-            this.LinkLabel10.TabIndex = 25;
-            this.LinkLabel10.TabStop = true;
-            this.LinkLabel10.Text = "DocEdge";
-            this.LinkLabel9.ActiveLinkColor = Color.Plum;
-            this.LinkLabel9.AutoSize = true;
-            this.LinkLabel9.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel9.ForeColor = Color.DarkViolet;
-            this.LinkLabel9.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel9.Location = new Point(6, 38);
-            this.LinkLabel9.Name = "LinkLabel9";
-            this.LinkLabel9.Size = new System.Drawing.Size(59, 15);
-            this.LinkLabel9.TabIndex = 26;
-            this.LinkLabel9.TabStop = true;
-            this.LinkLabel9.Text = "RedVision";
-            this.LinkLabel16.ActiveLinkColor = Color.Plum;
-            this.LinkLabel16.AutoSize = true;
-            this.LinkLabel16.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel16.ForeColor = Color.DarkViolet;
-            this.LinkLabel16.LinkColor = Color.FromArgb(0, 134, 77);
-            this.LinkLabel16.Location = new Point(6, 22);
-            this.LinkLabel16.Name = "LinkLabel16";
-            this.LinkLabel16.Size = new System.Drawing.Size(52, 15);
-            this.LinkLabel16.TabIndex = 27;
-            this.LinkLabel16.TabStop = true;
-            this.LinkLabel16.Text = "Tapestry";
-            this.LabelUseTap.AutoSize = true;
-            this.LabelUseTap.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseTap.ForeColor = Color.Black;
-            this.LabelUseTap.Location = new Point(71, 22);
-            this.LabelUseTap.Name = "LabelUseTap";
-            this.LabelUseTap.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseTap.TabIndex = 61;
-            this.LabelUseTap.Text = "*";
-            this.LabelUseDtree.AutoSize = true;
-            this.LabelUseDtree.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseDtree.ForeColor = Color.Black;
-            this.LabelUseDtree.Location = new Point(71, 52);
-            this.LabelUseDtree.Name = "LabelUseDtree";
-            this.LabelUseDtree.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseDtree.TabIndex = 63;
-            this.LabelUseDtree.Text = "*";
-            this.LabelUseRV.AutoSize = true;
-            this.LabelUseRV.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LabelUseRV.ForeColor = Color.Black;
-            this.LabelUseRV.Location = new Point(71, 37);
-            this.LabelUseRV.Name = "LabelUseRV";
-            this.LabelUseRV.Size = new System.Drawing.Size(12, 15);
-            this.LabelUseRV.TabIndex = 60;
-            this.LabelUseRV.Text = "*";
-            this.GroupBox2.BackColor = Color.GhostWhite;
-            this.GroupBox2.Controls.Add(this.lbl_courtImgDate);
-            this.GroupBox2.Controls.Add(this.lbl_courtIndexDate);
-            this.GroupBox2.Controls.Add(this.Label34);
-            this.GroupBox2.Controls.Add(this.Label35);
-            this.GroupBox2.Controls.Add(this.lbl_copyFeeAmt);
-            this.GroupBox2.Controls.Add(this.Label16);
-            this.GroupBox2.Controls.Add(this.Label27);
-            this.GroupBox2.Controls.Add(this.LabelIndex_source);
-            this.GroupBox2.Controls.Add(this.LabelCopyPmtType);
-            this.GroupBox2.Controls.Add(this.Label26);
-            this.GroupBox2.Controls.Add(this.LabelImage_date);
-            this.GroupBox2.Controls.Add(this.LabelIndex_date);
-            this.GroupBox2.Controls.Add(this.Label12);
-            this.GroupBox2.Controls.Add(this.Label10);
-            this.GroupBox2.Controls.Add(this.Label29);
-            this.GroupBox2.Controls.Add(this.LabelCopy_source);
-            this.GroupBox2.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox2.ForeColor = Color.FromArgb(64, 64, 64);
-            this.GroupBox2.Location = new Point(438, 86);
-            this.GroupBox2.Name = "GroupBox2";
-            this.GroupBox2.Size = new System.Drawing.Size(219, 151);
-            this.GroupBox2.TabIndex = 180;
-            this.GroupBox2.TabStop = false;
-            this.GroupBox2.Text = "RESOURCE INFORMATION";
-            this.lbl_courtImgDate.AutoSize = true;
-            this.lbl_courtImgDate.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_courtImgDate.ForeColor = Color.Black;
-            this.lbl_courtImgDate.Location = new Point(112, 84);
-            this.lbl_courtImgDate.Name = "lbl_courtImgDate";
-            this.lbl_courtImgDate.Size = new System.Drawing.Size(9, 12);
-            this.lbl_courtImgDate.TabIndex = 73;
-            this.lbl_courtImgDate.Text = "*";
-            this.lbl_courtIndexDate.AutoSize = true;
-            this.lbl_courtIndexDate.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_courtIndexDate.ForeColor = Color.Black;
-            this.lbl_courtIndexDate.Location = new Point(112, 68);
-            this.lbl_courtIndexDate.Name = "lbl_courtIndexDate";
-            this.lbl_courtIndexDate.Size = new System.Drawing.Size(9, 12);
-            this.lbl_courtIndexDate.TabIndex = 72;
-            this.lbl_courtIndexDate.Text = "*";
-            this.Label34.AutoSize = true;
-            this.Label34.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label34.ForeColor = Color.DarkSlateBlue;
-            this.Label34.Location = new Point(7, 84);
-            this.Label34.Name = "Label34";
-            this.Label34.Size = new System.Drawing.Size(88, 12);
-            this.Label34.TabIndex = 71;
-            this.Label34.Text = "Court Image Date: ";
-            this.Label35.AutoSize = true;
-            this.Label35.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label35.ForeColor = Color.DarkSlateBlue;
-            this.Label35.Location = new Point(7, 68);
-            this.Label35.Name = "Label35";
-            this.Label35.Size = new System.Drawing.Size(85, 12);
-            this.Label35.TabIndex = 70;
-            this.Label35.Text = "Court Index Date: ";
-            this.lbl_copyFeeAmt.AutoSize = true;
-            this.lbl_copyFeeAmt.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.lbl_copyFeeAmt.ForeColor = Color.Black;
-            this.lbl_copyFeeAmt.Location = new Point(112, 132);
-            this.lbl_copyFeeAmt.Name = "lbl_copyFeeAmt";
-            this.lbl_copyFeeAmt.Size = new System.Drawing.Size(9, 12);
-            this.lbl_copyFeeAmt.TabIndex = 69;
-            this.lbl_copyFeeAmt.Text = "*";
-            this.Label16.AutoSize = true;
-            this.Label16.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label16.ForeColor = Color.DarkSlateBlue;
-            this.Label16.Location = new Point(7, 132);
-            this.Label16.Name = "Label16";
-            this.Label16.Size = new System.Drawing.Size(90, 12);
-            this.Label16.TabIndex = 68;
-            this.Label16.Text = "Copy Fee Amount: ";
-            this.Label27.AutoSize = true;
-            this.Label27.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label27.ForeColor = Color.DarkSlateBlue;
-            this.Label27.Location = new Point(7, 20);
-            this.Label27.Name = "Label27";
-            this.Label27.Size = new System.Drawing.Size(78, 12);
-            this.Label27.TabIndex = 62;
-            this.Label27.Text = "INDEX SOURCE: ";
-            this.LabelIndex_source.AutoSize = true;
-            this.LabelIndex_source.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelIndex_source.ForeColor = Color.Black;
-            this.LabelIndex_source.Location = new Point(112, 20);
-            this.LabelIndex_source.Name = "LabelIndex_source";
-            this.LabelIndex_source.Size = new System.Drawing.Size(9, 12);
-            this.LabelIndex_source.TabIndex = 63;
-            this.LabelIndex_source.Text = "*";
-            this.LabelCopyPmtType.AutoSize = true;
-            this.LabelCopyPmtType.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelCopyPmtType.ForeColor = Color.Black;
-            this.LabelCopyPmtType.Location = new Point(112, 116);
-            this.LabelCopyPmtType.Name = "LabelCopyPmtType";
-            this.LabelCopyPmtType.Size = new System.Drawing.Size(9, 12);
-            this.LabelCopyPmtType.TabIndex = 61;
-            this.LabelCopyPmtType.Text = "*";
-            this.Label26.AutoSize = true;
-            this.Label26.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label26.ForeColor = Color.DarkSlateBlue;
-            this.Label26.Location = new Point(7, 116);
-            this.Label26.Name = "Label26";
-            this.Label26.Size = new System.Drawing.Size(66, 12);
-            this.Label26.TabIndex = 60;
-            this.Label26.Text = "Copy Pay By: ";
-            this.LabelImage_date.AutoSize = true;
-            this.LabelImage_date.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelImage_date.ForeColor = Color.Black;
-            this.LabelImage_date.Location = new Point(112, 52);
-            this.LabelImage_date.Name = "LabelImage_date";
-            this.LabelImage_date.Size = new System.Drawing.Size(9, 12);
-            this.LabelImage_date.TabIndex = 59;
-            this.LabelImage_date.Text = "*";
-            this.LabelIndex_date.AutoSize = true;
-            this.LabelIndex_date.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelIndex_date.ForeColor = Color.Black;
-            this.LabelIndex_date.Location = new Point(112, 36);
-            this.LabelIndex_date.Name = "LabelIndex_date";
-            this.LabelIndex_date.Size = new System.Drawing.Size(9, 12);
-            this.LabelIndex_date.TabIndex = 58;
-            this.LabelIndex_date.Text = "*";
-            this.Label12.AutoSize = true;
-            this.Label12.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label12.ForeColor = Color.DarkSlateBlue;
-            this.Label12.Location = new Point(7, 52);
-            this.Label12.Name = "Label12";
-            this.Label12.Size = new System.Drawing.Size(61, 12);
-            this.Label12.TabIndex = 57;
-            this.Label12.Text = "Image Date: ";
-            this.Label10.AutoSize = true;
-            this.Label10.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label10.ForeColor = Color.DarkSlateBlue;
-            this.Label10.Location = new Point(7, 36);
-            this.Label10.Name = "Label10";
-            this.Label10.Size = new System.Drawing.Size(83, 12);
-            this.Label10.TabIndex = 56;
-            this.Label10.Text = "Land Index Date: ";
-            this.Label29.AutoSize = true;
-            this.Label29.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.Label29.ForeColor = Color.DarkSlateBlue;
-            this.Label29.Location = new Point(7, 100);
-            this.Label29.Name = "Label29";
-            this.Label29.Size = new System.Drawing.Size(76, 12);
-            this.Label29.TabIndex = 54;
-            this.Label29.Text = "COPY SOURCE: ";
-            this.LabelCopy_source.AutoSize = true;
-            this.LabelCopy_source.Font = new System.Drawing.Font("Segoe UI", 10f, FontStyle.Regular, GraphicsUnit.Pixel, 0);
-            this.LabelCopy_source.ForeColor = Color.Black;
-            this.LabelCopy_source.Location = new Point(112, 100);
-            this.LabelCopy_source.Name = "LabelCopy_source";
-            this.LabelCopy_source.Size = new System.Drawing.Size(9, 12);
-            this.LabelCopy_source.TabIndex = 55;
-            this.LabelCopy_source.Text = "*";
-            this.lblOpenRunSheet.AutoSize = true;
-            this.lblOpenRunSheet.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblOpenRunSheet.Location = new Point(38, 34);
-            this.lblOpenRunSheet.Name = "lblOpenRunSheet";
-            this.lblOpenRunSheet.Size = new System.Drawing.Size(111, 15);
-            this.lblOpenRunSheet.TabIndex = 187;
-            this.lblOpenRunSheet.Text = "Abstract Run Sheet";
-            this.TabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            this.TabControl1.Controls.Add(this.TabPg1Docs);
-            this.TabControl1.Controls.Add(this.TabPg2PhBk);
-            this.TabControl1.Controls.Add(this.TabPg3Cal);
-            this.TabControl1.Controls.Add(this.TabPg4Clearing);
-            this.TabControl1.Controls.Add(this.TabPg5Req);
-            this.TabControl1.Controls.Add(this.TabPg6OtherLogins);
-            this.TabControl1.Controls.Add(this.TabPg7Taxes);
-            this.TabControl1.Controls.Add(this.TabPg8UWMan);
-            this.TabControl1.Controls.Add(this.TabPage1);
-            this.TabControl1.Controls.Add(this.TabPage2);
-            this.TabControl1.Controls.Add(this.TabPage3);
-            this.TabControl1.Location = new Point(0, 387);
-            this.TabControl1.Name = "TabControl1";
-            this.TabControl1.SelectedIndex = 0;
-            this.TabControl1.Size = new System.Drawing.Size(874, 227);
-            this.TabControl1.TabIndex = 190;
-            this.TabPg1Docs.AutoScroll = true;
-            this.TabPg1Docs.BackColor = Color.GhostWhite;
-            this.TabPg1Docs.Controls.Add(this.pboxOpenCredCard);
-            this.TabPg1Docs.Controls.Add(this.lbl_creditCard);
-            this.TabPg1Docs.Controls.Add(this.pbox_Abstr_SOP);
-            this.TabPg1Docs.Controls.Add(this.lbl_doc_AbstractingSOPs);
-            this.TabPg1Docs.Controls.Add(this.pboxOpenEtitleWkshare);
-            this.TabPg1Docs.Controls.Add(this.lblOpenEtitleWkshare);
-            this.TabPg1Docs.Controls.Add(this.pboxOpenORT_Wkshare);
-            this.TabPg1Docs.Controls.Add(this.lblOpenORT_Wkshare);
-            this.TabPg1Docs.Controls.Add(this.Button_ClosingDept);
-            this.TabPg1Docs.Controls.Add(this.Button_TitleDept);
-            this.TabPg1Docs.Controls.Add(this.GroupBox5);
-            this.TabPg1Docs.Controls.Add(this.pboxOpenClearanceCustSpecs);
-            this.TabPg1Docs.Controls.Add(this.lblOpenClearanceCustSpecs);
-            this.TabPg1Docs.Controls.Add(this.pboxOpenTitleCustSpecs);
-            this.TabPg1Docs.Controls.Add(this.lblOpenTitleCustSpec);
-            this.TabPg1Docs.Controls.Add(this.pboxOpenRunSheet);
-            this.TabPg1Docs.Controls.Add(this.lblOpenRunSheet);
-            this.TabPg1Docs.Location = new Point(4, 22);
-            this.TabPg1Docs.Name = "TabPg1Docs";
-            this.TabPg1Docs.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg1Docs.Size = new System.Drawing.Size(866, 201);
-            this.TabPg1Docs.TabIndex = 0;
-            this.TabPg1Docs.Text = "Doc Manager";
-            this.pbox_Abstr_SOP.Image = WindowsApplication1.Resources.word_logo;
-            this.pbox_Abstr_SOP.Location = new Point(22, 11);
-            this.pbox_Abstr_SOP.Name = "pbox_Abstr_SOP";
-            this.pbox_Abstr_SOP.Size = new System.Drawing.Size(14, 14);
-            this.pbox_Abstr_SOP.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbox_Abstr_SOP.TabIndex = 203;
-            this.pbox_Abstr_SOP.TabStop = false;
-            this.pbox_Abstr_SOP.Tag = "AbstractRunSheet";
-            this.lbl_doc_AbstractingSOPs.AutoSize = true;
-            this.lbl_doc_AbstractingSOPs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_AbstractingSOPs.Location = new Point(38, 10);
-            this.lbl_doc_AbstractingSOPs.Name = "lbl_doc_AbstractingSOPs";
-            this.lbl_doc_AbstractingSOPs.Size = new System.Drawing.Size(140, 15);
-            this.lbl_doc_AbstractingSOPs.TabIndex = 204;
-            this.lbl_doc_AbstractingSOPs.Text = "Online Abstracting SOPs";
-            this.Button_PolicyWarehouse.BackColor = Color.Turquoise;
-            this.Button_PolicyWarehouse.Cursor = Cursors.Hand;
-            this.Button_PolicyWarehouse.FlatAppearance.BorderColor = Color.MediumSlateBlue;
-            this.Button_PolicyWarehouse.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_PolicyWarehouse.FlatAppearance.MouseOverBackColor = Color.LightCyan;
-            this.Button_PolicyWarehouse.FlatStyle = FlatStyle.Flat;
-            this.Button_PolicyWarehouse.Font = new System.Drawing.Font("Arial", 7.5f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Button_PolicyWarehouse.ForeColor = Color.Indigo;
-            this.Button_PolicyWarehouse.Location = new Point(717, 2);
-            this.Button_PolicyWarehouse.Padding = new System.Windows.Forms.Padding(0);
-            this.Button_PolicyWarehouse.Name = "Button_PolicyWarehouse";
-            this.Button_PolicyWarehouse.Size = new System.Drawing.Size(70, 20);
-            this.Button_PolicyWarehouse.TabIndex = 202;
-            this.Button_PolicyWarehouse.Text = "POLICIES";
-            this.Button_PolicyWarehouse.UseVisualStyleBackColor = false;
-            this.pboxOpenEtitleWkshare.Image = (Image)componentResourceManager.GetObject("pboxOpenEtitleWkshare.Image");
-            this.pboxOpenEtitleWkshare.Location = new Point(21, 155);
-            this.pboxOpenEtitleWkshare.Name = "pboxOpenEtitleWkshare";
-            this.pboxOpenEtitleWkshare.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenEtitleWkshare.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenEtitleWkshare.TabIndex = 200;
-            this.pboxOpenEtitleWkshare.TabStop = false;
-            this.pboxOpenEtitleWkshare.Tag = "AbstractRunSheet";
-            this.lblOpenEtitleWkshare.AutoSize = true;
-            this.lblOpenEtitleWkshare.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblOpenEtitleWkshare.Location = new Point(38, 154);
-            this.lblOpenEtitleWkshare.Name = "lblOpenEtitleWkshare";
-            this.lblOpenEtitleWkshare.Size = new System.Drawing.Size(178, 15);
-            this.lblOpenEtitleWkshare.TabIndex = 201;
-            this.lblOpenEtitleWkshare.Text = "Stewart eTitle Workshare FAQ's";
-            this.pboxOpenORT_Wkshare.Image = (Image)componentResourceManager.GetObject("pboxOpenORT_Wkshare.Image");
-            this.pboxOpenORT_Wkshare.Location = new Point(21, 131);
-            this.pboxOpenORT_Wkshare.Name = "pboxOpenORT_Wkshare";
-            this.pboxOpenORT_Wkshare.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenORT_Wkshare.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenORT_Wkshare.TabIndex = 198;
-            this.pboxOpenORT_Wkshare.TabStop = false;
-            this.pboxOpenORT_Wkshare.Tag = "AbstractRunSheet";
-            this.lblOpenORT_Wkshare.AutoSize = true;
-            this.lblOpenORT_Wkshare.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblOpenORT_Wkshare.Location = new Point(38, 130);
-            this.lblOpenORT_Wkshare.Name = "lblOpenORT_Wkshare";
-            this.lblOpenORT_Wkshare.Size = new System.Drawing.Size(140, 15);
-            this.lblOpenORT_Wkshare.TabIndex = 199;
-            this.lblOpenORT_Wkshare.Text = "ORTIC Workshare FAQ's";
-            this.Button_ClosingDept.BackColor = Color.FromArgb(211, 168, 255);
-            this.Button_ClosingDept.Cursor = Cursors.Hand;
-            this.Button_ClosingDept.FlatAppearance.BorderColor = Color.Purple;
-            this.Button_ClosingDept.FlatAppearance.BorderSize = 2;
-            this.Button_ClosingDept.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_ClosingDept.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.Button_ClosingDept.FlatStyle = FlatStyle.Flat;
-            this.Button_ClosingDept.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.Button_ClosingDept.ForeColor = Color.Indigo;
-            this.Button_ClosingDept.Location = new Point(619, 153);
-            this.Button_ClosingDept.Padding = new System.Windows.Forms.Padding(0);
-            this.Button_ClosingDept.Name = "Button_ClosingDept";
-            this.Button_ClosingDept.Size = new System.Drawing.Size(82, 30);
-            this.Button_ClosingDept.TabIndex = 197;
-            this.Button_ClosingDept.Text = "Clos Dept";
-            this.Button_ClosingDept.UseVisualStyleBackColor = false;
-            this.Button_ClosingDept.Visible = false;
-            this.Button_TitleDept.BackColor = Color.FromArgb(211, 168, 255);
-            this.Button_TitleDept.Cursor = Cursors.Hand;
-            this.Button_TitleDept.FlatAppearance.BorderColor = Color.Purple;
-            this.Button_TitleDept.FlatAppearance.BorderSize = 2;
-            this.Button_TitleDept.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_TitleDept.FlatAppearance.MouseOverBackColor = Color.Cyan;
-            this.Button_TitleDept.FlatStyle = FlatStyle.Flat;
-            this.Button_TitleDept.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f, FontStyle.Bold, GraphicsUnit.Pixel, 0);
-            this.Button_TitleDept.ForeColor = Color.Indigo;
-            this.Button_TitleDept.Location = new Point(619, 118);
-            this.Button_TitleDept.Margin = new System.Windows.Forms.Padding(0);
-            this.Button_TitleDept.Name = "Button_TitleDept";
-            this.Button_TitleDept.Size = new System.Drawing.Size(82, 30);
-            this.Button_TitleDept.TabIndex = 196;
-            this.Button_TitleDept.Text = "Title Dept";
-            this.Button_TitleDept.UseVisualStyleBackColor = false;
-            this.Button_TitleDept.Visible = false;
-            this.ButtonHelp.BackColor = Color.Turquoise;
-            this.ButtonHelp.Cursor = Cursors.Hand;
-            this.ButtonHelp.FlatAppearance.BorderColor = Color.MediumSlateBlue;
-            this.ButtonHelp.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.ButtonHelp.FlatAppearance.MouseOverBackColor = Color.LightCyan;
-            this.ButtonHelp.FlatStyle = FlatStyle.Flat;
-            this.ButtonHelp.Font = new System.Drawing.Font("Arial", 7.5f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.ButtonHelp.ForeColor = Color.Indigo;
-            this.ButtonHelp.Location = new Point(647, 2);
-            this.ButtonHelp.Margin = new System.Windows.Forms.Padding(0);
-            this.ButtonHelp.Name = "ButtonHelp";
-            this.ButtonHelp.Size = new System.Drawing.Size(70, 20);
-            this.ButtonHelp.TabIndex = 195;
-            this.ButtonHelp.Text = "ORB HELP";
-            this.ButtonHelp.UseVisualStyleBackColor = false;
-            this.Button_RateCalc.BackColor = Color.Turquoise;
-            this.Button_RateCalc.Cursor = Cursors.Hand;
-            this.Button_RateCalc.FlatAppearance.BorderColor = Color.MediumSlateBlue;
-            this.Button_RateCalc.FlatAppearance.MouseDownBackColor = Color.Magenta;
-            this.Button_RateCalc.FlatAppearance.MouseOverBackColor = Color.LightCyan;
-            this.Button_RateCalc.FlatStyle = FlatStyle.Flat;
-            this.Button_RateCalc.Font = new System.Drawing.Font("Arial", 7.5f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Button_RateCalc.ForeColor = Color.Indigo;
-            this.Button_RateCalc.Location = new Point(787, 2);
-            this.Button_RateCalc.Margin = new System.Windows.Forms.Padding(0);
-            this.Button_RateCalc.Name = "Button_RateCalc";
-            this.Button_RateCalc.Size = new System.Drawing.Size(83, 20);
-            this.Button_RateCalc.TabIndex = 194;
-            this.Button_RateCalc.Text = "RATE CALC";
-            this.Button_RateCalc.UseVisualStyleBackColor = false;
-            this.GroupBox5.BackColor = Color.MintCream;
-            this.GroupBox5.Controls.Add(this.Label114);
-            this.GroupBox5.Controls.Add(this.Label113);
-            this.GroupBox5.Controls.Add(this.ButtonResetDocs);
-            this.GroupBox5.Controls.Add(this.ButtonGetDoc);
-            this.GroupBox5.Controls.Add(this.cboxDocType);
-            this.GroupBox5.Controls.Add(this.cboxDocState);
-            this.GroupBox5.Controls.Add(this.linkUS_Legal_Forms);
-            this.GroupBox5.Controls.Add(this.lbl_NotFound);
-            this.GroupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.GroupBox5.Location = new Point(339, 12);
-            this.GroupBox5.Name = "GroupBox5";
-            this.GroupBox5.Size = new System.Drawing.Size(260, 174);
-            this.GroupBox5.TabIndex = 193;
-            this.GroupBox5.TabStop = false;
-            this.GroupBox5.Text = "Legal Doc Templates";
-            this.Label114.AutoSize = true;
-            this.Label114.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label114.Location = new Point(14, 58);
-            this.Label114.Name = "Label114";
-            this.Label114.Size = new System.Drawing.Size(54, 13);
-            this.Label114.TabIndex = 7;
-            this.Label114.Text = "Doc Type";
-            this.Label113.AutoSize = true;
-            this.Label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label113.Location = new Point(36, 30);
-            this.Label113.Name = "Label113";
-            this.Label113.Size = new System.Drawing.Size(32, 13);
-            this.Label113.TabIndex = 6;
-            this.Label113.Text = "State";
-            this.ButtonResetDocs.Location = new Point(152, 89);
-            this.ButtonResetDocs.Name = "ButtonResetDocs";
-            this.ButtonResetDocs.Size = new System.Drawing.Size(73, 23);
-            this.ButtonResetDocs.TabIndex = 5;
-            this.ButtonResetDocs.Text = "Reset";
-            this.ButtonResetDocs.UseVisualStyleBackColor = true;
-            this.ButtonGetDoc.Location = new Point(74, 89);
-            this.ButtonGetDoc.Name = "ButtonGetDoc";
-            this.ButtonGetDoc.Size = new System.Drawing.Size(73, 23);
-            this.ButtonGetDoc.TabIndex = 4;
-            this.ButtonGetDoc.Text = "Get Docs";
-            this.ButtonGetDoc.UseVisualStyleBackColor = true;
-            this.cboxDocType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.cboxDocType.ForeColor = Color.Indigo;
-            this.cboxDocType.FormattingEnabled = true;
-            ComboBox.ObjectCollection objectCollections1 = this.cboxDocType.Items;
-            objArray = new object[] { "-choose-", "Affidavit-BwrIndem", "Affidavit-ContMarriage", "Affidavit-CommonName", "Affidavit-FirstTimeBuyer", "Affidavit-MaritalStatus-3rdParty", "Affidavit-Survivorship", "Affidavit-Trust", "Agrmt-CommonDriveway", "Agrmt-Escrow", "Agrmt-PartyWall", "Agrmt-PrivRoadMaint", "CertifResolution-Corp", "CertifResolution-LLC", "Deed", "Deed-Corrective", "Deed-Family", "Deed-Gift", "Deed-Grant", "Deed-LandContractCancel", "Deed-Special", "Deed-Warranty", "HoldHarmless", "Indemnity-Indiv", "Mortgage-Corp", "Mortgage-Private", "MtgModification", "NotaryAck", "Notice-Completion", "Notice-PendingJgmt", "Notice-Termination", "POA", "POA-2ndMtgOnly", "POA-Durable", "POA-Durable-Ltd", "POA-General", "POA-Special", "QCD", "QCD-hw-hw", "QCD-hw-indiv", "QCD-indiv-hw", "QCD-indiv-indiv", "QCD-LLC-hw", "QCD-LLC-indiv", "Release-Jgmt", "Release-JgmtCorp", "Release-Mtg", "Release-MtgCorp", "Release-MtgPartial", "Release-MtgPrivate", "Release-UCC", "Release-UCCPartial", "SettlementAuth", "Waiver-HomesteadRights", "Waiver-SpousalRights" };
-            objectCollections1.AddRange(objArray);
-            this.cboxDocType.Location = new Point(74, 55);
-            this.cboxDocType.Name = "cboxDocType";
-            this.cboxDocType.Size = new System.Drawing.Size(151, 21);
-            this.cboxDocType.TabIndex = 3;
-            this.cboxDocState.DropDownHeight = 100;
-            this.cboxDocState.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.cboxDocState.ForeColor = Color.Indigo;
-            this.cboxDocState.FormattingEnabled = true;
-            this.cboxDocState.IntegralHeight = false;
-            this.cboxDocState.ItemHeight = 15;
-            ComboBox.ObjectCollection items2 = this.cboxDocState.Items;
-            objArray = new object[] { "AK", "AL", "ANY", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
-            items2.AddRange(objArray);
-            this.cboxDocState.Location = new Point(74, 25);
-            this.cboxDocState.MaxDropDownItems = 10;
-            this.cboxDocState.Name = "cboxDocState";
-            this.cboxDocState.Size = new System.Drawing.Size(63, 23);
-            this.cboxDocState.Sorted = true;
-            this.cboxDocState.TabIndex = 2;
-            this.linkUS_Legal_Forms.ActiveLinkColor = Color.Green;
-            this.linkUS_Legal_Forms.AutoSize = true;
-            this.linkUS_Legal_Forms.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.linkUS_Legal_Forms.LinkColor = Color.FromArgb(0, 134, 77);
-            this.linkUS_Legal_Forms.Location = new Point(140, 139);
-            this.linkUS_Legal_Forms.Name = "linkUS_Legal_Forms";
-            this.linkUS_Legal_Forms.Size = new System.Drawing.Size(102, 15);
-            this.linkUS_Legal_Forms.TabIndex = 1;
-            this.linkUS_Legal_Forms.TabStop = true;
-            this.linkUS_Legal_Forms.Text = "USLegalDocs.com";
-            this.lbl_NotFound.AutoSize = true;
-            this.lbl_NotFound.Font = new System.Drawing.Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_NotFound.ForeColor = Color.Red;
-            this.lbl_NotFound.Location = new Point(13, 139);
-            this.lbl_NotFound.Name = "lbl_NotFound";
-            this.lbl_NotFound.Size = new System.Drawing.Size(134, 15);
-            this.lbl_NotFound.TabIndex = 0;
-            this.lbl_NotFound.Text = "DOC NOT FOUND. Visit ";
-            this.pboxOpenClearanceCustSpecs.Image = WindowsApplication1.Resources.xls_icon;
-            this.pboxOpenClearanceCustSpecs.Location = new Point(21, 107);
-            this.pboxOpenClearanceCustSpecs.Name = "pboxOpenClearanceCustSpecs";
-            this.pboxOpenClearanceCustSpecs.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenClearanceCustSpecs.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenClearanceCustSpecs.TabIndex = 191;
-            this.pboxOpenClearanceCustSpecs.TabStop = false;
-            this.pboxOpenClearanceCustSpecs.Tag = "AbstractRunSheet";
-            this.lblOpenClearanceCustSpecs.AutoSize = true;
-            this.lblOpenClearanceCustSpecs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblOpenClearanceCustSpecs.Location = new Point(38, 106);
-            this.lblOpenClearanceCustSpecs.Name = "lblOpenClearanceCustSpecs";
-            this.lblOpenClearanceCustSpecs.Size = new System.Drawing.Size(171, 15);
-            this.lblOpenClearanceCustSpecs.TabIndex = 192;
-            this.lblOpenClearanceCustSpecs.Text = "Title Clearance Cust. Specifics";
-            this.pboxOpenTitleCustSpecs.Image = (Image)componentResourceManager.GetObject("pboxOpenTitleCustSpecs.Image");
-            this.pboxOpenTitleCustSpecs.Location = new Point(21, 83);
-            this.pboxOpenTitleCustSpecs.Name = "pboxOpenTitleCustSpecs";
-            this.pboxOpenTitleCustSpecs.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenTitleCustSpecs.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenTitleCustSpecs.TabIndex = 189;
-            this.pboxOpenTitleCustSpecs.TabStop = false;
-            this.pboxOpenTitleCustSpecs.Tag = "AbstractRunSheet";
-            this.lblOpenTitleCustSpec.AutoSize = true;
-            this.lblOpenTitleCustSpec.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblOpenTitleCustSpec.Location = new Point(38, 82);
-            this.lblOpenTitleCustSpec.Name = "lblOpenTitleCustSpec";
-            this.lblOpenTitleCustSpec.Size = new System.Drawing.Size(174, 15);
-            this.lblOpenTitleCustSpec.TabIndex = 190;
-            this.lblOpenTitleCustSpec.Text = "Title Production Cust. Specifics";
-            this.pboxOpenRunSheet.Image = WindowsApplication1.Resources.word_logo;
-            this.pboxOpenRunSheet.Location = new Point(22, 35);
-            this.pboxOpenRunSheet.Name = "pboxOpenRunSheet";
-            this.pboxOpenRunSheet.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenRunSheet.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenRunSheet.TabIndex = 150;
-            this.pboxOpenRunSheet.TabStop = false;
-            this.pboxOpenRunSheet.Tag = "AbstractRunSheet";
-            this.TabPg2PhBk.AutoScroll = true;
-            this.TabPg2PhBk.BackColor = Color.GhostWhite;
-            this.TabPg2PhBk.Controls.Add(this.PictureBox9);
-            this.TabPg2PhBk.Controls.Add(this.lbl_BusnPhones);
-            this.TabPg2PhBk.Controls.Add(this.Label48);
-            this.TabPg2PhBk.Controls.Add(this.Label49);
-            this.TabPg2PhBk.Controls.Add(this.DataGridView1);
-            this.TabPg2PhBk.Location = new Point(4, 22);
-            this.TabPg2PhBk.Name = "TabPg2PhBk";
-            this.TabPg2PhBk.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg2PhBk.Size = new System.Drawing.Size(866, 201);
-            this.TabPg2PhBk.TabIndex = 1;
-            this.TabPg2PhBk.Text = "Phone Book";
-            this.PictureBox9.Image = WindowsApplication1.Resources.xls_icon;
-            this.PictureBox9.Location = new Point(13, 17);
-            this.PictureBox9.Name = "PictureBox9";
-            this.PictureBox9.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox9.TabIndex = 193;
-            this.PictureBox9.TabStop = false;
-            this.PictureBox9.Tag = "AbstractRunSheet";
-            this.lbl_BusnPhones.AutoSize = true;
-            this.lbl_BusnPhones.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_BusnPhones.Location = new Point(30, 16);
-            this.lbl_BusnPhones.Name = "lbl_BusnPhones";
-            this.lbl_BusnPhones.Size = new System.Drawing.Size(158, 15);
-            this.lbl_BusnPhones.TabIndex = 194;
-            this.lbl_BusnPhones.Text = "iMS Title Business Contacts";
-            this.Label48.AutoSize = true;
-            this.Label48.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label48.Location = new Point(9, 40);
-            this.Label48.Name = "Label48";
-            this.Label48.Size = new System.Drawing.Size(355, 13);
-            this.Label48.TabIndex = 77;
-            this.Label48.Text = "Double click in the cell with the Fax or Email to open Outlook";
-            this.Label49.AutoSize = true;
-            this.Label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label49.Location = new Point(416, 40);
-            this.Label49.Name = "Label49";
-            this.Label49.Size = new System.Drawing.Size(257, 13);
-            this.Label49.TabIndex = 76;
-            this.Label49.Text = "eskerfax format-  [FAX:18665758825@CHRIS@IMS]";
-            dataGridViewCellStyle.BackColor = Color.Thistle;
-            dataGridViewCellStyle.SelectionBackColor = Color.FromArgb(192, 255, 255);
-            dataGridViewCellStyle.SelectionForeColor = Color.Indigo;
-            this.DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle;
-            this.DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.DataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            this.DataGridView1.BackgroundColor = Color.Linen;
-            this.DataGridView1.BorderStyle = BorderStyle.None;
-            this.DataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.RaisedHorizontal;
-            whiteSmoke.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            whiteSmoke.BackColor = Color.WhiteSmoke;
-            whiteSmoke.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            whiteSmoke.ForeColor = SystemColors.WindowText;
-            whiteSmoke.SelectionBackColor = Color.Aquamarine;
-            whiteSmoke.SelectionForeColor = SystemColors.ControlText;
-            whiteSmoke.WrapMode = DataGridViewTriState.True;
-            this.DataGridView1.ColumnHeadersDefaultCellStyle = whiteSmoke;
-            this.DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView1.Cursor = Cursors.Default;
-            window.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            window.BackColor = SystemColors.Window;
-            window.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            window.ForeColor = SystemColors.ControlText;
-            window.SelectionBackColor = Color.White;
-            window.SelectionForeColor = SystemColors.ControlText;
-            window.WrapMode = DataGridViewTriState.False;
-            this.DataGridView1.DefaultCellStyle = window;
-            this.DataGridView1.GridColor = Color.MediumOrchid;
-            this.DataGridView1.Location = new Point(8, 65);
-            this.DataGridView1.Size = new System.Drawing.Size(700, 100);
-            this.DataGridView1.Size = new System.Drawing.Size(700, 100);
-            this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.RowHeadersWidth = 20;
-            lavenderBlush.BackColor = Color.LavenderBlush;
-            lavenderBlush.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lavenderBlush.ForeColor = Color.Indigo;
-            lavenderBlush.SelectionBackColor = Color.MediumPurple;
-            lavenderBlush.SelectionForeColor = Color.White;
-            lavenderBlush.WrapMode = DataGridViewTriState.True;
-            this.DataGridView1.RowsDefaultCellStyle = lavenderBlush;
-            this.DataGridView1.RowTemplate.Resizable = DataGridViewTriState.True;
-            this.DataGridView1.Size = new System.Drawing.Size(700, 100);
-            this.DataGridView1.TabIndex = 72;
-            this.TabPg3Cal.AutoScroll = true;
-            this.TabPg3Cal.BackColor = Color.GhostWhite;
-            this.TabPg3Cal.Location = new Point(4, 22);
-            this.TabPg3Cal.Name = "TabPg3Cal";
-            this.TabPg3Cal.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg3Cal.Size = new System.Drawing.Size(866, 201);
-            this.TabPg3Cal.TabIndex = 3;
-            this.TabPg3Cal.Text = "Calander";
-            this.TabPg4Clearing.AutoScroll = true;
-            this.TabPg4Clearing.BackColor = Color.Linen;
-            this.TabPg4Clearing.Controls.Add(this.PictureBox8);
-            this.TabPg4Clearing.Controls.Add(this.lbl_doc_Lease_Fee_LandContract);
-            this.TabPg4Clearing.Controls.Add(this.PictureBox6);
-            this.TabPg4Clearing.Controls.Add(this.lbl_doc_SOP_deedprep);
-            this.TabPg4Clearing.Controls.Add(this.PictureBox7);
-            this.TabPg4Clearing.Controls.Add(this.lbl_doc_approvePOA);
-            this.TabPg4Clearing.Controls.Add(this.PictureBox5);
-            this.TabPg4Clearing.Controls.Add(this.lbl_doc_aboutVesting);
-            this.TabPg4Clearing.Controls.Add(this.PictureBox4);
-            this.TabPg4Clearing.Controls.Add(this.lbl_doc_aboutDeeds);
-            this.TabPg4Clearing.Controls.Add(this.TableLayoutPanel1);
-            this.TabPg4Clearing.Location = new Point(4, 22);
-            this.TabPg4Clearing.Name = "TabPg4Clearing";
-            this.TabPg4Clearing.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg4Clearing.Size = new System.Drawing.Size(866, 201);
-            this.TabPg4Clearing.TabIndex = 4;
-            this.TabPg4Clearing.Text = "Clearing & Examination";
-            this.PictureBox8.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox8.Location = new Point(633, 98);
-            this.PictureBox8.Name = "PictureBox8";
-            this.PictureBox8.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox8.TabIndex = 200;
-            this.PictureBox8.TabStop = false;
-            this.PictureBox8.Tag = "AbstractRunSheet";
-            this.lbl_doc_Lease_Fee_LandContract.AutoSize = true;
-            this.lbl_doc_Lease_Fee_LandContract.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_Lease_Fee_LandContract.Location = new Point(651, 98);
-            this.lbl_doc_Lease_Fee_LandContract.Name = "lbl_doc_Lease_Fee_LandContract";
-            this.lbl_doc_Lease_Fee_LandContract.Size = new System.Drawing.Size(170, 13);
-            this.lbl_doc_Lease_Fee_LandContract.TabIndex = 201;
-            this.lbl_doc_Lease_Fee_LandContract.Text = "Lease vs. Fee and Land Contracts";
-            this.PictureBox6.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox6.Location = new Point(634, 77);
-            this.PictureBox6.Name = "PictureBox6";
-            this.PictureBox6.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox6.TabIndex = 198;
-            this.PictureBox6.TabStop = false;
-            this.PictureBox6.Tag = "AbstractRunSheet";
-            this.lbl_doc_SOP_deedprep.AutoSize = true;
-            this.lbl_doc_SOP_deedprep.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_SOP_deedprep.Location = new Point(652, 77);
-            this.lbl_doc_SOP_deedprep.Name = "lbl_doc_SOP_deedprep";
-            this.lbl_doc_SOP_deedprep.Size = new System.Drawing.Size(144, 13);
-            this.lbl_doc_SOP_deedprep.TabIndex = 199;
-            this.lbl_doc_SOP_deedprep.Text = "iMS SOP-Vesting/Deed Prep";
-            this.PictureBox7.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox7.Location = new Point(634, 56);
-            this.PictureBox7.Name = "PictureBox7";
-            this.PictureBox7.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox7.TabIndex = 196;
-            this.PictureBox7.TabStop = false;
-            this.PictureBox7.Tag = "AbstractRunSheet";
-            this.lbl_doc_approvePOA.AutoSize = true;
-            this.lbl_doc_approvePOA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_approvePOA.Location = new Point(652, 56);
-            this.lbl_doc_approvePOA.Name = "lbl_doc_approvePOA";
-            this.lbl_doc_approvePOA.Size = new System.Drawing.Size(85, 13);
-            this.lbl_doc_approvePOA.TabIndex = 197;
-            this.lbl_doc_approvePOA.Text = "Approving POAs";
-            this.PictureBox5.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox5.Location = new Point(634, 34);
-            this.PictureBox5.Name = "PictureBox5";
-            this.PictureBox5.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox5.TabIndex = 194;
-            this.PictureBox5.TabStop = false;
-            this.PictureBox5.Tag = "AbstractRunSheet";
-            this.lbl_doc_aboutVesting.AutoSize = true;
-            this.lbl_doc_aboutVesting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_aboutVesting.Location = new Point(652, 34);
-            this.lbl_doc_aboutVesting.Name = "lbl_doc_aboutVesting";
-            this.lbl_doc_aboutVesting.Size = new System.Drawing.Size(73, 13);
-            this.lbl_doc_aboutVesting.TabIndex = 195;
-            this.lbl_doc_aboutVesting.Text = "About Vesting";
-            this.PictureBox4.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox4.Location = new Point(634, 13);
-            this.PictureBox4.Name = "PictureBox4";
-            this.PictureBox4.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox4.TabIndex = 192;
-            this.PictureBox4.TabStop = false;
-            this.PictureBox4.Tag = "AbstractRunSheet";
-            this.lbl_doc_aboutDeeds.AutoSize = true;
-            this.lbl_doc_aboutDeeds.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_aboutDeeds.Location = new Point(652, 13);
-            this.lbl_doc_aboutDeeds.Name = "lbl_doc_aboutDeeds";
-            this.lbl_doc_aboutDeeds.Size = new System.Drawing.Size(69, 13);
-            this.lbl_doc_aboutDeeds.TabIndex = 193;
-            this.lbl_doc_aboutDeeds.Text = "About Deeds";
-            this.TableLayoutPanel1.AutoSize = true;
-            this.TableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.TableLayoutPanel1.ColumnCount = 3;
-            this.TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            this.TableLayoutPanel1.Controls.Add(this.txtSOL_notes, 0, 32);
-            this.TableLayoutPanel1.Controls.Add(this.Label_statutecomments, 0, 31);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Tax_RedemPer, 1, 21);
-            this.TableLayoutPanel1.Controls.Add(this.Label_forclRedem, 0, 20);
-            this.TableLayoutPanel1.Controls.Add(this.Label_taxTakRedem, 0, 21);
-            this.TableLayoutPanel1.Controls.Add(this.Label_mtg, 0, 0);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_forecl_redem_per, 1, 20);
-            this.TableLayoutPanel1.Controls.Add(this.Label73, 1, 16);
-            this.TableLayoutPanel1.Controls.Add(this.Label46, 1, 15);
-            this.TableLayoutPanel1.Controls.Add(this.Label74, 0, 16);
-            this.TableLayoutPanel1.Controls.Add(this.Label54, 1, 14);
-            this.TableLayoutPanel1.Controls.Add(this.Label52, 0, 15);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Mtg, 1, 0);
-            this.TableLayoutPanel1.Controls.Add(this.Label58, 0, 14);
-            this.TableLayoutPanel1.Controls.Add(this.Label_heloc, 0, 1);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Heloc, 1, 1);
-            this.TableLayoutPanel1.Controls.Add(this.Label_teRule, 0, 2);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_TERule, 1, 2);
-            this.TableLayoutPanel1.Controls.Add(this.Label_spousal, 0, 3);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_PersTax, 1, 13);
-            this.TableLayoutPanel1.Controls.Add(this.Label_persTax, 0, 13);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_ClaimLien, 1, 11);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_HOA, 1, 9);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Support, 1, 12);
-            this.TableLayoutPanel1.Controls.Add(this.Label_support, 0, 12);
-            this.TableLayoutPanel1.Controls.Add(this.Label_claimLien, 0, 11);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Notice, 1, 8);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Hosp, 1, 10);
-            this.TableLayoutPanel1.Controls.Add(this.Label_HOA, 0, 9);
-            this.TableLayoutPanel1.Controls.Add(this.Label_hospLien, 0, 10);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Mech, 1, 7);
-            this.TableLayoutPanel1.Controls.Add(this.Label_NOC, 0, 8);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_lispen, 1, 6);
-            this.TableLayoutPanel1.Controls.Add(this.Label_mechLien, 0, 7);
-            this.TableLayoutPanel1.Controls.Add(this.Label_lisPendens, 0, 6);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Jgmt, 1, 4);
-            this.TableLayoutPanel1.Controls.Add(this.Label_jgmt, 0, 4);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Spousal, 1, 3);
-            this.TableLayoutPanel1.Controls.Add(this.Label_stateJgmt, 0, 5);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_StateJgmt, 1, 5);
-            this.TableLayoutPanel1.Controls.Add(this.Label_fc, 0, 23);
-            this.TableLayoutPanel1.Controls.Add(this.txt_foreclosure_notes, 0, 24);
-            this.TableLayoutPanel1.Controls.Add(this.Label_credclaim, 0, 25);
-            this.TableLayoutPanel1.Controls.Add(this.Label_aftacq, 0, 26);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_Creditor_Claims, 1, 25);
-            this.TableLayoutPanel1.Controls.Add(this.lblSOL_AftAcq, 1, 26);
-            this.TableLayoutPanel1.Controls.Add(this.txt_ProbateInfo, 0, 29);
-            this.TableLayoutPanel1.Controls.Add(this.Label_probate, 0, 28);
-            this.TableLayoutPanel1.Location = new Point(12, 6);
-            this.TableLayoutPanel1.Name = "TableLayoutPanel1";
-            this.TableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.TableLayoutPanel1.RowCount = 33;
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20f));
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20f));
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20f));
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.RowStyles.Add(new RowStyle());
-            this.TableLayoutPanel1.Size = new System.Drawing.Size(453, 568);
-            this.TableLayoutPanel1.TabIndex = 98;
-            this.txtSOL_notes.BackColor = Color.Snow;
-            this.TableLayoutPanel1.SetColumnSpan(this.txtSOL_notes, 2);
-            this.txtSOL_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtSOL_notes.ForeColor = Color.Purple;
-            this.txtSOL_notes.Location = new Point(3, 505);
-            this.txtSOL_notes.Multiline = true;
-            this.txtSOL_notes.Name = "txtSOL_notes";
-            this.txtSOL_notes.ReadOnly = true;
-            this.txtSOL_notes.ScrollBars = ScrollBars.Vertical;
-            this.txtSOL_notes.Size = new System.Drawing.Size(447, 59);
-            this.txtSOL_notes.TabIndex = 97;
-            this.Label_statutecomments.AutoSize = true;
-            this.Label_statutecomments.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_statutecomments.ForeColor = Color.Black;
-            this.Label_statutecomments.Location = new Point(3, 489);
-            this.Label_statutecomments.Name = "Label_statutecomments";
-            this.Label_statutecomments.Size = new System.Drawing.Size(114, 13);
-            this.Label_statutecomments.TabIndex = 107;
-            this.Label_statutecomments.Text = "Statutes Comments::";
-            this.lblSOL_Tax_RedemPer.AutoSize = true;
-            this.lblSOL_Tax_RedemPer.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Tax_RedemPer.ForeColor = Color.Black;
-            this.lblSOL_Tax_RedemPer.Location = new Point(154, 235);
-            this.lblSOL_Tax_RedemPer.Name = "lblSOL_Tax_RedemPer";
-            this.lblSOL_Tax_RedemPer.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Tax_RedemPer.TabIndex = 61;
-            this.lblSOL_Tax_RedemPer.Text = "Label58";
-            this.Label_forclRedem.AutoSize = true;
-            this.Label_forclRedem.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_forclRedem.ForeColor = Color.Black;
-            this.Label_forclRedem.Location = new Point(3, 222);
-            this.Label_forclRedem.Name = "Label_forclRedem";
-            this.Label_forclRedem.Size = new System.Drawing.Size(143, 13);
-            this.Label_forclRedem.TabIndex = 68;
-            this.Label_forclRedem.Text = "Forclosure Redem. Period:";
-            this.Label_taxTakRedem.AutoSize = true;
-            this.Label_taxTakRedem.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_taxTakRedem.ForeColor = Color.Black;
-            this.Label_taxTakRedem.Location = new Point(3, 235);
-            this.Label_taxTakRedem.Name = "Label_taxTakRedem";
-            this.Label_taxTakRedem.Size = new System.Drawing.Size(145, 13);
-            this.Label_taxTakRedem.TabIndex = 62;
-            this.Label_taxTakRedem.Text = "Tax Taking Redem. Period:";
-            this.Label_mtg.AutoSize = true;
-            this.Label_mtg.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_mtg.Location = new Point(3, 1);
-            this.Label_mtg.Name = "Label_mtg";
-            this.Label_mtg.Size = new System.Drawing.Size(59, 13);
-            this.Label_mtg.TabIndex = 0;
-            this.Label_mtg.Text = "Mtg/DOT:";
-            this.lblSOL_forecl_redem_per.AutoSize = true;
-            this.lblSOL_forecl_redem_per.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_forecl_redem_per.ForeColor = Color.Black;
-            this.lblSOL_forecl_redem_per.Location = new Point(154, 222);
-            this.lblSOL_forecl_redem_per.Name = "lblSOL_forecl_redem_per";
-            this.lblSOL_forecl_redem_per.Size = new System.Drawing.Size(20, 13);
-            this.lblSOL_forecl_redem_per.TabIndex = 67;
-            this.lblSOL_forecl_redem_per.Text = "lbl";
-            this.Label73.AutoSize = true;
-            this.Label73.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label73.ForeColor = Color.Black;
-            this.Label73.Location = new Point(154, 209);
-            this.Label73.Name = "Label73";
-            this.Label73.Size = new System.Drawing.Size(36, 13);
-            this.Label73.TabIndex = 101;
-            this.Label73.Text = "20 yrs";
-            this.Label46.AutoSize = true;
-            this.Label46.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label46.ForeColor = Color.Black;
-            this.Label46.Location = new Point(154, 196);
-            this.Label46.Name = "Label46";
-            this.Label46.Size = new System.Drawing.Size(30, 13);
-            this.Label46.TabIndex = 103;
-            this.Label46.Text = "5 yrs";
-            this.Label74.AutoSize = true;
-            this.Label74.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label74.ForeColor = Color.Black;
-            this.Label74.Location = new Point(3, 209);
-            this.Label74.Name = "Label74";
-            this.Label74.Size = new System.Drawing.Size(66, 13);
-            this.Label74.TabIndex = 100;
-            this.Label74.Text = "USA Jgmts:";
-            this.Label54.AutoSize = true;
-            this.Label54.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label54.ForeColor = Color.Black;
-            this.Label54.Location = new Point(154, 183);
-            this.Label54.Name = "Label54";
-            this.Label54.Size = new System.Drawing.Size(82, 13);
-            this.Label54.TabIndex = 105;
-            this.Label54.Text = "10 yrs+30 days";
-            this.Label52.AutoSize = true;
-            this.Label52.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label52.ForeColor = Color.Black;
-            this.Label52.Location = new Point(3, 196);
-            this.Label52.Name = "Label52";
-            this.Label52.Size = new System.Drawing.Size(37, 13);
-            this.Label52.TabIndex = 102;
-            this.Label52.Text = "UCCs:";
-            this.lblSOL_Mtg.AutoSize = true;
-            this.lblSOL_Mtg.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Mtg.Location = new Point(154, 1);
-            this.lblSOL_Mtg.Name = "lblSOL_Mtg";
-            this.lblSOL_Mtg.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Mtg.TabIndex = 1;
-            this.lblSOL_Mtg.Text = "Label46";
-            this.Label58.AutoSize = true;
-            this.Label58.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label58.ForeColor = Color.Black;
-            this.Label58.Location = new Point(3, 183);
-            this.Label58.Name = "Label58";
-            this.Label58.Size = new System.Drawing.Size(75, 13);
-            this.Label58.TabIndex = 104;
-            this.Label58.Text = "Fed Tax Lien:";
-            this.Label_heloc.AutoSize = true;
-            this.Label_heloc.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_heloc.Location = new Point(3, 14);
-            this.Label_heloc.Name = "Label_heloc";
-            this.Label_heloc.Size = new System.Drawing.Size(45, 13);
-            this.Label_heloc.TabIndex = 2;
-            this.Label_heloc.Text = "HELOC:";
-            this.lblSOL_Heloc.AutoSize = true;
-            this.lblSOL_Heloc.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Heloc.Location = new Point(154, 14);
-            this.lblSOL_Heloc.Name = "lblSOL_Heloc";
-            this.lblSOL_Heloc.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Heloc.TabIndex = 3;
-            this.lblSOL_Heloc.Text = "Label52";
-            this.Label_teRule.AutoSize = true;
-            this.Label_teRule.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_teRule.Location = new Point(3, 27);
-            this.Label_teRule.Name = "Label_teRule";
-            this.Label_teRule.Size = new System.Drawing.Size(48, 13);
-            this.Label_teRule.TabIndex = 55;
-            this.Label_teRule.Text = "TE Rule:";
-            this.lblSOL_TERule.AutoSize = true;
-            this.lblSOL_TERule.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_TERule.Location = new Point(154, 27);
-            this.lblSOL_TERule.Name = "lblSOL_TERule";
-            this.lblSOL_TERule.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_TERule.TabIndex = 56;
-            this.lblSOL_TERule.Text = "Label52";
-            this.Label_spousal.AutoSize = true;
-            this.Label_spousal.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_spousal.Location = new Point(3, 40);
-            this.Label_spousal.Name = "Label_spousal";
-            this.Label_spousal.Size = new System.Drawing.Size(80, 13);
-            this.Label_spousal.TabIndex = 66;
-            this.Label_spousal.Text = "Spousal State:";
-            this.lblSOL_PersTax.AutoSize = true;
-            this.lblSOL_PersTax.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_PersTax.ForeColor = Color.Black;
-            this.lblSOL_PersTax.Location = new Point(154, 170);
-            this.lblSOL_PersTax.Name = "lblSOL_PersTax";
-            this.lblSOL_PersTax.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_PersTax.TabIndex = 98;
-            this.lblSOL_PersTax.Text = "Label60";
-            this.Label_persTax.AutoSize = true;
-            this.Label_persTax.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_persTax.ForeColor = Color.Black;
-            this.Label_persTax.Location = new Point(3, 170);
-            this.Label_persTax.Name = "Label_persTax";
-            this.Label_persTax.Size = new System.Drawing.Size(76, 13);
-            this.Label_persTax.TabIndex = 99;
-            this.Label_persTax.Text = "Personal Tax:";
-            this.lblSOL_ClaimLien.AutoSize = true;
-            this.lblSOL_ClaimLien.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_ClaimLien.ForeColor = Color.Black;
-            this.lblSOL_ClaimLien.Location = new Point(154, 144);
-            this.lblSOL_ClaimLien.Name = "lblSOL_ClaimLien";
-            this.lblSOL_ClaimLien.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_ClaimLien.TabIndex = 91;
-            this.lblSOL_ClaimLien.Text = "Label68";
-            this.lblSOL_HOA.AutoSize = true;
-            this.lblSOL_HOA.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_HOA.ForeColor = Color.Black;
-            this.lblSOL_HOA.Location = new Point(154, 118);
-            this.lblSOL_HOA.Name = "lblSOL_HOA";
-            this.lblSOL_HOA.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_HOA.TabIndex = 89;
-            this.lblSOL_HOA.Text = "Label66";
-            this.lblSOL_Support.AutoSize = true;
-            this.lblSOL_Support.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Support.ForeColor = Color.Black;
-            this.lblSOL_Support.Location = new Point(154, 157);
-            this.lblSOL_Support.Name = "lblSOL_Support";
-            this.lblSOL_Support.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Support.TabIndex = 81;
-            this.lblSOL_Support.Text = "Label64";
-            this.Label_support.AutoSize = true;
-            this.Label_support.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_support.ForeColor = Color.Black;
-            this.Label_support.Location = new Point(3, 157);
-            this.Label_support.Name = "Label_support";
-            this.Label_support.Size = new System.Drawing.Size(73, 13);
-            this.Label_support.TabIndex = 82;
-            this.Label_support.Text = "Support Obl:";
-            this.Label_claimLien.AutoSize = true;
-            this.Label_claimLien.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_claimLien.ForeColor = Color.Black;
-            this.Label_claimLien.Location = new Point(3, 144);
-            this.Label_claimLien.Name = "Label_claimLien";
-            this.Label_claimLien.Size = new System.Drawing.Size(78, 13);
-            this.Label_claimLien.TabIndex = 92;
-            this.Label_claimLien.Text = "Claim of Lien:";
-            this.lblSOL_Notice.AutoSize = true;
-            this.lblSOL_Notice.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Notice.ForeColor = Color.Black;
-            this.lblSOL_Notice.Location = new Point(154, 105);
-            this.lblSOL_Notice.Name = "lblSOL_Notice";
-            this.lblSOL_Notice.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Notice.TabIndex = 87;
-            this.lblSOL_Notice.Text = "Label58";
-            this.lblSOL_Hosp.AutoSize = true;
-            this.lblSOL_Hosp.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Hosp.ForeColor = Color.Black;
-            this.lblSOL_Hosp.Location = new Point(154, 131);
-            this.lblSOL_Hosp.Name = "lblSOL_Hosp";
-            this.lblSOL_Hosp.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Hosp.TabIndex = 95;
-            this.lblSOL_Hosp.Text = "Label72";
-            this.Label_HOA.AutoSize = true;
-            this.Label_HOA.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_HOA.ForeColor = Color.Black;
-            this.Label_HOA.Location = new Point(3, 118);
-            this.Label_HOA.Name = "Label_HOA";
-            this.Label_HOA.Size = new System.Drawing.Size(59, 13);
-            this.Label_HOA.TabIndex = 90;
-            this.Label_HOA.Text = "HOA Lien:";
-            this.Label_hospLien.AutoSize = true;
-            this.Label_hospLien.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_hospLien.ForeColor = Color.Black;
-            this.Label_hospLien.Location = new Point(3, 131);
-            this.Label_hospLien.Name = "Label_hospLien";
-            this.Label_hospLien.Size = new System.Drawing.Size(65, 13);
-            this.Label_hospLien.TabIndex = 96;
-            this.Label_hospLien.Text = "Hosp. Lien:";
-            this.lblSOL_Mech.AutoSize = true;
-            this.lblSOL_Mech.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Mech.ForeColor = Color.Black;
-            this.lblSOL_Mech.Location = new Point(154, 92);
-            this.lblSOL_Mech.Name = "lblSOL_Mech";
-            this.lblSOL_Mech.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Mech.TabIndex = 85;
-            this.lblSOL_Mech.Text = "Label60";
-            this.Label_NOC.AutoSize = true;
-            this.Label_NOC.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_NOC.ForeColor = Color.Black;
-            this.Label_NOC.Location = new Point(3, 105);
-            this.Label_NOC.Name = "Label_NOC";
-            this.Label_NOC.Size = new System.Drawing.Size(107, 13);
-            this.Label_NOC.TabIndex = 88;
-            this.Label_NOC.Text = "Notice/Commence:";
-            this.lblSOL_lispen.AutoSize = true;
-            this.lblSOL_lispen.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_lispen.ForeColor = Color.Black;
-            this.lblSOL_lispen.Location = new Point(154, 79);
-            this.lblSOL_lispen.Name = "lblSOL_lispen";
-            this.lblSOL_lispen.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_lispen.TabIndex = 80;
-            this.lblSOL_lispen.Text = "Label54";
-            this.Label_mechLien.AutoSize = true;
-            this.Label_mechLien.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_mechLien.ForeColor = Color.Black;
-            this.Label_mechLien.Location = new Point(3, 92);
-            this.Label_mechLien.Name = "Label_mechLien";
-            this.Label_mechLien.Size = new System.Drawing.Size(64, 13);
-            this.Label_mechLien.TabIndex = 86;
-            this.Label_mechLien.Text = "Mech.Lien:";
-            this.Label_lisPendens.AutoSize = true;
-            this.Label_lisPendens.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_lisPendens.ForeColor = Color.Black;
-            this.Label_lisPendens.Location = new Point(3, 79);
-            this.Label_lisPendens.Name = "Label_lisPendens";
-            this.Label_lisPendens.Size = new System.Drawing.Size(69, 13);
-            this.Label_lisPendens.TabIndex = 79;
-            this.Label_lisPendens.Text = "LisPendens:";
-            this.lblSOL_Jgmt.AutoSize = true;
-            this.lblSOL_Jgmt.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Jgmt.ForeColor = Color.Black;
-            this.lblSOL_Jgmt.Location = new Point(154, 53);
-            this.lblSOL_Jgmt.Name = "lblSOL_Jgmt";
-            this.lblSOL_Jgmt.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Jgmt.TabIndex = 93;
-            this.lblSOL_Jgmt.Text = "Label70";
-            this.Label_jgmt.AutoSize = true;
-            this.Label_jgmt.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_jgmt.ForeColor = Color.Black;
-            this.Label_jgmt.Location = new Point(3, 53);
-            this.Label_jgmt.Name = "Label_jgmt";
-            this.Label_jgmt.Size = new System.Drawing.Size(63, 13);
-            this.Label_jgmt.TabIndex = 94;
-            this.Label_jgmt.Text = "Judgment:";
-            this.lblSOL_Spousal.AutoSize = true;
-            this.lblSOL_Spousal.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Spousal.Location = new Point(154, 40);
-            this.lblSOL_Spousal.Name = "lblSOL_Spousal";
-            this.lblSOL_Spousal.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Spousal.TabIndex = 65;
-            this.lblSOL_Spousal.Text = "Label72";
-            this.Label_stateJgmt.AutoSize = true;
-            this.Label_stateJgmt.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_stateJgmt.ForeColor = Color.Black;
-            this.Label_stateJgmt.Location = new Point(3, 66);
-            this.Label_stateJgmt.Name = "Label_stateJgmt";
-            this.Label_stateJgmt.Size = new System.Drawing.Size(65, 13);
-            this.Label_stateJgmt.TabIndex = 84;
-            this.Label_stateJgmt.Text = "State Jgmt:";
-            this.lblSOL_StateJgmt.AutoSize = true;
-            this.lblSOL_StateJgmt.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_StateJgmt.ForeColor = Color.Black;
-            this.lblSOL_StateJgmt.Location = new Point(154, 66);
-            this.lblSOL_StateJgmt.Name = "lblSOL_StateJgmt";
-            this.lblSOL_StateJgmt.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_StateJgmt.TabIndex = 83;
-            this.lblSOL_StateJgmt.Text = "Label62";
-            this.Label_fc.AutoSize = true;
-            this.Label_fc.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_fc.ForeColor = Color.Black;
-            this.Label_fc.Location = new Point(3, 268);
-            this.Label_fc.Name = "Label_fc";
-            this.Label_fc.Size = new System.Drawing.Size(94, 13);
-            this.Label_fc.TabIndex = 106;
-            this.Label_fc.Text = "Foreclosure Info:";
-            this.txt_foreclosure_notes.BackColor = Color.Snow;
-            this.TableLayoutPanel1.SetColumnSpan(this.txt_foreclosure_notes, 2);
-            this.txt_foreclosure_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_foreclosure_notes.ForeColor = Color.Purple;
-            this.txt_foreclosure_notes.Location = new Point(3, 284);
-            this.txt_foreclosure_notes.Multiline = true;
-            this.txt_foreclosure_notes.Name = "txt_foreclosure_notes";
-            this.txt_foreclosure_notes.ReadOnly = true;
-            this.txt_foreclosure_notes.ScrollBars = ScrollBars.Vertical;
-            this.txt_foreclosure_notes.Size = new System.Drawing.Size(447, 58);
-            this.txt_foreclosure_notes.TabIndex = 69;
-            this.Label_credclaim.AutoSize = true;
-            this.Label_credclaim.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_credclaim.ForeColor = Color.Black;
-            this.Label_credclaim.Location = new Point(3, 345);
-            this.Label_credclaim.Name = "Label_credclaim";
-            this.Label_credclaim.Size = new System.Drawing.Size(89, 13);
-            this.Label_credclaim.TabIndex = 57;
-            this.Label_credclaim.Text = "Creditor Claims:";
-            this.Label_aftacq.AutoSize = true;
-            this.Label_aftacq.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_aftacq.ForeColor = Color.Black;
-            this.Label_aftacq.Location = new Point(3, 358);
-            this.Label_aftacq.Name = "Label_aftacq";
-            this.Label_aftacq.Size = new System.Drawing.Size(111, 13);
-            this.Label_aftacq.TabIndex = 53;
-            this.Label_aftacq.Text = "After Acquired Lien:";
-            this.lblSOL_Creditor_Claims.AutoSize = true;
-            this.lblSOL_Creditor_Claims.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_Creditor_Claims.ForeColor = Color.Black;
-            this.lblSOL_Creditor_Claims.Location = new Point(154, 345);
-            this.lblSOL_Creditor_Claims.Name = "lblSOL_Creditor_Claims";
-            this.lblSOL_Creditor_Claims.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_Creditor_Claims.TabIndex = 58;
-            this.lblSOL_Creditor_Claims.Text = "Label54";
-            this.lblSOL_AftAcq.AutoSize = true;
-            this.lblSOL_AftAcq.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lblSOL_AftAcq.ForeColor = Color.Black;
-            this.lblSOL_AftAcq.Location = new Point(154, 358);
-            this.lblSOL_AftAcq.Name = "lblSOL_AftAcq";
-            this.lblSOL_AftAcq.Size = new System.Drawing.Size(46, 13);
-            this.lblSOL_AftAcq.TabIndex = 54;
-            this.lblSOL_AftAcq.Text = "Label46";
-            this.txt_ProbateInfo.BackColor = Color.Snow;
-            this.TableLayoutPanel1.SetColumnSpan(this.txt_ProbateInfo, 2);
-            this.txt_ProbateInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_ProbateInfo.ForeColor = Color.Purple;
-            this.txt_ProbateInfo.Location = new Point(3, 407);
-            this.txt_ProbateInfo.Multiline = true;
-            this.txt_ProbateInfo.Name = "txt_ProbateInfo";
-            this.txt_ProbateInfo.ReadOnly = true;
-            this.txt_ProbateInfo.ScrollBars = ScrollBars.Vertical;
-            this.txt_ProbateInfo.Size = new System.Drawing.Size(447, 59);
-            this.txt_ProbateInfo.TabIndex = 74;
-            this.Label_probate.AutoSize = true;
-            this.Label_probate.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label_probate.ForeColor = Color.Black;
-            this.Label_probate.Location = new Point(3, 391);
-            this.Label_probate.Name = "Label_probate";
-            this.Label_probate.Size = new System.Drawing.Size(75, 13);
-            this.Label_probate.TabIndex = 107;
-            this.Label_probate.Text = "Probate Info:";
-            this.TabPg5Req.AutoScroll = true;
-            this.TabPg5Req.BackColor = Color.GhostWhite;
-            this.TabPg5Req.Controls.Add(this.WebBrowser3);
-            this.TabPg5Req.Location = new Point(4, 22);
-            this.TabPg5Req.Name = "TabPg5Req";
-            this.TabPg5Req.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg5Req.Size = new System.Drawing.Size(866, 201);
-            this.TabPg5Req.TabIndex = 5;
-            this.TabPg5Req.Text = "Search Requirements";
-            this.WebBrowser3.Dock = DockStyle.Fill;
-            this.WebBrowser3.Location = new Point(3, 3);
-            this.WebBrowser3.Size = new System.Drawing.Size(20, 20);
-            this.WebBrowser3.Name = "WebBrowser3";
-            this.WebBrowser3.Size = new System.Drawing.Size(860, 195);
-            this.WebBrowser3.TabIndex = 1;
-            this.WebBrowser3.Url = new Uri("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\Title Insurance Search Requirements.htm", UriKind.Absolute);
-            this.TabPg6OtherLogins.BackColor = Color.GhostWhite;
-            this.TabPg6OtherLogins.Controls.Add(this.DataGridView2);
-            this.TabPg6OtherLogins.Location = new Point(4, 22);
-            this.TabPg6OtherLogins.Name = "TabPg6OtherLogins";
-            this.TabPg6OtherLogins.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg6OtherLogins.Size = new System.Drawing.Size(866, 201);
-            this.TabPg6OtherLogins.TabIndex = 6;
-            this.TabPg6OtherLogins.Text = "Other Login Info";
-            thistle.BackColor = Color.Thistle;
-            thistle.SelectionBackColor = Color.FromArgb(192, 255, 255);
-            thistle.SelectionForeColor = Color.Indigo;
-            this.DataGridView2.AlternatingRowsDefaultCellStyle = thistle;
-            this.DataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            this.DataGridView2.BackgroundColor = Color.Linen;
-            this.DataGridView2.BorderStyle = BorderStyle.None;
-            this.DataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.RaisedHorizontal;
-            font.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            font.BackColor = Color.WhiteSmoke;
-            font.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            font.ForeColor = SystemColors.WindowText;
-            font.SelectionBackColor = Color.Aquamarine;
-            font.SelectionForeColor = SystemColors.ControlText;
-            font.WrapMode = DataGridViewTriState.True;
-            this.DataGridView2.ColumnHeadersDefaultCellStyle = font;
-            this.DataGridView2.Cursor = Cursors.Default;
-            controlText.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            controlText.BackColor = SystemColors.Window;
-            controlText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            controlText.ForeColor = SystemColors.ControlText;
-            controlText.SelectionBackColor = Color.White;
-            controlText.SelectionForeColor = SystemColors.ControlText;
-            controlText.WrapMode = DataGridViewTriState.False;
-            this.DataGridView2.DefaultCellStyle = controlText;
-            this.DataGridView2.Dock = DockStyle.Fill;
-            this.DataGridView2.GridColor = Color.MediumOrchid;
-            this.DataGridView2.Location = new Point(3, 3);
-            this.DataGridView2.Name = "DataGridView2";
-            this.DataGridView2.RowHeadersWidth = 20;
-            indigo.BackColor = Color.LavenderBlush;
-            indigo.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            indigo.ForeColor = Color.Indigo;
-            indigo.SelectionBackColor = Color.MediumPurple;
-            indigo.SelectionForeColor = Color.White;
-            indigo.WrapMode = DataGridViewTriState.True;
-            this.DataGridView2.RowsDefaultCellStyle = indigo;
-            this.DataGridView2.RowTemplate.Resizable = DataGridViewTriState.True;
-            this.DataGridView2.Size = new System.Drawing.Size(860, 195);
-            this.DataGridView2.TabIndex = 74;
-            this.TabPg7Taxes.AutoScroll = true;
-            this.TabPg7Taxes.BackColor = Color.GhostWhite;
-            this.TabPg7Taxes.Controls.Add(this.lbl_verifDate5);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff5);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verifDate4);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff4);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verifDate3);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff3);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verifDate2);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff2);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verifDate1);
-            this.TabPg7Taxes.Controls.Add(this.lbl_verified_taxoff1);
-            this.TabPg7Taxes.Controls.Add(this.Label39);
-            this.TabPg7Taxes.Controls.Add(this.txtTaxOffice1);
-            this.TabPg7Taxes.Controls.Add(this.txtTaxOffice2);
-            this.TabPg7Taxes.Controls.Add(this.txtTaxOffice3);
-            this.TabPg7Taxes.Controls.Add(this.txtTaxOffice4);
-            this.TabPg7Taxes.Controls.Add(this.txtTaxOffice5);
-            this.TabPg7Taxes.Controls.Add(this.lblTxAuth1);
-            this.TabPg7Taxes.Controls.Add(this.linkLocTax1);
-            this.TabPg7Taxes.Controls.Add(this.linkLocTax5);
-            this.TabPg7Taxes.Controls.Add(this.lblTxAuth5);
-            this.TabPg7Taxes.Controls.Add(this.lblTxAuth2);
-            this.TabPg7Taxes.Controls.Add(this.linkLocTax2);
-            this.TabPg7Taxes.Controls.Add(this.linkLocTax4);
-            this.TabPg7Taxes.Controls.Add(this.lblTxAuth4);
-            this.TabPg7Taxes.Controls.Add(this.lblTxAuth3);
-            this.TabPg7Taxes.Controls.Add(this.linkLocTax3);
-            this.TabPg7Taxes.Controls.Add(this.pbxExport);
-            this.TabPg7Taxes.Controls.Add(this.pbxCopy5);
-            this.TabPg7Taxes.Controls.Add(this.pbxCopy4);
-            this.TabPg7Taxes.Controls.Add(this.pbxCopy3);
-            this.TabPg7Taxes.Controls.Add(this.pbxCopy2);
-            this.TabPg7Taxes.Controls.Add(this.pbxCopy1);
-            this.TabPg7Taxes.Location = new Point(4, 22);
-            this.TabPg7Taxes.Name = "TabPg7Taxes";
-            this.TabPg7Taxes.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg7Taxes.Size = new System.Drawing.Size(866, 201);
-            this.TabPg7Taxes.TabIndex = 7;
-            this.TabPg7Taxes.Text = "Taxes";
-            this.lbl_verifDate5.AutoSize = true;
-            this.lbl_verifDate5.Location = new Point(438, 383);
-            this.lbl_verifDate5.Name = "lbl_verifDate5";
-            this.lbl_verifDate5.Size = new System.Drawing.Size(30, 13);
-            this.lbl_verifDate5.TabIndex = 209;
-            this.lbl_verifDate5.Text = "Date";
-            this.lbl_verified_taxoff5.AutoSize = true;
-            this.lbl_verified_taxoff5.Location = new Point(438, 357);
-            this.lbl_verified_taxoff5.Name = "lbl_verified_taxoff5";
-            this.lbl_verified_taxoff5.Size = new System.Drawing.Size(48, 13);
-            this.lbl_verified_taxoff5.TabIndex = 208;
-            this.lbl_verified_taxoff5.Text = "Verified?";
-            this.lbl_verifDate4.AutoSize = true;
-            this.lbl_verifDate4.Location = new Point(438, 304);
-            this.lbl_verifDate4.Name = "lbl_verifDate4";
-            this.lbl_verifDate4.Size = new System.Drawing.Size(30, 13);
-            this.lbl_verifDate4.TabIndex = 207;
-            this.lbl_verifDate4.Text = "Date";
-            this.lbl_verified_taxoff4.AutoSize = true;
-            this.lbl_verified_taxoff4.Location = new Point(438, 278);
-            this.lbl_verified_taxoff4.Name = "lbl_verified_taxoff4";
-            this.lbl_verified_taxoff4.Size = new System.Drawing.Size(48, 13);
-            this.lbl_verified_taxoff4.TabIndex = 206;
-            this.lbl_verified_taxoff4.Text = "Verified?";
-            this.lbl_verifDate3.AutoSize = true;
-            this.lbl_verifDate3.Location = new Point(438, 229);
-            this.lbl_verifDate3.Name = "lbl_verifDate3";
-            this.lbl_verifDate3.Size = new System.Drawing.Size(30, 13);
-            this.lbl_verifDate3.TabIndex = 205;
-            this.lbl_verifDate3.Text = "Date";
-            this.lbl_verified_taxoff3.AutoSize = true;
-            this.lbl_verified_taxoff3.Location = new Point(438, 203);
-            this.lbl_verified_taxoff3.Name = "lbl_verified_taxoff3";
-            this.lbl_verified_taxoff3.Size = new System.Drawing.Size(48, 13);
-            this.lbl_verified_taxoff3.TabIndex = 204;
-            this.lbl_verified_taxoff3.Text = "Verified?";
-            this.lbl_verifDate2.AutoSize = true;
-            this.lbl_verifDate2.Location = new Point(438, 146);
-            this.lbl_verifDate2.Name = "lbl_verifDate2";
-            this.lbl_verifDate2.Size = new System.Drawing.Size(30, 13);
-            this.lbl_verifDate2.TabIndex = 203;
-            this.lbl_verifDate2.Text = "Date";
-            this.lbl_verified_taxoff2.AutoSize = true;
-            this.lbl_verified_taxoff2.Location = new Point(438, 120);
-            this.lbl_verified_taxoff2.Name = "lbl_verified_taxoff2";
-            this.lbl_verified_taxoff2.Size = new System.Drawing.Size(48, 13);
-            this.lbl_verified_taxoff2.TabIndex = 202;
-            this.lbl_verified_taxoff2.Text = "Verified?";
-            this.lbl_verifDate1.AutoSize = true;
-            this.lbl_verifDate1.Location = new Point(438, 64);
-            this.lbl_verifDate1.Name = "lbl_verifDate1";
-            this.lbl_verifDate1.Size = new System.Drawing.Size(30, 13);
-            this.lbl_verifDate1.TabIndex = 201;
-            this.lbl_verifDate1.Text = "Date";
-            this.lbl_verified_taxoff1.AutoSize = true;
-            this.lbl_verified_taxoff1.Location = new Point(438, 38);
-            this.lbl_verified_taxoff1.Name = "lbl_verified_taxoff1";
-            this.lbl_verified_taxoff1.Size = new System.Drawing.Size(48, 13);
-            this.lbl_verified_taxoff1.TabIndex = 200;
-            this.lbl_verified_taxoff1.Text = "Verified?";
-            this.Label39.AutoSize = true;
-            this.Label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label39.Location = new Point(573, 27);
-            this.Label39.Name = "Label39";
-            this.Label39.Size = new System.Drawing.Size(158, 18);
-            this.Label39.TabIndex = 199;
-            this.Label39.Text = "Export Taxes To Word";
-            this.txtTaxOffice1.BackColor = Color.MintCream;
-            this.txtTaxOffice1.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtTaxOffice1.ForeColor = Color.Purple;
-            this.txtTaxOffice1.Location = new Point(49, 28);
-            this.txtTaxOffice1.Multiline = true;
-            this.txtTaxOffice1.Name = "txtTaxOffice1";
-            this.txtTaxOffice1.ReadOnly = true;
-            this.txtTaxOffice1.ScrollBars = ScrollBars.Vertical;
-            this.txtTaxOffice1.Size = new System.Drawing.Size(373, 60);
-            this.txtTaxOffice1.TabIndex = 178;
-            this.txtTaxOffice1.Text = "no data";
-            this.txtTaxOffice2.BackColor = Color.MintCream;
-            this.txtTaxOffice2.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtTaxOffice2.ForeColor = Color.Purple;
-            this.txtTaxOffice2.Location = new Point(49, 107);
-            this.txtTaxOffice2.Multiline = true;
-            this.txtTaxOffice2.Name = "txtTaxOffice2";
-            this.txtTaxOffice2.ReadOnly = true;
-            this.txtTaxOffice2.ScrollBars = ScrollBars.Vertical;
-            this.txtTaxOffice2.Size = new System.Drawing.Size(373, 60);
-            this.txtTaxOffice2.TabIndex = 179;
-            this.txtTaxOffice2.Text = "no data";
-            this.txtTaxOffice3.BackColor = Color.MintCream;
-            this.txtTaxOffice3.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtTaxOffice3.ForeColor = Color.Purple;
-            this.txtTaxOffice3.Location = new Point(49, 190);
-            this.txtTaxOffice3.Multiline = true;
-            this.txtTaxOffice3.Name = "txtTaxOffice3";
-            this.txtTaxOffice3.ReadOnly = true;
-            this.txtTaxOffice3.ScrollBars = ScrollBars.Vertical;
-            this.txtTaxOffice3.Size = new System.Drawing.Size(373, 60);
-            this.txtTaxOffice3.TabIndex = 180;
-            this.txtTaxOffice3.Text = "no data";
-            this.txtTaxOffice4.BackColor = Color.MintCream;
-            this.txtTaxOffice4.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtTaxOffice4.ForeColor = Color.Purple;
-            this.txtTaxOffice4.Location = new Point(49, 268);
-            this.txtTaxOffice4.Multiline = true;
-            this.txtTaxOffice4.Name = "txtTaxOffice4";
-            this.txtTaxOffice4.ReadOnly = true;
-            this.txtTaxOffice4.ScrollBars = ScrollBars.Vertical;
-            this.txtTaxOffice4.Size = new System.Drawing.Size(373, 60);
-            this.txtTaxOffice4.TabIndex = 181;
-            this.txtTaxOffice4.Text = "no data";
-            this.txtTaxOffice5.BackColor = Color.MintCream;
-            this.txtTaxOffice5.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txtTaxOffice5.ForeColor = Color.Purple;
-            this.txtTaxOffice5.Location = new Point(48, 347);
-            this.txtTaxOffice5.Multiline = true;
-            this.txtTaxOffice5.Name = "txtTaxOffice5";
-            this.txtTaxOffice5.ReadOnly = true;
-            this.txtTaxOffice5.ScrollBars = ScrollBars.Vertical;
-            this.txtTaxOffice5.Size = new System.Drawing.Size(373, 60);
-            this.txtTaxOffice5.TabIndex = 182;
-            this.txtTaxOffice5.Text = "no data";
-            this.lblTxAuth1.AutoSize = true;
-            this.lblTxAuth1.Location = new Point(51, 12);
-            this.lblTxAuth1.Name = "lblTxAuth1";
-            this.lblTxAuth1.Size = new System.Drawing.Size(62, 13);
-            this.lblTxAuth1.TabIndex = 183;
-            this.lblTxAuth1.Text = "Tax Office1";
-            this.linkLocTax1.ActiveLinkColor = Color.MediumOrchid;
-            this.linkLocTax1.AutoSize = true;
-            this.linkLocTax1.LinkColor = Color.Purple;
-            this.linkLocTax1.Location = new Point(345, 12);
-            this.linkLocTax1.Name = "linkLocTax1";
-            this.linkLocTax1.Size = new System.Drawing.Size(57, 13);
-            this.linkLocTax1.TabIndex = 188;
-            this.linkLocTax1.TabStop = true;
-            this.linkLocTax1.Text = "Tax Web1";
-            this.linkLocTax1.VisitedLinkColor = Color.DarkSlateBlue;
-            this.linkLocTax5.ActiveLinkColor = Color.MediumOrchid;
-            this.linkLocTax5.AutoSize = true;
-            this.linkLocTax5.LinkColor = Color.Purple;
-            this.linkLocTax5.Location = new Point(344, 331);
-            this.linkLocTax5.Name = "linkLocTax5";
-            this.linkLocTax5.Size = new System.Drawing.Size(57, 13);
-            this.linkLocTax5.TabIndex = 192;
-            this.linkLocTax5.TabStop = true;
-            this.linkLocTax5.Text = "Tax Web5";
-            this.linkLocTax5.VisitedLinkColor = Color.DarkSlateBlue;
-            this.lblTxAuth5.AutoSize = true;
-            this.lblTxAuth5.Location = new Point(50, 331);
-            this.lblTxAuth5.Name = "lblTxAuth5";
-            this.lblTxAuth5.Size = new System.Drawing.Size(62, 13);
-            this.lblTxAuth5.TabIndex = 187;
-            this.lblTxAuth5.Text = "Tax Office5";
-            this.lblTxAuth2.AutoSize = true;
-            this.lblTxAuth2.Location = new Point(51, 91);
-            this.lblTxAuth2.Name = "lblTxAuth2";
-            this.lblTxAuth2.Size = new System.Drawing.Size(62, 13);
-            this.lblTxAuth2.TabIndex = 184;
-            this.lblTxAuth2.Text = "Tax Office2";
-            this.linkLocTax2.ActiveLinkColor = Color.MediumOrchid;
-            this.linkLocTax2.AutoSize = true;
-            this.linkLocTax2.LinkColor = Color.Purple;
-            this.linkLocTax2.Location = new Point(345, 91);
-            this.linkLocTax2.Name = "linkLocTax2";
-            this.linkLocTax2.Size = new System.Drawing.Size(57, 13);
-            this.linkLocTax2.TabIndex = 189;
-            this.linkLocTax2.TabStop = true;
-            this.linkLocTax2.Text = "Tax Web2";
-            this.linkLocTax2.VisitedLinkColor = Color.DarkSlateBlue;
-            this.linkLocTax4.ActiveLinkColor = Color.MediumOrchid;
-            this.linkLocTax4.AutoSize = true;
-            this.linkLocTax4.LinkColor = Color.Purple;
-            this.linkLocTax4.Location = new Point(345, 252);
-            this.linkLocTax4.Name = "linkLocTax4";
-            this.linkLocTax4.Size = new System.Drawing.Size(57, 13);
-            this.linkLocTax4.TabIndex = 191;
-            this.linkLocTax4.TabStop = true;
-            this.linkLocTax4.Text = "Tax Web4";
-            this.linkLocTax4.VisitedLinkColor = Color.DarkSlateBlue;
-            this.lblTxAuth4.AutoSize = true;
-            this.lblTxAuth4.Location = new Point(51, 252);
-            this.lblTxAuth4.Name = "lblTxAuth4";
-            this.lblTxAuth4.Size = new System.Drawing.Size(62, 13);
-            this.lblTxAuth4.TabIndex = 186;
-            this.lblTxAuth4.Text = "Tax Office4";
-            this.lblTxAuth3.AutoSize = true;
-            this.lblTxAuth3.Location = new Point(51, 174);
-            this.lblTxAuth3.Name = "lblTxAuth3";
-            this.lblTxAuth3.Size = new System.Drawing.Size(62, 13);
-            this.lblTxAuth3.TabIndex = 185;
-            this.lblTxAuth3.Text = "Tax Office3";
-            this.linkLocTax3.ActiveLinkColor = Color.MediumOrchid;
-            this.linkLocTax3.AutoSize = true;
-            this.linkLocTax3.LinkColor = Color.Purple;
-            this.linkLocTax3.Location = new Point(345, 174);
-            this.linkLocTax3.Name = "linkLocTax3";
-            this.linkLocTax3.Size = new System.Drawing.Size(57, 13);
-            this.linkLocTax3.TabIndex = 190;
-            this.linkLocTax3.TabStop = true;
-            this.linkLocTax3.Text = "Tax Web3";
-            this.linkLocTax3.VisitedLinkColor = Color.DarkSlateBlue;
-            this.pbxExport.Image = WindowsApplication1.Resources.doc_icon;
-            this.pbxExport.Location = new Point(542, 22);
-            this.pbxExport.Name = "pbxExport";
-            this.pbxExport.Size = new System.Drawing.Size(23, 25);
-            this.pbxExport.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxExport.TabIndex = 198;
-            this.pbxExport.TabStop = false;
-            this.pbxExport.Tag = "clipboard";
-            this.pbxCopy5.Image = WindowsApplication1.Resources.clipboard;
-            this.pbxCopy5.Location = new Point(21, 347);
-            this.pbxCopy5.Name = "pbxCopy5";
-            this.pbxCopy5.Size = new System.Drawing.Size(21, 23);
-            this.pbxCopy5.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxCopy5.TabIndex = 197;
-            this.pbxCopy5.TabStop = false;
-            this.pbxCopy5.Tag = "clipboard";
-            this.pbxCopy4.Image = WindowsApplication1.Resources.clipboard;
-            this.pbxCopy4.Location = new Point(22, 268);
-            this.pbxCopy4.Name = "pbxCopy4";
-            this.pbxCopy4.Size = new System.Drawing.Size(21, 23);
-            this.pbxCopy4.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxCopy4.TabIndex = 196;
-            this.pbxCopy4.TabStop = false;
-            this.pbxCopy4.Tag = "clipboard";
-            this.pbxCopy3.Image = WindowsApplication1.Resources.clipboard;
-            this.pbxCopy3.Location = new Point(22, 190);
-            this.pbxCopy3.Name = "pbxCopy3";
-            this.pbxCopy3.Size = new System.Drawing.Size(21, 23);
-            this.pbxCopy3.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxCopy3.TabIndex = 195;
-            this.pbxCopy3.TabStop = false;
-            this.pbxCopy3.Tag = "clipboard";
-            this.pbxCopy2.Image = WindowsApplication1.Resources.clipboard;
-            this.pbxCopy2.Location = new Point(22, 107);
-            this.pbxCopy2.Name = "pbxCopy2";
-            this.pbxCopy2.Size = new System.Drawing.Size(21, 23);
-            this.pbxCopy2.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxCopy2.TabIndex = 194;
-            this.pbxCopy2.TabStop = false;
-            this.pbxCopy2.Tag = "clipboard";
-            this.pbxCopy1.Image = WindowsApplication1.Resources.clipboard;
-            this.pbxCopy1.Location = new Point(22, 28);
-            this.pbxCopy1.Name = "pbxCopy1";
-            this.pbxCopy1.Size = new System.Drawing.Size(21, 23);
-            this.pbxCopy1.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pbxCopy1.TabIndex = 193;
-            this.pbxCopy1.TabStop = false;
-            this.pbxCopy1.Tag = "clipboard";
-            this.TabPg8UWMan.AutoScroll = true;
-            this.TabPg8UWMan.BackColor = Color.GhostWhite;
-            this.TabPg8UWMan.BorderStyle = BorderStyle.Fixed3D;
-            this.TabPg8UWMan.Controls.Add(this.WebBrowser1);
-            this.TabPg8UWMan.Location = new Point(4, 22);
-            this.TabPg8UWMan.Name = "TabPg8UWMan";
-            this.TabPg8UWMan.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg8UWMan.Size = new System.Drawing.Size(866, 201);
-            this.TabPg8UWMan.TabIndex = 8;
-            this.TabPg8UWMan.Text = "Underwriting Manual";
-            this.WebBrowser1.Dock = DockStyle.Fill;
-            this.WebBrowser1.Location = new Point(3, 3);
-            this.WebBrowser1.Size = new System.Drawing.Size(20, 20);
-            this.WebBrowser1.Name = "WebBrowser1";
-            this.WebBrowser1.Size = new System.Drawing.Size(856, 191);
-            this.WebBrowser1.TabIndex = 77;
-            this.WebBrowser1.Url = new Uri("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\IMS NATIONAL UNDERWRITING MANUAL.htm", UriKind.Absolute);
-            this.TabPage1.AutoScroll = true;
-            this.TabPage1.BackColor = Color.AliceBlue;
-            this.TabPage1.Controls.Add(this.GroupBox1);
-            this.TabPage1.Controls.Add(this.Label121);
-            this.TabPage1.Controls.Add(this.Label118);
-            this.TabPage1.Controls.Add(this.Label21);
-            this.TabPage1.Controls.Add(this.cbox_StatsTaxCounties);
-            this.TabPage1.Controls.Add(this.txt_StatsTaxOffices);
-            this.TabPage1.Controls.Add(this.lbl_TaxOnlineStats);
-            this.TabPage1.Controls.Add(this.Label14);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat6);
-            this.TabPage1.Controls.Add(this.Label37);
-            this.TabPage1.Controls.Add(this.cbox_StatsStates);
-            this.TabPage1.Controls.Add(this.Label25);
-            this.TabPage1.Controls.Add(this.Label23);
-            this.TabPage1.Controls.Add(this.lbl_OrbStats);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat5);
-            this.TabPage1.Controls.Add(this.txt_StatsCounties);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat4);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat3);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat2);
-            this.TabPage1.Controls.Add(this.lbl_OrbStat1);
-            this.TabPage1.Controls.Add(this.lbl_CoOnlineStats);
-            this.TabPage1.Controls.Add(this.Label120);
-            this.TabPage1.Controls.Add(this.Label119);
-            this.TabPage1.Controls.Add(this.Label116);
-            this.TabPage1.Controls.Add(this.Label115);
-            this.TabPage1.Location = new Point(4, 22);
-            this.TabPage1.Name = "TabPage1";
-            this.TabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage1.Size = new System.Drawing.Size(866, 201);
-            this.TabPage1.TabIndex = 9;
-            this.TabPage1.Text = "Statistics";
-            this.GroupBox1.Controls.Add(this.lbl_vstats_YTD);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Jan);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Dec);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Feb);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Nov);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Mar);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Oct);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Apr);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Sep);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_May);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Aug);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Jun);
-            this.GroupBox1.Controls.Add(this.lbl_vstats_Jul);
-            this.GroupBox1.Location = new Point(15, 19);
-            this.GroupBox1.Name = "GroupBox1";
-            this.GroupBox1.Size = new System.Drawing.Size(237, 161);
-            this.GroupBox1.TabIndex = 36;
-            this.GroupBox1.TabStop = false;
-            this.GroupBox1.Text = "Online Searches Completed - 2008";
-            this.lbl_vstats_YTD.AutoSize = true;
-            this.lbl_vstats_YTD.Location = new Point(23, 22);
-            this.lbl_vstats_YTD.Name = "lbl_vstats_YTD";
-            this.lbl_vstats_YTD.Size = new System.Drawing.Size(83, 13);
-            this.lbl_vstats_YTD.TabIndex = 36;
-            this.lbl_vstats_YTD.Text = "YTD #Inhouse: ";
-            this.lbl_vstats_Jan.AutoSize = true;
-            this.lbl_vstats_Jan.Location = new Point(24, 46);
-            this.lbl_vstats_Jan.Name = "lbl_vstats_Jan";
-            this.lbl_vstats_Jan.Size = new System.Drawing.Size(30, 13);
-            this.lbl_vstats_Jan.TabIndex = 24;
-            this.lbl_vstats_Jan.Text = "Jan: ";
-            this.lbl_vstats_Dec.AutoSize = true;
-            this.lbl_vstats_Dec.Location = new Point(125, 136);
-            this.lbl_vstats_Dec.Name = "lbl_vstats_Dec";
-            this.lbl_vstats_Dec.Size = new System.Drawing.Size(33, 13);
-            this.lbl_vstats_Dec.TabIndex = 35;
-            this.lbl_vstats_Dec.Text = "Dec: ";
-            this.lbl_vstats_Feb.AutoSize = true;
-            this.lbl_vstats_Feb.Location = new Point(24, 64);
-            this.lbl_vstats_Feb.Name = "lbl_vstats_Feb";
-            this.lbl_vstats_Feb.Size = new System.Drawing.Size(31, 13);
-            this.lbl_vstats_Feb.TabIndex = 25;
-            this.lbl_vstats_Feb.Text = "Feb: ";
-            this.lbl_vstats_Nov.AutoSize = true;
-            this.lbl_vstats_Nov.Location = new Point(125, 118);
-            this.lbl_vstats_Nov.Name = "lbl_vstats_Nov";
-            this.lbl_vstats_Nov.Size = new System.Drawing.Size(33, 13);
-            this.lbl_vstats_Nov.TabIndex = 34;
-            this.lbl_vstats_Nov.Text = "Nov: ";
-            this.lbl_vstats_Mar.AutoSize = true;
-            this.lbl_vstats_Mar.Location = new Point(24, 82);
-            this.lbl_vstats_Mar.Name = "lbl_vstats_Mar";
-            this.lbl_vstats_Mar.Size = new System.Drawing.Size(31, 13);
-            this.lbl_vstats_Mar.TabIndex = 26;
-            this.lbl_vstats_Mar.Text = "Mar: ";
-            this.lbl_vstats_Oct.AutoSize = true;
-            this.lbl_vstats_Oct.Location = new Point(125, 100);
-            this.lbl_vstats_Oct.Name = "lbl_vstats_Oct";
-            this.lbl_vstats_Oct.Size = new System.Drawing.Size(30, 13);
-            this.lbl_vstats_Oct.TabIndex = 33;
-            this.lbl_vstats_Oct.Text = "Oct: ";
-            this.lbl_vstats_Apr.AutoSize = true;
-            this.lbl_vstats_Apr.Location = new Point(24, 100);
-            this.lbl_vstats_Apr.Name = "lbl_vstats_Apr";
-            this.lbl_vstats_Apr.Size = new System.Drawing.Size(29, 13);
-            this.lbl_vstats_Apr.TabIndex = 27;
-            this.lbl_vstats_Apr.Text = "Apr: ";
-            this.lbl_vstats_Sep.AutoSize = true;
-            this.lbl_vstats_Sep.Location = new Point(125, 82);
-            this.lbl_vstats_Sep.Name = "lbl_vstats_Sep";
-            this.lbl_vstats_Sep.Size = new System.Drawing.Size(32, 13);
-            this.lbl_vstats_Sep.TabIndex = 32;
-            this.lbl_vstats_Sep.Text = "Sep: ";
-            this.lbl_vstats_May.AutoSize = true;
-            this.lbl_vstats_May.Location = new Point(24, 118);
-            this.lbl_vstats_May.Name = "lbl_vstats_May";
-            this.lbl_vstats_May.Size = new System.Drawing.Size(33, 13);
-            this.lbl_vstats_May.TabIndex = 28;
-            this.lbl_vstats_May.Text = "May: ";
-            this.lbl_vstats_Aug.AutoSize = true;
-            this.lbl_vstats_Aug.Location = new Point(125, 64);
-            this.lbl_vstats_Aug.Name = "lbl_vstats_Aug";
-            this.lbl_vstats_Aug.Size = new System.Drawing.Size(32, 13);
-            this.lbl_vstats_Aug.TabIndex = 31;
-            this.lbl_vstats_Aug.Text = "Aug: ";
-            this.lbl_vstats_Jun.AutoSize = true;
-            this.lbl_vstats_Jun.Location = new Point(24, 136);
-            this.lbl_vstats_Jun.Name = "lbl_vstats_Jun";
-            this.lbl_vstats_Jun.Size = new System.Drawing.Size(30, 13);
-            this.lbl_vstats_Jun.TabIndex = 29;
-            this.lbl_vstats_Jun.Text = "Jun: ";
-            this.lbl_vstats_Jul.AutoSize = true;
-            this.lbl_vstats_Jul.Location = new Point(125, 46);
-            this.lbl_vstats_Jul.Name = "lbl_vstats_Jul";
-            this.lbl_vstats_Jul.Size = new System.Drawing.Size(26, 13);
-            this.lbl_vstats_Jul.TabIndex = 30;
-            this.lbl_vstats_Jul.Text = "Jul: ";
-            this.Label121.AutoSize = true;
-            this.Label121.Font = new System.Drawing.Font("Calibri", 10f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label121.Location = new Point(578, 183);
-            this.Label121.Name = "Label121";
-            this.Label121.Size = new System.Drawing.Size(122, 17);
-            this.Label121.TabIndex = 23;
-            this.Label121.Text = "Tax Offices By State";
-            this.Label118.AutoSize = true;
-            this.Label118.Font = new System.Drawing.Font("Calibri", 10f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label118.Location = new Point(578, 8);
-            this.Label118.Name = "Label118";
-            this.Label118.Size = new System.Drawing.Size(198, 17);
-            this.Label118.TabIndex = 22;
-            this.Label118.Text = "InHouse Coverage Area By State";
-            this.Label21.AutoSize = true;
-            this.Label21.Location = new Point(576, 200);
-            this.Label21.Name = "Label21";
-            this.Label21.Size = new System.Drawing.Size(43, 13);
-            this.Label21.TabIndex = 21;
-            this.Label21.Text = "County:";
-            this.cbox_StatsTaxCounties.FormattingEnabled = true;
-            this.cbox_StatsTaxCounties.Location = new Point(579, 216);
-            this.cbox_StatsTaxCounties.Name = "cbox_StatsTaxCounties";
-            this.cbox_StatsTaxCounties.Size = new System.Drawing.Size(60, 21);
-            this.cbox_StatsTaxCounties.TabIndex = 20;
-            this.txt_StatsTaxOffices.BackColor = Color.GhostWhite;
-            this.txt_StatsTaxOffices.BorderStyle = BorderStyle.FixedSingle;
-            this.txt_StatsTaxOffices.Font = new System.Drawing.Font("Calibri", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_StatsTaxOffices.ForeColor = Color.DarkBlue;
-            this.txt_StatsTaxOffices.Location = new Point(581, 256);
-            this.txt_StatsTaxOffices.Multiline = true;
-            this.txt_StatsTaxOffices.Name = "txt_StatsTaxOffices";
-            this.txt_StatsTaxOffices.ReadOnly = true;
-            this.txt_StatsTaxOffices.ScrollBars = ScrollBars.Vertical;
-            this.txt_StatsTaxOffices.Size = new System.Drawing.Size(259, 92);
-            this.txt_StatsTaxOffices.TabIndex = 19;
-            this.lbl_TaxOnlineStats.AutoSize = true;
-            this.lbl_TaxOnlineStats.Location = new Point(578, 240);
-            this.lbl_TaxOnlineStats.Name = "lbl_TaxOnlineStats";
-            this.lbl_TaxOnlineStats.Size = new System.Drawing.Size(64, 13);
-            this.lbl_TaxOnlineStats.TabIndex = 18;
-            this.lbl_TaxOnlineStats.Text = "Tax Offices:";
-            this.Label14.AutoSize = true;
-            this.Label14.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label14.Location = new Point(298, 113);
-            this.Label14.Name = "Label14";
-            this.Label14.Size = new System.Drawing.Size(181, 14);
-            this.Label14.TabIndex = 17;
-            this.Label14.Text = "Total# Records in Tax Database:";
-            this.lbl_OrbStat6.AutoSize = true;
-            this.lbl_OrbStat6.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat6.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat6.Location = new Point(505, 113);
-            this.lbl_OrbStat6.Name = "lbl_OrbStat6";
-            this.lbl_OrbStat6.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat6.TabIndex = 16;
-            this.lbl_OrbStat6.Text = "#";
-            this.Label37.AutoSize = true;
-            this.Label37.Location = new Point(578, 25);
-            this.Label37.Name = "Label37";
-            this.Label37.Size = new System.Drawing.Size(35, 13);
-            this.Label37.TabIndex = 15;
-            this.Label37.Text = "State:";
-            this.cbox_StatsStates.FormattingEnabled = true;
-            ComboBox.ObjectCollection objectCollections2 = this.cbox_StatsStates.Items;
-            objArray = new object[] { "ALL", "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY" };
-            objectCollections2.AddRange(objArray);
-            this.cbox_StatsStates.Location = new Point(581, 41);
-            this.cbox_StatsStates.Name = "cbox_StatsStates";
-            this.cbox_StatsStates.Size = new System.Drawing.Size(60, 21);
-            this.cbox_StatsStates.TabIndex = 14;
-            this.Label25.AutoSize = true;
-            this.Label25.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label25.Location = new Point(298, 157);
-            this.Label25.Name = "Label25";
-            this.Label25.Size = new System.Drawing.Size(173, 14);
-            this.Label25.TabIndex = 13;
-            this.Label25.Text = "Total# Tax Offices Researched:";
-            this.Label23.AutoSize = true;
-            this.Label23.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label23.Location = new Point(298, 25);
-            this.Label23.Name = "Label23";
-            this.Label23.Size = new System.Drawing.Size(182, 14);
-            this.Label23.TabIndex = 12;
-            this.Label23.Text = "Total# Records in Orb Database:";
-            this.lbl_OrbStats.AutoSize = true;
-            this.lbl_OrbStats.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStats.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStats.Location = new Point(505, 25);
-            this.lbl_OrbStats.Name = "lbl_OrbStats";
-            this.lbl_OrbStats.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStats.TabIndex = 11;
-            this.lbl_OrbStats.Text = "#";
-            this.lbl_OrbStat5.AutoSize = true;
-            this.lbl_OrbStat5.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat5.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat5.Location = new Point(505, 157);
-            this.lbl_OrbStat5.Name = "lbl_OrbStat5";
-            this.lbl_OrbStat5.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat5.TabIndex = 10;
-            this.lbl_OrbStat5.Text = "#";
-            this.txt_StatsCounties.BackColor = Color.GhostWhite;
-            this.txt_StatsCounties.BorderStyle = BorderStyle.FixedSingle;
-            this.txt_StatsCounties.Font = new System.Drawing.Font("Calibri", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_StatsCounties.ForeColor = Color.DarkBlue;
-            this.txt_StatsCounties.Location = new Point(581, 81);
-            this.txt_StatsCounties.Multiline = true;
-            this.txt_StatsCounties.Name = "txt_StatsCounties";
-            this.txt_StatsCounties.ReadOnly = true;
-            this.txt_StatsCounties.ScrollBars = ScrollBars.Vertical;
-            this.txt_StatsCounties.Size = new System.Drawing.Size(182, 92);
-            this.txt_StatsCounties.TabIndex = 9;
-            this.lbl_OrbStat4.AutoSize = true;
-            this.lbl_OrbStat4.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat4.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat4.Location = new Point(505, 135);
-            this.lbl_OrbStat4.Name = "lbl_OrbStat4";
-            this.lbl_OrbStat4.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat4.TabIndex = 8;
-            this.lbl_OrbStat4.Text = "#";
-            this.lbl_OrbStat3.AutoSize = true;
-            this.lbl_OrbStat3.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat3.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat3.Location = new Point(505, 91);
-            this.lbl_OrbStat3.Name = "lbl_OrbStat3";
-            this.lbl_OrbStat3.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat3.TabIndex = 7;
-            this.lbl_OrbStat3.Text = "#";
-            this.lbl_OrbStat2.AutoSize = true;
-            this.lbl_OrbStat2.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat2.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat2.Location = new Point(505, 69);
-            this.lbl_OrbStat2.Name = "lbl_OrbStat2";
-            this.lbl_OrbStat2.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat2.TabIndex = 6;
-            this.lbl_OrbStat2.Text = "#";
-            this.lbl_OrbStat1.AutoSize = true;
-            this.lbl_OrbStat1.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_OrbStat1.ForeColor = Color.DarkBlue;
-            this.lbl_OrbStat1.Location = new Point(505, 47);
-            this.lbl_OrbStat1.Name = "lbl_OrbStat1";
-            this.lbl_OrbStat1.Size = new System.Drawing.Size(13, 14);
-            this.lbl_OrbStat1.TabIndex = 5;
-            this.lbl_OrbStat1.Text = "#";
-            this.lbl_CoOnlineStats.AutoSize = true;
-            this.lbl_CoOnlineStats.Location = new Point(578, 65);
-            this.lbl_CoOnlineStats.Name = "lbl_CoOnlineStats";
-            this.lbl_CoOnlineStats.Size = new System.Drawing.Size(84, 13);
-            this.lbl_CoOnlineStats.TabIndex = 4;
-            this.lbl_CoOnlineStats.Text = "Online Counties:";
-            this.Label120.AutoSize = true;
-            this.Label120.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label120.Location = new Point(298, 91);
-            this.Label120.Name = "Label120";
-            this.Label120.Size = new System.Drawing.Size(121, 14);
-            this.Label120.TabIndex = 3;
-            this.Label120.Text = "Total# Courts Online:";
-            this.Label119.AutoSize = true;
-            this.Label119.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label119.Location = new Point(298, 69);
-            this.Label119.Name = "Label119";
-            this.Label119.Size = new System.Drawing.Size(196, 14);
-            this.Label119.TabIndex = 2;
-            this.Label119.Text = "Total# InHouse Coverage Counties:";
-            this.Label116.AutoSize = true;
-            this.Label116.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label116.Location = new Point(298, 135);
-            this.Label116.Name = "Label116";
-            this.Label116.Size = new System.Drawing.Size(146, 14);
-            this.Label116.TabIndex = 1;
-            this.Label116.Text = "Total# Tax Offices Online:";
-            this.Label115.AutoSize = true;
-            this.Label115.Font = new System.Drawing.Font("Calibri", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label115.Location = new Point(298, 47);
-            this.Label115.Name = "Label115";
-            this.Label115.Size = new System.Drawing.Size(166, 14);
-            this.Label115.TabIndex = 0;
-            this.Label115.Text = "Total# of Land Indexs Online:";
-            this.TabPage2.AutoScroll = true;
-            this.TabPage2.BackColor = Color.GhostWhite;
-            this.TabPage2.Controls.Add(this.lblSOL_being_Clause);
-            this.TabPage2.Controls.Add(this.lbl_homestead);
-            this.TabPage2.Controls.Add(this.txt_homestead_notes);
-            this.TabPage2.Controls.Add(this.lbl_deed_prep);
-            this.TabPage2.Controls.Add(this.lbl_attyClose);
-            this.TabPage2.Controls.Add(this.txt_AttyNotes);
-            this.TabPage2.Controls.Add(this.txt_DeedNotes);
-            this.TabPage2.Controls.Add(this.CheckBox1);
-            this.TabPage2.Controls.Add(this.Label123);
-            this.TabPage2.Controls.Add(this.txt_PolicyNotes);
-            this.TabPage2.Location = new Point(4, 22);
-            this.TabPage2.Name = "TabPage2";
-            this.TabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage2.Size = new System.Drawing.Size(866, 201);
-            this.TabPage2.TabIndex = 10;
-            this.TabPage2.Text = "Misc";
-            this.lblSOL_being_Clause.AutoSize = true;
-            this.lblSOL_being_Clause.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lblSOL_being_Clause.Location = new Point(8, 157);
-            this.lblSOL_being_Clause.Name = "lblSOL_being_Clause";
-            this.lblSOL_being_Clause.Size = new System.Drawing.Size(124, 13);
-            this.lblSOL_being_Clause.TabIndex = 89;
-            this.lblSOL_being_Clause.Text = "Being Clause Required";
-            this.lbl_homestead.AutoSize = true;
-            this.lbl_homestead.Location = new Point(4, 12);
-            this.lbl_homestead.Name = "lbl_homestead";
-            this.lbl_homestead.Size = new System.Drawing.Size(64, 13);
-            this.lbl_homestead.TabIndex = 88;
-            this.lbl_homestead.Text = "Homestead:";
-            this.txt_homestead_notes.BackColor = Color.Snow;
-            this.txt_homestead_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_homestead_notes.ForeColor = Color.Purple;
-            this.txt_homestead_notes.Location = new Point(4, 28);
-            this.txt_homestead_notes.Multiline = true;
-            this.txt_homestead_notes.Name = "txt_homestead_notes";
-            this.txt_homestead_notes.ReadOnly = true;
-            this.txt_homestead_notes.ScrollBars = ScrollBars.Vertical;
-            this.txt_homestead_notes.Size = new System.Drawing.Size(262, 48);
-            this.txt_homestead_notes.TabIndex = 87;
-            this.lbl_deed_prep.AutoSize = true;
-            this.lbl_deed_prep.Location = new Point(8, 90);
-            this.lbl_deed_prep.Name = "lbl_deed_prep";
-            this.lbl_deed_prep.Size = new System.Drawing.Size(64, 13);
-            this.lbl_deed_prep.TabIndex = 86;
-            this.lbl_deed_prep.Text = "Deed Prep: ";
-            this.lbl_attyClose.AutoSize = true;
-            this.lbl_attyClose.Location = new Point(287, 12);
-            this.lbl_attyClose.Name = "lbl_attyClose";
-            this.lbl_attyClose.Size = new System.Drawing.Size(108, 13);
-            this.lbl_attyClose.TabIndex = 77;
-            this.lbl_attyClose.Text = "Attorney State Notes:";
-            this.txt_AttyNotes.BackColor = Color.Snow;
-            this.txt_AttyNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_AttyNotes.ForeColor = Color.Purple;
-            this.txt_AttyNotes.Location = new Point(287, 28);
-            this.txt_AttyNotes.Multiline = true;
-            this.txt_AttyNotes.Name = "txt_AttyNotes";
-            this.txt_AttyNotes.ReadOnly = true;
-            this.txt_AttyNotes.ScrollBars = ScrollBars.Vertical;
-            this.txt_AttyNotes.Size = new System.Drawing.Size(262, 48);
-            this.txt_AttyNotes.TabIndex = 76;
-            this.txt_DeedNotes.BackColor = Color.Snow;
-            this.txt_DeedNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_DeedNotes.ForeColor = Color.Purple;
-            this.txt_DeedNotes.Location = new Point(6, 106);
-            this.txt_DeedNotes.Multiline = true;
-            this.txt_DeedNotes.Name = "txt_DeedNotes";
-            this.txt_DeedNotes.ReadOnly = true;
-            this.txt_DeedNotes.ScrollBars = ScrollBars.Vertical;
-            this.txt_DeedNotes.Size = new System.Drawing.Size(262, 48);
-            this.txt_DeedNotes.TabIndex = 74;
-            this.CheckBox1.AutoSize = true;
-            this.CheckBox1.Location = new Point(207, 355);
-            this.CheckBox1.Name = "CheckBox1";
-            this.CheckBox1.Size = new System.Drawing.Size(141, 17);
-            this.CheckBox1.TabIndex = 257;
-            this.CheckBox1.Text = "Attorney must close loan";
-            this.CheckBox1.UseVisualStyleBackColor = true;
-            this.Label123.AutoSize = true;
-            this.Label123.Location = new Point(577, 12);
-            this.Label123.Name = "Label123";
-            this.Label123.Size = new System.Drawing.Size(69, 13);
-            this.Label123.TabIndex = 73;
-            this.Label123.Text = "Policy Notes:";
-            this.txt_PolicyNotes.BackColor = Color.Snow;
-            this.txt_PolicyNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.txt_PolicyNotes.ForeColor = Color.Purple;
-            this.txt_PolicyNotes.Location = new Point(577, 28);
-            this.txt_PolicyNotes.Multiline = true;
-            this.txt_PolicyNotes.Name = "txt_PolicyNotes";
-            this.txt_PolicyNotes.ReadOnly = true;
-            this.txt_PolicyNotes.ScrollBars = ScrollBars.Vertical;
-            this.txt_PolicyNotes.Size = new System.Drawing.Size(262, 48);
-            this.txt_PolicyNotes.TabIndex = 72;
-            this.TabPage3.BackColor = Color.GhostWhite;
-            this.TabPage3.Controls.Add(this.PictureBox3);
-            this.TabPage3.Controls.Add(this.lbl_doc_endorsInfo);
-            this.TabPage3.Controls.Add(this.PictureBox2);
-            this.TabPage3.Controls.Add(this.lbl_doc_Alta_Clta);
-            this.TabPage3.Controls.Add(this.WebBrowser2);
-            this.TabPage3.Location = new Point(4, 22);
-            this.TabPage3.Name = "TabPage3";
-            this.TabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage3.Size = new System.Drawing.Size(866, 201);
-            this.TabPage3.TabIndex = 11;
-            this.TabPage3.Text = "About ALTAs";
-            this.PictureBox3.Image = WindowsApplication1.Resources.word_logo;
-            this.PictureBox3.Location = new Point(699, 41);
-            this.PictureBox3.Name = "PictureBox3";
-            this.PictureBox3.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox3.TabIndex = 190;
-            this.PictureBox3.TabStop = false;
-            this.PictureBox3.Tag = "AbstractRunSheet";
-            this.lbl_doc_endorsInfo.AutoSize = true;
-            this.lbl_doc_endorsInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_endorsInfo.Location = new Point(717, 41);
-            this.lbl_doc_endorsInfo.Name = "lbl_doc_endorsInfo";
-            this.lbl_doc_endorsInfo.Size = new System.Drawing.Size(89, 13);
-            this.lbl_doc_endorsInfo.TabIndex = 191;
-            this.lbl_doc_endorsInfo.Text = "Endorsement info";
-            this.PictureBox2.Image = (Image)componentResourceManager.GetObject("PictureBox2.Image");
-            this.PictureBox2.Location = new Point(699, 17);
-            this.PictureBox2.Name = "PictureBox2";
-            this.PictureBox2.Size = new System.Drawing.Size(14, 14);
-            this.PictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBox2.TabIndex = 188;
-            this.PictureBox2.TabStop = false;
-            this.PictureBox2.Tag = "AbstractRunSheet";
-            this.lbl_doc_Alta_Clta.AutoSize = true;
-            this.lbl_doc_Alta_Clta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_doc_Alta_Clta.Location = new Point(717, 18);
-            this.lbl_doc_Alta_Clta.Name = "lbl_doc_Alta_Clta";
-            this.lbl_doc_Alta_Clta.Size = new System.Drawing.Size(120, 13);
-            this.lbl_doc_Alta_Clta.TabIndex = 189;
-            this.lbl_doc_Alta_Clta.Text = "ALTA-CLTA Conversion";
-            this.WebBrowser2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            this.WebBrowser2.Location = new Point(0, 0);
-            this.WebBrowser2.Size = new System.Drawing.Size(20, 20);
-            this.WebBrowser2.Name = "WebBrowser2";
-            this.WebBrowser2.Size = new System.Drawing.Size(690, 198);
-            this.WebBrowser2.TabIndex = 0;
-            this.WebBrowser2.Url = new Uri("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\Alta_Manual_STGC2006.htm", UriKind.Absolute);
-            this.LinkLabel4.AutoSize = true;
-            this.LinkLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.LinkLabel4.Location = new Point(492, 617);
-            this.LinkLabel4.Name = "LinkLabel4";
-            this.LinkLabel4.Size = new System.Drawing.Size(236, 15);
-            this.LinkLabel4.TabIndex = 191;
-            this.LinkLabel4.TabStop = true;
-            this.LinkLabel4.Text = "Report suggestions or problems with ORB";
-            this.Label56.AutoSize = true;
-            this.Label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label56.ForeColor = Color.SteelBlue;
-            this.Label56.Location = new Point(18, 617);
-            this.Label56.Name = "Label56";
-            this.Label56.Size = new System.Drawing.Size(396, 15);
-            this.Label56.TabIndex = 193;
-            this.Label56.Text = "iMortgage Services Online Resource Bank  Updated through 9-29-2008";
-            this.Label55.AutoSize = true;
-            this.Label55.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label55.Location = new Point(324, 60);
-            this.Label55.Name = "Label55";
-            this.Label55.Size = new System.Drawing.Size(80, 13);
-            this.Label55.TabIndex = 66;
-            this.Label55.Text = "Spousal State:";
-            this.Label62.AutoSize = true;
-            this.Label62.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label62.Location = new Point(408, 60);
-            this.Label62.Name = "Label62";
-            this.Label62.Size = new System.Drawing.Size(46, 13);
-            this.Label62.TabIndex = 65;
-            this.Label62.Text = "Label72";
-            this.Label64.AutoSize = true;
-            this.Label64.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label64.Location = new Point(12, 267);
-            this.Label64.Name = "Label64";
-            this.Label64.Size = new System.Drawing.Size(86, 13);
-            this.Label64.TabIndex = 62;
-            this.Label64.Text = "Redem. Period:";
-            this.Label66.AutoSize = true;
-            this.Label66.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label66.Location = new Point(132, 267);
-            this.Label66.Name = "Label66";
-            this.Label66.Size = new System.Drawing.Size(46, 13);
-            this.Label66.TabIndex = 61;
-            this.Label66.Text = "Label58";
-            this.Label70.AutoSize = true;
-            this.Label70.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label70.Location = new Point(12, 233);
-            this.Label70.Name = "Label70";
-            this.Label70.Size = new System.Drawing.Size(76, 13);
-            this.Label70.TabIndex = 60;
-            this.Label70.Text = "Personal Tax:";
-            this.Label75.AutoSize = true;
-            this.Label75.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label75.Location = new Point(132, 233);
-            this.Label75.Name = "Label75";
-            this.Label75.Size = new System.Drawing.Size(46, 13);
-            this.Label75.TabIndex = 59;
-            this.Label75.Text = "Label60";
-            this.Label76.AutoSize = true;
-            this.Label76.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label76.Location = new Point(132, 196);
-            this.Label76.Name = "Label76";
-            this.Label76.Size = new System.Drawing.Size(46, 13);
-            this.Label76.TabIndex = 58;
-            this.Label76.Text = "Label54";
-            this.Label77.AutoSize = true;
-            this.Label77.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label77.Location = new Point(12, 216);
-            this.Label77.Name = "Label77";
-            this.Label77.Size = new System.Drawing.Size(89, 13);
-            this.Label77.TabIndex = 57;
-            this.Label77.Text = "Creditor Claims:";
-            this.Label78.AutoSize = true;
-            this.Label78.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label78.Location = new Point(408, 77);
-            this.Label78.Name = "Label78";
-            this.Label78.Size = new System.Drawing.Size(46, 13);
-            this.Label78.TabIndex = 56;
-            this.Label78.Text = "Label52";
-            this.Label80.AutoSize = true;
-            this.Label80.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label80.Location = new Point(324, 77);
-            this.Label80.Name = "Label80";
-            this.Label80.Size = new System.Drawing.Size(48, 13);
-            this.Label80.TabIndex = 55;
-            this.Label80.Text = "TE Rule:";
-            this.Label82.AutoSize = true;
-            this.Label82.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label82.Location = new Point(132, 301);
-            this.Label82.Name = "Label82";
-            this.Label82.Size = new System.Drawing.Size(46, 13);
-            this.Label82.TabIndex = 54;
-            this.Label82.Text = "Label46";
-            this.Label84.AutoSize = true;
-            this.Label84.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label84.Location = new Point(12, 301);
-            this.Label84.Name = "Label84";
-            this.Label84.Size = new System.Drawing.Size(111, 13);
-            this.Label84.TabIndex = 53;
-            this.Label84.Text = "After Acquired Lien:";
-            this.Label85.AutoSize = true;
-            this.Label85.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label85.Location = new Point(132, 43);
-            this.Label85.Name = "Label85";
-            this.Label85.Size = new System.Drawing.Size(82, 13);
-            this.Label85.TabIndex = 52;
-            this.Label85.Text = "10 yrs+30 days";
-            this.Label86.AutoSize = true;
-            this.Label86.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label86.Location = new Point(12, 43);
-            this.Label86.Name = "Label86";
-            this.Label86.Size = new System.Drawing.Size(75, 13);
-            this.Label86.TabIndex = 51;
-            this.Label86.Text = "Fed Tax Lien:";
-            this.Label87.AutoSize = true;
-            this.Label87.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label87.Location = new Point(132, 60);
-            this.Label87.Name = "Label87";
-            this.Label87.Size = new System.Drawing.Size(30, 13);
-            this.Label87.TabIndex = 50;
-            this.Label87.Text = "5 yrs";
-            this.Label88.AutoSize = true;
-            this.Label88.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label88.Location = new Point(12, 60);
-            this.Label88.Name = "Label88";
-            this.Label88.Size = new System.Drawing.Size(37, 13);
-            this.Label88.TabIndex = 49;
-            this.Label88.Text = "UCCs:";
-            this.TextBox1.BackColor = Color.Snow;
-            this.TextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.TextBox1.ForeColor = Color.Purple;
-            this.TextBox1.Location = new Point(327, 9);
-            this.TextBox1.Multiline = true;
-            this.TextBox1.Name = "TextBox1";
-            this.TextBox1.ReadOnly = true;
-            this.TextBox1.ScrollBars = ScrollBars.Vertical;
-            this.TextBox1.Size = new System.Drawing.Size(395, 47);
-            this.TextBox1.TabIndex = 48;
-            this.TextBox1.Text = "Comments";
-            this.Label89.AutoSize = true;
-            this.Label89.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label89.Location = new Point(12, 162);
-            this.Label89.Name = "Label89";
-            this.Label89.Size = new System.Drawing.Size(65, 13);
-            this.Label89.TabIndex = 23;
-            this.Label89.Text = "Hosp. Lien:";
-            this.Label90.AutoSize = true;
-            this.Label90.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label90.Location = new Point(132, 162);
-            this.Label90.Name = "Label90";
-            this.Label90.Size = new System.Drawing.Size(46, 13);
-            this.Label90.TabIndex = 22;
-            this.Label90.Text = "Label72";
-            this.Label91.AutoSize = true;
-            this.Label91.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label91.Location = new Point(12, 196);
-            this.Label91.Name = "Label91";
-            this.Label91.Size = new System.Drawing.Size(63, 13);
-            this.Label91.TabIndex = 21;
-            this.Label91.Text = "Judgment:";
-            this.Label92.AutoSize = true;
-            this.Label92.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label92.Location = new Point(132, 216);
-            this.Label92.Name = "Label92";
-            this.Label92.Size = new System.Drawing.Size(46, 13);
-            this.Label92.TabIndex = 20;
-            this.Label92.Text = "Label70";
-            this.Label93.AutoSize = true;
-            this.Label93.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label93.Location = new Point(132, 77);
-            this.Label93.Name = "Label93";
-            this.Label93.Size = new System.Drawing.Size(36, 13);
-            this.Label93.TabIndex = 25;
-            this.Label93.Text = "20 yrs";
-            this.Label94.AutoSize = true;
-            this.Label94.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label94.Location = new Point(12, 179);
-            this.Label94.Name = "Label94";
-            this.Label94.Size = new System.Drawing.Size(78, 13);
-            this.Label94.TabIndex = 19;
-            this.Label94.Text = "Claim of Lien:";
-            this.Label95.AutoSize = true;
-            this.Label95.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label95.Location = new Point(12, 77);
-            this.Label95.Name = "Label95";
-            this.Label95.Size = new System.Drawing.Size(66, 13);
-            this.Label95.TabIndex = 24;
-            this.Label95.Text = "USA Jgmts:";
-            this.Label96.AutoSize = true;
-            this.Label96.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label96.Location = new Point(132, 179);
-            this.Label96.Name = "Label96";
-            this.Label96.Size = new System.Drawing.Size(46, 13);
-            this.Label96.TabIndex = 18;
-            this.Label96.Text = "Label68";
-            this.Label97.AutoSize = true;
-            this.Label97.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label97.Location = new Point(12, 145);
-            this.Label97.Name = "Label97";
-            this.Label97.Size = new System.Drawing.Size(59, 13);
-            this.Label97.TabIndex = 17;
-            this.Label97.Text = "HOA Lien:";
-            this.Label98.AutoSize = true;
-            this.Label98.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label98.Location = new Point(132, 145);
-            this.Label98.Name = "Label98";
-            this.Label98.Size = new System.Drawing.Size(46, 13);
-            this.Label98.TabIndex = 16;
-            this.Label98.Text = "Label66";
-            this.Label99.AutoSize = true;
-            this.Label99.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label99.Location = new Point(12, 128);
-            this.Label99.Name = "Label99";
-            this.Label99.Size = new System.Drawing.Size(107, 13);
-            this.Label99.TabIndex = 15;
-            this.Label99.Text = "Notice/Commence:";
-            this.Label100.AutoSize = true;
-            this.Label100.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label100.Location = new Point(132, 128);
-            this.Label100.Name = "Label100";
-            this.Label100.Size = new System.Drawing.Size(46, 13);
-            this.Label100.TabIndex = 14;
-            this.Label100.Text = "Label58";
-            this.Label101.AutoSize = true;
-            this.Label101.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label101.Location = new Point(12, 111);
-            this.Label101.Name = "Label101";
-            this.Label101.Size = new System.Drawing.Size(64, 13);
-            this.Label101.TabIndex = 13;
-            this.Label101.Text = "Mech.Lien:";
-            this.Label102.AutoSize = true;
-            this.Label102.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label102.Location = new Point(132, 111);
-            this.Label102.Name = "Label102";
-            this.Label102.Size = new System.Drawing.Size(46, 13);
-            this.Label102.TabIndex = 12;
-            this.Label102.Text = "Label60";
-            this.Label103.AutoSize = true;
-            this.Label103.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label103.Location = new Point(12, 284);
-            this.Label103.Name = "Label103";
-            this.Label103.Size = new System.Drawing.Size(65, 13);
-            this.Label103.TabIndex = 11;
-            this.Label103.Text = "State Jgmt:";
-            this.Label104.AutoSize = true;
-            this.Label104.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label104.Location = new Point(132, 284);
-            this.Label104.Name = "Label104";
-            this.Label104.Size = new System.Drawing.Size(46, 13);
-            this.Label104.TabIndex = 10;
-            this.Label104.Text = "Label62";
-            this.Label105.AutoSize = true;
-            this.Label105.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label105.Location = new Point(12, 250);
-            this.Label105.Name = "Label105";
-            this.Label105.Size = new System.Drawing.Size(73, 13);
-            this.Label105.TabIndex = 9;
-            this.Label105.Text = "Support Obl:";
-            this.Label106.AutoSize = true;
-            this.Label106.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label106.Location = new Point(132, 250);
-            this.Label106.Name = "Label106";
-            this.Label106.Size = new System.Drawing.Size(46, 13);
-            this.Label106.TabIndex = 8;
-            this.Label106.Text = "Label64";
-            this.Label107.AutoSize = true;
-            this.Label107.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label107.Location = new Point(132, 94);
-            this.Label107.Name = "Label107";
-            this.Label107.Size = new System.Drawing.Size(46, 13);
-            this.Label107.TabIndex = 5;
-            this.Label107.Text = "Label54";
-            this.Label108.AutoSize = true;
-            this.Label108.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label108.Location = new Point(12, 94);
-            this.Label108.Name = "Label108";
-            this.Label108.Size = new System.Drawing.Size(69, 13);
-            this.Label108.TabIndex = 4;
-            this.Label108.Text = "LisPendens:";
-            this.Label109.AutoSize = true;
-            this.Label109.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label109.Location = new Point(132, 26);
-            this.Label109.Name = "Label109";
-            this.Label109.Size = new System.Drawing.Size(46, 13);
-            this.Label109.TabIndex = 3;
-            this.Label109.Text = "Label52";
-            this.Label110.AutoSize = true;
-            this.Label110.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label110.Location = new Point(12, 26);
-            this.Label110.Name = "Label110";
-            this.Label110.Size = new System.Drawing.Size(45, 13);
-            this.Label110.TabIndex = 2;
-            this.Label110.Text = "HELOC:";
-            this.Label111.AutoSize = true;
-            this.Label111.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.Label111.Location = new Point(132, 9);
-            this.Label111.Name = "Label111";
-            this.Label111.Size = new System.Drawing.Size(46, 13);
-            this.Label111.TabIndex = 1;
-            this.Label111.Text = "Label46";
-            this.Label112.AutoSize = true;
-            this.Label112.Font = new System.Drawing.Font("Segoe UI", 8f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.Label112.Location = new Point(12, 9);
-            this.Label112.Name = "Label112";
-            this.Label112.Size = new System.Drawing.Size(59, 13);
-            this.Label112.TabIndex = 0;
-            this.Label112.Text = "Mtg/DOT:";
-            this.Panel2.Anchor = AnchorStyles.Left;
-            this.Panel2.BackColor = Color.Gainsboro;
-            this.Panel2.Location = new Point(0, 3);
-            this.Panel2.Name = "Panel2";
-            this.Panel2.Size = new System.Drawing.Size(860, 520);
-            this.Panel2.TabIndex = 198;
-            this.pboxOpenCredCard.Image = WindowsApplication1.Resources.xls_icon;
-            this.pboxOpenCredCard.Location = new Point(21, 59);
-            this.pboxOpenCredCard.Name = "pboxOpenCredCard";
-            this.pboxOpenCredCard.Size = new System.Drawing.Size(14, 14);
-            this.pboxOpenCredCard.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.pboxOpenCredCard.TabIndex = 205;
-            this.pboxOpenCredCard.TabStop = false;
-            this.pboxOpenCredCard.Tag = "AbstractRunSheet";
-            this.lbl_creditCard.AutoSize = true;
-            this.lbl_creditCard.Font = new System.Drawing.Font("Microsoft Sans Serif", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_creditCard.Location = new Point(38, 58);
-            this.lbl_creditCard.Name = "lbl_creditCard";
-            this.lbl_creditCard.Size = new System.Drawing.Size(131, 15);
-            this.lbl_creditCard.TabIndex = 206;
-            this.lbl_creditCard.Text = "Credit Card Usage Log";
-            this.AutoScaleDimensions = new SizeF(6f, 13f);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = Color.Honeydew;
-            this.Size = new System.Drawing.Size(874, 639);
-            this.Controls.Add(this.TabControl1);
-            this.Controls.Add(this.SplitContainer1);
-            this.Controls.Add(this.Label56);
-            this.Controls.Add(this.LinkLabel4);
-            this.Controls.Add(this.Panel2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = (System.Drawing.Icon)componentResourceManager.GetObject("$this.Icon");
-            this.Name = "Form1";
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "ORB - iMS Online Resource Bank";
-            this.pbxExport.Click += new EventHandler(pbxExport_Click);
-            this.TabControl1.MouseClick += new MouseEventHandler(TabPage1_Click);
-            this.Button_PolicyWarehouse.Click += new EventHandler(Button_PolicyWarehouse_Click);
-			this.Button_RateCalc.Click += new EventHandler(Button_RateCalc_Click);
-			this.Button_Search.Click += new EventHandler(ButtonGetLinks_Click);
-			this.Button_TitleDept.Click += new EventHandler(Button2_Click);
-			this.ButtonExit.Click += new EventHandler(ButtonExit_Click);
-			this.ButtonGetDoc.Click += new EventHandler(ButtonGetDoc_Click);
-			this.ButtonReset.Click += new EventHandler(ButtonReset_Click);
-			this.ButtonHelp.Click += new EventHandler(ButtonHelp_Click);
-			this.ButtonResetDocs.Click += new EventHandler(ButtonResetDocs_Click);
-		this.cbox_StatsStates.TextChanged += new EventHandler(cbox_StatsStates_SelectedIndexChanged);
-		this.cbox_StatsTaxCounties.SelectedIndexChanged += new EventHandler(cbox_StatsTaxCounties_SelectedIndexChanged);
-		this.cbxAddtlLinks.SelectedIndexChanged += new EventHandler(cbxAddtlLinks_SelectedIndexChanged);
-		this.ComboBoxCounty.TextChanged += new EventHandler(ComboBoxCounty_SelectedIndexChanged);
-		this.ComboBoxState.TextChanged += new EventHandler(comboboxState_TextChanged);
-		this.ComboBoxTaxAuth.TextChanged += new EventHandler(ComboBoxTaxAuth_SelectedIndexChanged);
-		this.DataGridView1.CellContentDoubleClick += new DataGridViewCellEventHandler(DataGridView1_CellContentDoubleClick);
-		this.Label4Tap.MouseLeave += new EventHandler(Label4Tap_Leave);
-		this.Label4Tap.MouseHover += new EventHandler(Label4Tap_Hover);
-		this.Label4Tap.Click += new EventHandler(Label4Tap_Click);
-		this.Label5dtree.MouseLeave += new EventHandler(Label5dtree_Leave);
-		this.Label5dtree.MouseHover += new EventHandler(Label5dtree_Hover);
-		this.Label5dtree.Click += new EventHandler(Label5dtree_Click);
-		this.Label6RV.Click += new EventHandler(Label6RV_Click);
-		this.Label6RV.MouseLeave += new EventHandler(Label6RV_Leave);
-		this.Label6RV.MouseHover += new EventHandler(Label6RV_Hover);				
-		this.lbl_BusnPhones.MouseLeave += new EventHandler(lbl_BusnPhones_mouseLeave);
-		this.lbl_BusnPhones.MouseHover += new EventHandler(lbl_BusnPhones_mouseHover);
-		this.lbl_BusnPhones.Click += new EventHandler(lbl_BusnPhones_Click);
-		this.lbl_creditCard.MouseLeave += new EventHandler(lbl_creditCard_mouseLeave);
-		this.lbl_creditCard.MouseHover += new EventHandler(lbl_creditCard_mouseHover);
-		this.lbl_creditCard.Click += new EventHandler(lbl_creditCard_Click);
-		this.lbl_deed_prep.MouseLeave += new EventHandler(lblDeedPrep_mouseLeave);
-		this.lbl_deed_prep.MouseHover += new EventHandler(lblDeedPrep_mouseHover);
-		this.lbl_deed_prep.Click += new EventHandler(lblDeedPrep_Click);
-		this.lbl_doc_aboutDeeds.MouseLeave += new EventHandler(lblDocDeeds_mouseLeave);
-		this.lbl_doc_aboutDeeds.MouseHover += new EventHandler(lblDocDeeds_mouseHover);
-		this.lbl_doc_aboutDeeds.Click += new EventHandler(lblDocDeeds_Click);
-		this.lbl_doc_aboutVesting.MouseLeave += new EventHandler(lblVesting_mouseLeave);
-		this.lbl_doc_aboutVesting.MouseHover += new EventHandler(lblVesting_mouseHover);
-		this.lbl_doc_aboutVesting.Click += new EventHandler(lblVesting_Click);			
-		this.lbl_doc_AbstractingSOPs.MouseLeave += new EventHandler(lbl_AbstrSOP_mouseLeave);
-		this.lbl_doc_AbstractingSOPs.MouseHover += new EventHandler(lbl_AbstrSOP_mouseHover);
-		this.lbl_doc_AbstractingSOPs.Click += new EventHandler(lbl_AbstrSOP_Click);
-		this.lbl_doc_Alta_Clta.MouseLeave += new EventHandler(lblAltaClta_mouseLeave);
-		this.lbl_doc_Alta_Clta.MouseHover += new EventHandler(lblAltaClta_mouseHover);
-		this.lbl_doc_Alta_Clta.Click += new EventHandler(lblAltaClta_Click);
-		this.lbl_doc_approvePOA.MouseLeave += new EventHandler(lblPOA_mouseLeave);
-		this.lbl_doc_approvePOA.MouseHover += new EventHandler(lblPOA_mouseHover);
-		this.lbl_doc_approvePOA.Click += new EventHandler(lblPOA_Click);
-		this.lbl_doc_endorsInfo.MouseLeave += new EventHandler(lbl_endorsInfo_mouseLeave);
-		this.lbl_doc_endorsInfo.MouseHover += new EventHandler(lbl_endorsInfo_mouseHover);
-		this.lbl_doc_endorsInfo.Click += new EventHandler(lbl_endorsInfo_Click);
-		this.lbl_doc_SOP_deedprep.MouseLeave += new EventHandler(lblDeedPrepSOP_mouseLeave);
-		this.lbl_doc_SOP_deedprep.MouseHover += new EventHandler(lblDeedPrepSOP_mouseHover);
-		this.lbl_doc_SOP_deedprep.Click += new EventHandler(lblDeedPrepSOP_Click);											
-		this.lbl_doc_Lease_Fee_LandContract.MouseLeave += new EventHandler(lblLeaseFee_mouseLeave);
-		this.lbl_doc_Lease_Fee_LandContract.MouseHover += new EventHandler(lblLeaseFee_mouseHover);
-		this.lbl_doc_Lease_Fee_LandContract.Click += new EventHandler(lblLeaseFee_Click);
-		this.lblOpenClearanceCustSpecs.MouseLeave += new EventHandler(lblOpenClearance_mouseLeave);
-		this.lblOpenClearanceCustSpecs.MouseHover += new EventHandler(lblOpenClearance_mouseHover);
-		this.lblOpenClearanceCustSpecs.Click += new EventHandler(lblOpenClearance_Click);
-		this.lblOpenEtitleWkshare.MouseLeave += new EventHandler(lblOpenEtitleWkshare_mouseLeave);
-		this.lblOpenEtitleWkshare.MouseHover += new EventHandler(lblOpenEtitleWkshare_mouseHover);
-		this.lblOpenEtitleWkshare.Click += new EventHandler(lblOpenEtitleWkshare_Click);
-		this.lblOpenORT_Wkshare.MouseLeave += new EventHandler(lblOpenORT_Wkshare_mouseLeave);
-		this.lblOpenORT_Wkshare.MouseHover += new EventHandler(lblOpenORT_Wkshare_mouseHover);
-		this.lblOpenORT_Wkshare.Click += new EventHandler(lblOpenORT_Wkshare_Click);
-		this.lblOpenRunSheet.MouseLeave += new EventHandler(lblOpenRunSheet_mouseLeave);
-		this.lblOpenRunSheet.MouseHover += new EventHandler(lblOpenRunSheet_mouseHover);
-		this.lblOpenRunSheet.Click += new EventHandler(lblOpenRunSheet_Click);
-		this.lblOpenTitleCustSpec.MouseLeave += new EventHandler(lblOpenTitleCustSpec_mouseLeave);
-		this.lblOpenTitleCustSpec.MouseHover += new EventHandler(lblOpenTitleCustSpec_mouseHover);
-		this.lblOpenTitleCustSpec.Click += new EventHandler(lblOpenTitleProdCustSpecs_Click);
-		this.lblSOL_Heloc.MouseLeave += new EventHandler(lblSOL_heloc_mouseLeave);
-		this.lblSOL_Heloc.MouseHover += new EventHandler(lblSOL_heloc_mouseHover);
-		this.lblSOL_Mtg.MouseLeave += new EventHandler(lblSOL_Mtg_mouseLeave);
-		this.lblSOL_Mtg.MouseHover += new EventHandler(lblSOL_Mtg_mouseHover);
-		this.LinkLabel_MyFlCountiesURL.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel_MyFla_LinkClicked);																						
-		this.LinkLabel10.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel10_LinkClicked);
-		this.LinkLabel16.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel16_LinkClicked);
-		this.LinkLabel4.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel4_LinkClicked);
-		this.LinkLabel9.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabel9_LinkClicked);
-		this.LinkLabelCoHome.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCoHome_LinkClicked);
-		this.LinkLabelCounty.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCounty_LinkClicked);
-		this.LinkLabelCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelCourt_LinkClicked);
-		this.LinkLabelForeclosure.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelForeclosure_LinkClicked);
-		this.LinkLabelMaps.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelMaps_LinkClicked);
-		this.LinkLabelMuniCourt.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelTax2_LinkClicked);
-		this.LinkLabelOtherTax.LinkClicked +=  new LinkLabelLinkClickedEventHandler(LinkLabelOtherTax_LinkClicked);		
-this.LinkLabelProbate.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelProbate_LinkClicked);
-this.LinkLabelProthon.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelPro_LinkClicked);
-this.LinkLabelSheriff.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelSheriff_LinkClicked);
-this.LinkLabelTax.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelTax_LinkClicked);
-this.linkLocTax1.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx1_LinkClicked);
-this.linkLocTax2.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx2_LinkClicked);
-this.linkLocTax3.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx3_LinkClicked);
-this.linkLocTax4.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx4_LinkClicked);
-this.linkLocTax5.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLocTx5_LinkClicked);
-this.linkUS_Legal_Forms.LinkClicked += new LinkLabelLinkClickedEventHandler(linkUS_Legal_Forms_LinkClicked);
-this.pbox_Abstr_SOP.MouseLeave += new EventHandler(pboxAbstr_SOP_MouseLeave);
-this.pbox_Abstr_SOP.MouseHover += new EventHandler(pboxAbstr_SOP_MouseHover);
-this.pboxOpenClearanceCustSpecs.Click += new EventHandler(pboxOpenClearance_Click);
-this.pboxOpenClearanceCustSpecs.MouseLeave += new EventHandler(pboxOpenClearanceCustSpecs_MouseLeave);
-this.pboxOpenClearanceCustSpecs.MouseHover += new EventHandler(pboxOpenClearanceCustSpecs_MouseHover);
-this.pboxOpenCredCard.MouseHover += new EventHandler(pboxOpenCreditCard_MouseHover);
-this.pboxOpenCredCard.Click += new EventHandler(pboxOpenCredCard_Click);
-this.pboxOpenCredCard.MouseLeave += new EventHandler(pboxOpenCredCard_MouseLeave);
-this.pboxOpenEtitleWkshare.Click += new EventHandler(pboxOpenEtitleWkshare_Click);
-this.pboxOpenEtitleWkshare.MouseLeave += new EventHandler(pboxOpenEtitleWkshare_MouseLeave);
-this.pboxOpenEtitleWkshare.MouseHover += new EventHandler(pboxOpenEtitleWkshare_MouseHover);
-this.pboxOpenORT_Wkshare.Click += new EventHandler(pboxOpenORT_Wkshare_Click);
-this.pboxOpenORT_Wkshare.MouseLeave += new EventHandler(pboxOpenORT_Wkshare_MouseLeave);;
-this.pboxOpenORT_Wkshare.MouseHover += new EventHandler(pboxOpenORT_Wkshare_MouseHover);
-this.pboxOpenRunSheet.Click += new EventHandler(pboxOpenRunSheet_Click);
-this.pboxOpenRunSheet.MouseLeave += new EventHandler(pboxOpenRunSheet_MouseLeave);
-this.pboxOpenRunSheet.MouseHover += new EventHandler(pboxOpenRunSheet_MouseHover);
-this.pboxOpenRunSheet.Click += new EventHandler(pboxAbstr_SOP_Click);
-this.pboxOpenTitleCustSpecs.Click += new EventHandler(pboxOpenTitleProdSpecs_Click);
-this.pboxOpenTitleCustSpecs.MouseLeave += new EventHandler(pboxOpenTitleCustSpecs_MouseLeave);
-this.pboxOpenTitleCustSpecs.MouseHover += new EventHandler(pboxOpenTitleCustSpecs_MouseHover);
-this.pbxCopy1.MouseClick += new MouseEventHandler(pboxCopy1_MouseClick);               
-this.pbxCopy2.MouseClick += new MouseEventHandler(pbxCopy2_Mouseclick);                                                            
-this.pbxCopy3.MouseClick += new MouseEventHandler(pboxCopy3_MouseClick);
-this.pbxCopy4.MouseClick += new MouseEventHandler(pboxCopy4_MouseClick); 
-this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
-
-            this.SplitContainer1.Panel1.ResumeLayout(false);
-            this.SplitContainer1.Panel1.PerformLayout();
-            this.SplitContainer1.Panel2.ResumeLayout(false);
-            this.SplitContainer1.Panel2.PerformLayout();
-            this.SplitContainer1.ResumeLayout(false);
-            ((ISupportInitialize)this.PictureBox1).EndInit();
-            this.Panel1.ResumeLayout(false);
-            this.Panel1.PerformLayout();
-            this.GroupBox6.ResumeLayout(false);
-            this.GroupBox10.ResumeLayout(false);
-            this.GroupBox10.PerformLayout();
-            this.GroupBox8.ResumeLayout(false);
-            this.GroupBox8.PerformLayout();
-            this.GroupBox7.ResumeLayout(false);
-            this.GroupBox7.PerformLayout();
-            this.TableLayoutPanel2.ResumeLayout(false);
-            this.TableLayoutPanel2.PerformLayout();
-            this.GroupBox4.ResumeLayout(false);
-            this.GroupBox4.PerformLayout();
-            this.GroupBox3.ResumeLayout(false);
-            this.GroupBox3.PerformLayout();
-            this.GroupBox2.ResumeLayout(false);
-            this.GroupBox2.PerformLayout();
-            this.TabControl1.ResumeLayout(false);
-            this.TabPg1Docs.ResumeLayout(false);
-            this.TabPg1Docs.PerformLayout();
-            ((ISupportInitialize)this.pbox_Abstr_SOP).EndInit();
-            ((ISupportInitialize)this.pboxOpenEtitleWkshare).EndInit();
-            ((ISupportInitialize)this.pboxOpenORT_Wkshare).EndInit();
-            this.GroupBox5.ResumeLayout(false);
-            this.GroupBox5.PerformLayout();
-            ((ISupportInitialize)this.pboxOpenClearanceCustSpecs).EndInit();
-            ((ISupportInitialize)this.pboxOpenTitleCustSpecs).EndInit();
-            ((ISupportInitialize)this.pboxOpenRunSheet).EndInit();
-            this.TabPg2PhBk.ResumeLayout(false);
-            this.TabPg2PhBk.PerformLayout();
-            ((ISupportInitialize)this.PictureBox9).EndInit();
-            ((ISupportInitialize)this.DataGridView1).EndInit();
-            this.TabPg3Cal.ResumeLayout(false);
-            this.TabPg4Clearing.ResumeLayout(false);
-            this.TabPg4Clearing.PerformLayout();
-            ((ISupportInitialize)this.PictureBox8).EndInit();
-            ((ISupportInitialize)this.PictureBox6).EndInit();
-            ((ISupportInitialize)this.PictureBox7).EndInit();
-            ((ISupportInitialize)this.PictureBox5).EndInit();
-            ((ISupportInitialize)this.PictureBox4).EndInit();
-            this.TableLayoutPanel1.ResumeLayout(false);
-            this.TableLayoutPanel1.PerformLayout();
-            this.TabPg5Req.ResumeLayout(false);
-            this.TabPg6OtherLogins.ResumeLayout(false);
-            ((ISupportInitialize)this.DataGridView2).EndInit();
-            this.TabPg7Taxes.ResumeLayout(false);
-            this.TabPg7Taxes.PerformLayout();
-            ((ISupportInitialize)this.pbxExport).EndInit();
-            ((ISupportInitialize)this.pbxCopy5).EndInit();
-            ((ISupportInitialize)this.pbxCopy4).EndInit();
-            ((ISupportInitialize)this.pbxCopy3).EndInit();
-            ((ISupportInitialize)this.pbxCopy2).EndInit();
-            ((ISupportInitialize)this.pbxCopy1).EndInit();
-            this.TabPg8UWMan.ResumeLayout(false);
-            this.TabPage1.ResumeLayout(false);
-            this.TabPage1.PerformLayout();
-            this.GroupBox1.ResumeLayout(false);
-            this.GroupBox1.PerformLayout();
-            this.TabPage2.ResumeLayout(false);
-            this.TabPage2.PerformLayout();
-            this.TabPage3.ResumeLayout(false);
-            this.TabPage3.PerformLayout();
-            ((ISupportInitialize)this.PictureBox3).EndInit();
-            ((ISupportInitialize)this.PictureBox2).EndInit();
-            ((ISupportInitialize)this.pboxOpenCredCard).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         private void Label4Tap_Click(object sender, EventArgs e)
@@ -5838,37 +6028,9 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\Education\\Online Abstracting\\ONLINE ABSTRACTING PROCEDURES.doc");
         }
 
-        private void lbl_AbstrSOP_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_AbstractingSOPs, "InHouse Abstracting Procedures");
-            this.lbl_doc_AbstractingSOPs.ForeColor = Color.MediumPurple;
-            this.lbl_doc_AbstractingSOPs.Cursor = Cursors.Hand;
-        }
-
-        private void lbl_AbstrSOP_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_AbstractingSOPs.ForeColor = Color.Black;
-            this.lbl_doc_AbstractingSOPs.Cursor = Cursors.Default;
-        }
-
         private void lbl_BusnPhones_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Business & Vendor Phone List.xls");
-        }
-
-        private void lbl_BusnPhones_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_BusnPhones, "CLICK TO OPEN");
-            this.lbl_BusnPhones.ForeColor = Color.MediumPurple;
-            this.lbl_BusnPhones.Cursor = Cursors.Hand;
-        }
-
-        private void lbl_BusnPhones_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_BusnPhones.ForeColor = Color.Black;
-            this.lbl_BusnPhones.Cursor = Cursors.Default;
         }
 
         private void lbl_creditCard_Click(object sender, EventArgs e)
@@ -5876,56 +6038,14 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\Credit Card Usage tracking.xls");
         }
 
-        private void lbl_creditCard_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_creditCard, "Abstract Run Sheet");
-            this.lbl_creditCard.ForeColor = Color.MediumPurple;
-            this.lbl_creditCard.Cursor = Cursors.Hand;
-        }
-
-        private void lbl_creditCard_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_creditCard.ForeColor = Color.Black;
-            this.lbl_creditCard.Cursor = Cursors.Default;
-        }
-
         private void lbl_endorsInfo_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\ALTA Title Insurance Endorsements.doc");
         }
 
-        private void lbl_endorsInfo_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_endorsInfo, "CLICK TO OPEN");
-            this.lbl_doc_endorsInfo.ForeColor = Color.MediumPurple;
-            this.lbl_doc_endorsInfo.Cursor = Cursors.Hand;
-        }
-
-        private void lbl_endorsInfo_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_endorsInfo.ForeColor = Color.Black;
-            this.lbl_doc_endorsInfo.Cursor = Cursors.Default;
-        }
-
         private void lblAltaClta_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\ALTA-CLTA Conversion 2006.doc");
-        }
-
-        private void lblAltaClta_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_Alta_Clta, "CLICK TO OPEN");
-            this.lbl_doc_Alta_Clta.ForeColor = Color.MediumPurple;
-            this.lbl_doc_Alta_Clta.Cursor = Cursors.Hand;
-        }
-
-        private void lblAltaClta_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_Alta_Clta.ForeColor = Color.Black;
-            this.lbl_doc_Alta_Clta.Cursor = Cursors.Default;
         }
 
         private void lblDeedPrep_Click(object sender, EventArgs e)
@@ -5952,75 +6072,20 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\Education\\Vesting & Deeds\\Vesting Changes and New Deed Prep.doc");
         }
 
-        private void lblDeedPrepSOP_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_SOP_deedprep, "CLICK TO OPEN");
-            this.lbl_doc_SOP_deedprep.ForeColor = Color.MediumPurple;
-            this.lbl_doc_SOP_deedprep.Cursor = Cursors.Hand;
-        }
-
-        private void lblDeedPrepSOP_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_SOP_deedprep.ForeColor = Color.Black;
-            this.lbl_doc_SOP_deedprep.Cursor = Cursors.Default;
-        }
-
+ 
         private void lblDocDeeds_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\Vesting & Deeds\\About Deeds.doc");
         }
 
-        private void lblDocDeeds_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_aboutDeeds, "CLICK TO OPEN");
-            this.lbl_doc_aboutDeeds.ForeColor = Color.MediumPurple;
-            this.lbl_doc_aboutDeeds.Cursor = Cursors.Hand;
-        }
-
-        private void lblDocDeeds_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_aboutDeeds.ForeColor = Color.Black;
-            this.lbl_doc_aboutDeeds.Cursor = Cursors.Default;
-        }
-
-        private void lblLeaseFee_Click(object sender, EventArgs e)
+         private void lblLeaseFee_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\Clearance\\Land Contract - Leasehold Property.doc");
         }
 
-        private void lblLeaseFee_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_Lease_Fee_LandContract, "CLICK TO OPEN");
-            this.lbl_doc_Lease_Fee_LandContract.ForeColor = Color.MediumPurple;
-            this.lbl_doc_Lease_Fee_LandContract.Cursor = Cursors.Hand;
-        }
-
-        private void lblLeaseFee_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_Lease_Fee_LandContract.ForeColor = Color.Black;
-            this.lbl_doc_Lease_Fee_LandContract.Cursor = Cursors.Default;
-        }
-
-        private void lblOpenClearance_Click(object sender, EventArgs e)
+         private void lblOpenClearance_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Title Customers\\TITLE CLEARANCE CUSTOMER SPECIFICS .xls");
-        }
-
-        private void lblOpenClearance_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lblOpenClearanceCustSpecs, "CLICK TO OPEN");
-            this.lblOpenClearanceCustSpecs.ForeColor = Color.MediumPurple;
-            this.lblOpenClearanceCustSpecs.Cursor = Cursors.Hand;
-        }
-
-        private void lblOpenClearance_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lblOpenClearanceCustSpecs.ForeColor = Color.Black;
-            this.lblOpenClearanceCustSpecs.Cursor = Cursors.Default;
         }
 
         private void lblOpenEtitleWkshare_Click(object sender, EventArgs e)
@@ -6028,73 +6093,17 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\iMS Title Insurance Workshare Procedures.doc");
         }
 
-        private void lblOpenEtitleWkshare_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lblOpenEtitleWkshare, "CLICK TO OPEN");
-            this.lblOpenEtitleWkshare.ForeColor = Color.MediumPurple;
-            this.lblOpenEtitleWkshare.Cursor = Cursors.Hand;
-        }
-
-        private void lblOpenEtitleWkshare_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lblOpenEtitleWkshare.ForeColor = Color.Black;
-            this.lblOpenEtitleWkshare.Cursor = Cursors.Default;
-        }
-
-        private void lblOpenORT_Wkshare_Click(object sender, EventArgs e)
+         private void lblOpenORT_Wkshare_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\ortic_workshare_faq.doc");
         }
 
-        private void lblOpenORT_Wkshare_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lblOpenORT_Wkshare, "CLICK TO OPEN");
-            this.lblOpenORT_Wkshare.ForeColor = Color.MediumPurple;
-            this.lblOpenORT_Wkshare.Cursor = Cursors.Hand;
-        }
-
-        private void lblOpenORT_Wkshare_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lblOpenORT_Wkshare.ForeColor = Color.Black;
-            this.lblOpenORT_Wkshare.Cursor = Cursors.Default;
-        }
-
-        private void lblOpenRunSheet_Click(object sender, EventArgs e)
+         private void lblOpenRunSheet_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\IMS ONLINE ABSTRACT RUN SHEET.doc");
         }
 
-        private void lblOpenRunSheet_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lblOpenRunSheet, "Abstract Run Sheet");
-            this.lblOpenRunSheet.ForeColor = Color.MediumPurple;
-            this.lblOpenRunSheet.Cursor = Cursors.Hand;
-        }
-
-        private void lblOpenRunSheet_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lblOpenRunSheet.ForeColor = Color.Black;
-            this.lblOpenRunSheet.Cursor = Cursors.Default;
-        }
-
-        private void lblOpenTitleCustSpec_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lblOpenTitleCustSpec, "Title Production Customer Specifics");
-            this.lblOpenTitleCustSpec.ForeColor = Color.MediumPurple;
-            this.lblOpenTitleCustSpec.Cursor = Cursors.Hand;
-        }
-
-        private void lblOpenTitleCustSpec_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lblOpenTitleCustSpec.ForeColor = Color.Black;
-            this.lblOpenTitleCustSpec.Cursor = Cursors.Default;
-        }
-
-        private void lblOpenTitleProdCustSpecs_Click(object sender, EventArgs e)
+         private void lblOpenTitleProdCustSpecs_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Title Research & Review\\Typing-Review\\Typing-Review Customer Specifics 7-2008.doc");
         }
@@ -6102,20 +6111,6 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
         private void lblPOA_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\Vesting & Deeds\\STEPS TO APPROVE A POWER OF ATTORNEY.doc");
-        }
-
-        private void lblPOA_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_approvePOA, "CLICK TO OPEN");
-            this.lbl_doc_approvePOA.ForeColor = Color.MediumPurple;
-            this.lbl_doc_approvePOA.Cursor = Cursors.Hand;
-        }
-
-        private void lblPOA_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_approvePOA.ForeColor = Color.Black;
-            this.lbl_doc_approvePOA.Cursor = Cursors.Default;
         }
 
         private void lblSOL_heloc_mouseHover(object sender, EventArgs e)
@@ -6141,20 +6136,6 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
         private void lblVesting_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\Clearance\\Title Vesting Explained.doc");
-        }
-
-        private void lblVesting_mouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.lbl_doc_aboutVesting, "CLICK TO OPEN");
-            this.lbl_doc_aboutVesting.ForeColor = Color.MediumPurple;
-            this.lbl_doc_aboutVesting.Cursor = Cursors.Hand;
-        }
-
-        private void lblVesting_mouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.RemoveAll();
-            this.lbl_doc_aboutVesting.ForeColor = Color.Black;
-            this.lbl_doc_aboutVesting.Cursor = Cursors.Default;
         }
 
         private void LinkLabel_DOI_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -6367,74 +6348,74 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
 
         private void madStat(string st)
         {
-            long i;
-            string[] text;
-            DataTable dataTable = new DataTable();
-            DataTable dataTable1 = new DataTable();
-            this.cmd.CommandType = CommandType.TableDirect;
-            this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-            this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm1, "$]");
-            this.cmd.Connection = new OleDbConnection(this.dsn);
-            this.da.SelectCommand = this.cmd;
-            this.cmdBuilder.DataAdapter = this.da;
-            this.da.Fill(dataTable);
-            this.da.Dispose();
-            decimal[] numArray = new decimal[11];
-            string[] strArrays = new string[] { null, null, null, null, null, "inhouseCounties", "countyCount", null, null, null, null };
-            long j = (long)1;
-            for (i = (long)0; i < (long)11; i = checked(i + (long)1))
-            {
-                numArray[checked((int)i)] = new decimal();
-            }
-            i = (long)0;
-            j = (long)1;
-            this.txt_StatsCounties.Text = "";
-            this.txt_StatsTaxOffices.Text = "";
-            while (j < (long)dataTable.Rows.Count)
-            {
-                if ((Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "ALL", false) == 0) & (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["ins"].ToString(), "Yes", false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["props"].ToString(), "Yes", false) == 0))
-                {
-                    numArray[5] = decimal.Add(numArray[5], decimal.One);
-                    text = new string[] { this.txt_StatsCounties.Text, dataTable.Rows[checked((int)j)]["st"].ToString(), " - ", dataTable.Rows[checked((int)j)]["county"].ToString(), "\r\n" };
-                    txt_StatsCounties.Text = string.Concat(text);
-                }
-                if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 | Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "ALL", false) == 0)
-                {
-                    numArray[6] = decimal.Add(numArray[6], decimal.One);
-                }
-                j = checked(j + (long)1);
-            }
-            this.cmd.CommandType = CommandType.TableDirect;
-            this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-            this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
-            this.cmd.Connection = new OleDbConnection(this.dsn);
-            this.da.SelectCommand = this.cmd;
-            this.cmdBuilder.DataAdapter = this.da;
-            this.da.Fill(dataTable1);
-            this.da.Dispose();
-            for (j = (long)2; j < (long)dataTable1.Rows.Count; j = checked(j + (long)1))
-            {
-                if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable1.Rows[checked((int)j)]["st"].ToString(), st, false) == 0 & Microsoft.VisualBasic.CompilerServices.Operators.CompareString(dataTable1.Rows[checked((int)j)]["payee"].ToString(), "", false) != 0)
-                {
-                    numArray[7] = decimal.Add(numArray[7], decimal.One);
-                    text = new string[] { this.txt_StatsTaxOffices.Text, dataTable1.Rows[checked((int)j)]["st"].ToString(), " - ", dataTable1.Rows[checked((int)j)]["county"].ToString(), " - ", dataTable1.Rows[checked((int)j)]["tax_auth"].ToString(), "\r\n" };
-                    txt_StatsTaxOffices.Text = string.Concat(text);
-                }
-            }
-            if (decimal.Compare(numArray[6], decimal.Zero) != 0)
-            {
-                text = new string[] { "Of ", Conversions.ToString(numArray[6]), " Counties, ", Conversions.ToString(Math.Round(decimal.Multiply(decimal.Divide(numArray[5], numArray[6]), new decimal((long)100)))), " % Online" };
-                lbl_CoOnlineStats.Text = string.Concat(text);
-            }
-            if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.cbox_StatsStates.Text, "", false) == 0)
-            {
-                this.lbl_CoOnlineStats.ResetText();
-            }
+			// Get Number of Online Counties
+            //int i;
+            //string[] text;
+            //DataTable dataTable = new DataTable();
+            //DataTable dataTable1 = new DataTable();
+            //this.cmd.CommandType = CommandType.TableDirect;
+            //this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm1, "$] Where st = '", st, "'");
+            //this.cmd.Connection = new OleDbConnection(this.dsn);
+            //this.da.SelectCommand = this.cmd;
+            //this.cmdBuilder.DataAdapter = this.da;
+            //this.da.Fill(dataTable);
+            //this.da.Dispose();
+            //decimal[] numArray = new decimal[11];
+            //string[] strArrays = new string[] { null, null, null, null, null, "inhouseCounties", "countyCount", null, null, null, null };
+            //int j = 1;
+            //for (i = 0; i < 11; i = i + 1)
+            //{
+            //    numArray[i] = new decimal();
+            //}
+            //i = 0;
+            //j = 1;
+            //this.txt_StatsCounties.Text = "";
+            //this.txt_StatsTaxOffices.Text = "";
+            //while (j < (long)dataTable.Rows.Count)
+            //{
+            //    if (this.cbox_StatsStates.Text == "ALL" && dataTable.Rows[j]["ins"].ToString() == "Yes" || dataTable.Rows[j]["props"].ToString() == "Yes")
+            //    {
+            //        numArray[5] = decimal.Add(numArray[5], decimal.One);
+            //        text = new string[] { this.txt_StatsCounties.Text, dataTable.Rows[j]["st"].ToString(), " - ", dataTable.Rows[checked((int)j)]["county"].ToString(), "\r\n" };
+            //        txt_StatsCounties.Text = string.Concat(text);
+            //    }
+            //    if (this.cbox_StatsStates.Text == "ALL")
+            //    {
+            //        numArray[6] = decimal.Add(numArray[6], decimal.One);
+            //    }
+            //    j = j + 1;
+            //}
+
+			Resource_Lookup rsLookup = new Resource_Lookup();
+			txt_StatsCounties.Text = rsLookup.GetOnlineResources(st);
+
+    //        this.cmd.CommandType = CommandType.TableDirect;
+    //        this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$] Where st = '", st, "' and payee<>''");
+    //        this.cmd.Connection = new OleDbConnection(this.dsn);
+    //        this.da.SelectCommand = this.cmd;
+    //        this.cmdBuilder.DataAdapter = this.da;
+    //        this.da.Fill(dataTable1);
+    //        this.da.Dispose();
+    //        for (j = 2; j < dataTable1.Rows.Count; j = j + 1)
+    //        {
+				//numArray[7] = numArray[7] + 1;
+				//text = new string[] { this.txt_StatsTaxOffices.Text, dataTable1.Rows[j]["st"].ToString(), " - ", dataTable1.Rows[j]["county"].ToString(), " - ", dataTable1.Rows[j]["tax_auth"].ToString(), "\r\n" };
+    //            txt_StatsTaxOffices.Text = string.Concat(text);
+    //        }
+    //        if (numArray[6] != 0)
+    //        {
+    //            text = new string[] { "Of ", Conversions.ToString(numArray[6]), " Counties, ", Conversions.ToString(Math.Round(decimal.Multiply(decimal.Divide(numArray[5], numArray[6]), new decimal((long)100)))), " % Online" };
+    //            lbl_CoOnlineStats.Text = string.Concat(text);
+    //        }
+    //        if (this.cbox_StatsStates.Text == "")
+    //        {
+    //            this.lbl_CoOnlineStats.ResetText();
+    //        }
         }
 
         private void onlineStats()
         {
-            int i = 0;
+  /*          int i = 0;
             OleDbDataAdapter oleDbDataAdapter = new OleDbDataAdapter();
             OleDbCommandBuilder oleDbCommandBuilder = new OleDbCommandBuilder();
             OleDbCommand oleDbCommand = new OleDbCommand();
@@ -6523,24 +6504,12 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             this.lbl_vstats_Sep.Text = string.Concat("Sep: ", strArrays[9]);
             this.lbl_vstats_Oct.Text = string.Concat("Oct: ", strArrays[10]);
             this.lbl_vstats_Nov.Text = string.Concat("Nov: ", strArrays[11]);
-            this.lbl_vstats_Dec.Text = string.Concat("Dec: ", strArrays[12]);
+            this.lbl_vstats_Dec.Text = string.Concat("Dec: ", strArrays[12]);*/
         }
 
         private void pboxAbstr_SOP_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Education\\Online Abstracting\\ONLINE ABSTRACTING PROCEDURES.doc");
-        }
-
-        private void pboxAbstr_SOP_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pbox_Abstr_SOP, "CLICK TO OPEN");
-            this.pbox_Abstr_SOP.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxAbstr_SOP_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pbox_Abstr_SOP, "CLICK TO OPEN");
-            this.pbox_Abstr_SOP.BorderStyle = BorderStyle.None;
         }
 
         private void pboxCopy1_MouseClick(object sender, MouseEventArgs e)
@@ -6569,50 +6538,14 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\Title Customers\\TITLE CLEARANCE CUSTOMER SPECIFICS .xls");
         }
 
-        private void pboxOpenClearanceCustSpecs_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenClearanceCustSpecs, "CLICK TO OPEN/EDIT");
-            this.pboxOpenClearanceCustSpecs.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenClearanceCustSpecs_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenClearanceCustSpecs, "CLICK TO OPEN");
-            this.pboxOpenClearanceCustSpecs.BorderStyle = BorderStyle.None;
-        }
-
         private void pboxOpenCredCard_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\Credit Card Usage tracking.xls");
         }
 
-        private void pboxOpenCredCard_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenCredCard, "CLICK TO OPEN");
-            this.pboxOpenCredCard.BorderStyle = BorderStyle.None;
-        }
-
-        private void pboxOpenCreditCard_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenCredCard, "CLICK TO OPEN");
-            this.pboxOpenCredCard.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenEtitleWkshare_Click(object sender, EventArgs e)
+         private void pboxOpenEtitleWkshare_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\iMS Title Insurance Workshare Procedures.doc");
-        }
-
-        private void pboxOpenEtitleWkshare_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenEtitleWkshare, "CLICK TO OPEN");
-            this.pboxOpenEtitleWkshare.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenEtitleWkshare_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenEtitleWkshare, "CLICK TO OPEN");
-            this.pboxOpenEtitleWkshare.BorderStyle = BorderStyle.None;
         }
 
         private void pboxOpenORT_Wkshare_Click(object sender, EventArgs e)
@@ -6620,45 +6553,9 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\ortic_workshare_faq.doc");
         }
 
-        private void pboxOpenORT_Wkshare_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenORT_Wkshare, "CLICK TO OPEN");
-            this.pboxOpenORT_Wkshare.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenORT_Wkshare_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenORT_Wkshare, "CLICK TO OPEN");
-            this.pboxOpenORT_Wkshare.BorderStyle = BorderStyle.None;
-        }
-
         private void pboxOpenRunSheet_Click(object sender, EventArgs e)
         {
             Process.Start("T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\IMS ONLINE ABSTRACT RUN SHEET.doc");
-        }
-
-        private void pboxOpenRunSheet_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenRunSheet, "CLICK TO OPEN");
-            this.pboxOpenRunSheet.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenRunSheet_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenRunSheet, "CLICK TO OPEN");
-            this.pboxOpenRunSheet.BorderStyle = BorderStyle.None;
-        }
-
-        private void pboxOpenTitleCustSpecs_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenTitleCustSpecs, "CLICK TO OPEN/EDIT");
-            this.pboxOpenTitleCustSpecs.BorderStyle = BorderStyle.Fixed3D;
-        }
-
-        private void pboxOpenTitleCustSpecs_MouseLeave(object sender, EventArgs e)
-        {
-            this.ToolTip2.SetToolTip(this.pboxOpenTitleCustSpecs, "CLICK TO OPEN");
-            this.pboxOpenTitleCustSpecs.BorderStyle = BorderStyle.None;
         }
 
         private void pboxOpenTitleProdSpecs_Click(object sender, EventArgs e)
@@ -6774,8 +6671,6 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
             this.LabelUseTap.Visible = false;
             this.LabelUseRV.Visible = false;
             this.LabelUseDtree.Visible = false;
-            this.lbl_NotFound.Visible = false;
-            this.linkUS_Legal_Forms.Visible = false;
             this.lblSOL_Mtg.Visible = false;
             this.Label_mtg.Visible = false;
             this.lblSOL_Heloc.Visible = false;
@@ -6851,15 +6746,14 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
         {
             long i;
             this.onlineStats();
-            this.txt_StatsCounties.Text = "";
-            this.madStat(this.ComboBoxState.Text);
+         //   this.txt_StatsCounties.Text = "";
+         //+   this.madStat(this.ComboBoxState.Text);
             this.cbox_StatsStates.Text = this.ComboBoxState.Text;
             if (Microsoft.VisualBasic.CompilerServices.Operators.CompareString(this.ComboBoxState.Text, "", false) != 0)
             {
                 DataTable dataTable = new DataTable();
                 DataTable dataTable1 = new DataTable();
                 this.cmd.CommandType = CommandType.TableDirect;
-                this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
                 this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm1, "$]");
                 this.cmd.Connection = new OleDbConnection(this.dsn);
                 this.da.SelectCommand = this.cmd;
@@ -6898,7 +6792,6 @@ this.pbxCopy5.MouseClick += new MouseEventHandler(pboxCopy5_MouseClick);
                 this.lbl_OrbStat3.Text = string.Concat(Conversions.ToString(numArray[2]), " or ", Conversions.ToString(Math.Round(decimal.Multiply(decimal.Divide(numArray[2], new decimal(checked(j - (long)1))), new decimal((long)100)))), " %");
                 this.lbl_OrbStat4.Text = string.Concat(Conversions.ToString(numArray[3]), " or ", Conversions.ToString(Math.Round(decimal.Multiply(decimal.Divide(numArray[3], new decimal(checked(j - (long)1))), new decimal((long)100)))), " %");
                 this.cmd.CommandType = CommandType.TableDirect;
-                this.dsn = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", this.Import_File, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
                 this.cmd.CommandText = string.Concat("Select * From [", this.sheetNm2, "$]");
                 this.cmd.Connection = new OleDbConnection(this.dsn);
                 this.da.SelectCommand = this.cmd;

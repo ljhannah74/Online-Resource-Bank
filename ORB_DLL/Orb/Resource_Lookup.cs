@@ -33,6 +33,28 @@ namespace ORB_DLL.Orb
 			return dtReturn;
 		}
 
+		public string GetOnlineResources(string state)
+		{
+			DataTable dataTable = new DataTable();
+			string cmdText = string.Concat("Select * From [orb$] Where st = '", state, "'");
+			OleDbConnection dsn = new OleDbConnection(this.dsn);
+			OleDbDataAdapter datGetOnlineResources = new OleDbDataAdapter(cmdText, dsn);
+			datGetOnlineResources.Fill(dataTable);
+			datGetOnlineResources.Dispose();
+
+			string returnValue = "";
+
+			for (int i = 0; i < dataTable.Rows.Count; i++)
+			{
+				if(dataTable.Rows[i]["props"].ToString() == "Yes")
+				{
+					returnValue = string.Concat(returnValue, dataTable.Rows[i]["st"].ToString(), " - ", dataTable.Rows[i]["county"].ToString(), "\r\n");
+				}
+			}
+
+			return returnValue;
+		}
+
 		public Online_Resource GetResources(string state, string county, string tax_auth)
 		{
 			Online_Resource orReturn;
@@ -46,7 +68,6 @@ namespace ORB_DLL.Orb
 			dapResource.SelectCommand = cmdGetResource;
 			oleDbCommandBuilder.DataAdapter = dapResource;
 			dapResource.Fill(getResource);
-			dapResource.Dispose();
 			
 			if (getResource.Rows.Count > 0)
 			{

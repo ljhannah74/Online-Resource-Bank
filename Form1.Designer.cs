@@ -24,7 +24,6 @@ namespace WindowsApplication1
 		private System.Windows.Forms.PictureBox PictureBox1;
 		private System.Windows.Forms.MonthCalendar MonthCalendar1;
 		private System.Windows.Forms.Label Label32;
-		private System.Windows.Forms.PictureBox pboxOpenRunSheet;
 		private System.Windows.Forms.ToolTip ToolTip1;
 		public System.Windows.Forms.SplitContainer SplitContainer1;
 		private System.Windows.Forms.GroupBox GroupBox7;
@@ -60,13 +59,8 @@ namespace WindowsApplication1
 		private System.Windows.Forms.Label Label10;
 		private System.Windows.Forms.Label Label29;
 		private System.Windows.Forms.Label LabelCopy_source;
-		private System.Windows.Forms.Label lblOpenRunSheet;
 		public System.Windows.Forms.TabControl TabControl1;
-		private System.Windows.Forms.TabPage TabPg1Docs;
-		private System.Windows.Forms.TabPage TabPg2PhBk;
-		private System.Windows.Forms.TabPage TabPg3Cal;
 		private System.Windows.Forms.TabPage TabPg4Clearing;
-		private System.Windows.Forms.TabPage TabPg5Req;
 		private System.Windows.Forms.TabPage TabPg6OtherLogins;
 		private System.Windows.Forms.Label lblSOL_Heloc;
 		private System.Windows.Forms.Label Label_heloc;
@@ -83,7 +77,6 @@ namespace WindowsApplication1
 		private System.Windows.Forms.Label lblSOL_AftAcq;
 		private System.Windows.Forms.Label Label_aftacq;
 		private System.Windows.Forms.TabPage TabPg7Taxes;
-		private System.Windows.Forms.TabPage TabPg8UWMan;
 		private System.Windows.Forms.TextBox txtTaxOffice1;
 		private System.Windows.Forms.PictureBox pbxCopy5;
 		private System.Windows.Forms.TextBox txtTaxOffice2;
@@ -133,32 +126,16 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Label Label56;
 
-		
-		private System.Windows.Forms.DataGridView DataGridView1;
 
 		
 		private System.Windows.Forms.ToolTip ToolTip2;
 
-		
-		private System.Windows.Forms.Label Label49;
 
-		
-		private System.Windows.Forms.WebBrowser WebBrowser1;
 
-		
-		private System.Windows.Forms.PictureBox pboxOpenClearanceCustSpecs;
 
-		
-		private System.Windows.Forms.Label lblOpenClearanceCustSpecs;
 
-		
-		private System.Windows.Forms.PictureBox pboxOpenTitleCustSpecs;
 
-		
-		private System.Windows.Forms.Label lblOpenTitleCustSpec;
 
-		
-		private System.Windows.Forms.Label Label48;
 
 		
 		private System.Windows.Forms.Label lblDefault_UW_Name;
@@ -286,26 +263,12 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Label Label112;
 
-		
-		private System.Windows.Forms.GroupBox GroupBox5;
 
-		
-		private System.Windows.Forms.Button ButtonResetDocs;
 
-		
-		private System.Windows.Forms.Button ButtonGetDoc;
 
-		
-		private System.Windows.Forms.ComboBox cboxDocType;
 
-		
-		private System.Windows.Forms.ComboBox cboxDocState;
 
-		
-		private System.Windows.Forms.LinkLabel linkUS_Legal_Forms;
 
-		
-		private System.Windows.Forms.Label lbl_NotFound;
 
 		
 		private System.Windows.Forms.GroupBox GroupBox8;
@@ -337,17 +300,11 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Label Label51;
 
-		
-		private System.Windows.Forms.WebBrowser WebBrowser3;
 
 		
 		private System.Windows.Forms.DataGridView DataGridView2;
 
-		
-		private System.Windows.Forms.Button Button_ClosingDept;
 
-		
-		private System.Windows.Forms.Button Button_TitleDept;
 
 		
 		private System.Windows.Forms.Button ButtonHelp;
@@ -355,14 +312,10 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Button Button_RateCalc;
 
-		
-		private System.Windows.Forms.Label Label114;
+
 
 		
-		private System.Windows.Forms.Label Label113;
-
-		
-		private System.Windows.Forms.TabPage TabPage1;
+		private System.Windows.Forms.TabPage TabPg1Statistics;
 
 		
 		private System.Windows.Forms.Label lbl_OrbStat4;
@@ -477,17 +430,9 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Label Label135;
 
-		
-		private System.Windows.Forms.PictureBox pboxOpenEtitleWkshare;
 
-		
-		private System.Windows.Forms.Label lblOpenEtitleWkshare;
 
-		
-		private System.Windows.Forms.PictureBox pboxOpenORT_Wkshare;
 
-		
-		private System.Windows.Forms.Label lblOpenORT_Wkshare;
 
 		
 		private System.Windows.Forms.Label lbl_OrbStat5;
@@ -576,7 +521,7 @@ namespace WindowsApplication1
 		private System.Windows.Forms.TextBox txt_foreclosure_notes;
 
 		
-		private System.Windows.Forms.TabPage TabPage2;
+		private System.Windows.Forms.TabPage TabPg2Misc;
 
 		
 		private System.Windows.Forms.TextBox txt_DeedNotes;
@@ -824,11 +769,7 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.Button Button_PolicyWarehouse;
 
-		
-		private System.Windows.Forms.TabPage TabPage3;
 
-		
-		private System.Windows.Forms.WebBrowser WebBrowser2;
 
 		
 		private System.Windows.Forms.Label lbl_vstats_Dec;
@@ -935,59 +876,23 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.TextBox txt_login_tax2U;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox2;
 
-		
-		private System.Windows.Forms.Label lbl_doc_Alta_Clta;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox3;
 
-		
-		private System.Windows.Forms.Label lbl_doc_endorsInfo;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox4;
 
-		
-		private System.Windows.Forms.Label lbl_doc_aboutDeeds;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox5;
 
-		
-		private System.Windows.Forms.Label lbl_doc_aboutVesting;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox6;
 
-		
-		private System.Windows.Forms.Label lbl_doc_SOP_deedprep;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox7;
 
-		
-		private System.Windows.Forms.Label lbl_doc_approvePOA;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox8;
 
-		
-		private System.Windows.Forms.Label lbl_doc_Lease_Fee_LandContract;
 
-		
-		private System.Windows.Forms.PictureBox pbox_Abstr_SOP;
 
-		
-		private System.Windows.Forms.Label lbl_doc_AbstractingSOPs;
 
-		
-		private System.Windows.Forms.PictureBox PictureBox9;
 
-		
-		private System.Windows.Forms.Label lbl_BusnPhones;
 
 		
 		private System.Windows.Forms.LinkLabel LinkLabel_MyFlCountiesURL;
@@ -1001,11 +906,7 @@ namespace WindowsApplication1
 		
 		private System.Windows.Forms.TextBox txt_myfl_U;
 
-		
-		private System.Windows.Forms.PictureBox pboxOpenCredCard;
 
-		
-		private System.Windows.Forms.Label lbl_creditCard;
 
 	}
 }

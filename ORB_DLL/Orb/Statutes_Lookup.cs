@@ -310,12 +310,10 @@ namespace ORB_DLL.Orb
 			string str = "statutes";
 			OleDbCommandBuilder oleDbCommandBuilder = new OleDbCommandBuilder();
 			OleDbCommand oleDbCommand = new OleDbCommand();
-			string str1 = "T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\ORB_DATABASE.xls";
-			oleDbCommand.CommandType = CommandType.TableDirect;
-			string str2 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", str1, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-			string[] strArrays = new string[] { "Select * From [", str, "$] where st = '", state, "'" };
-			oleDbCommand.CommandText = string.Concat(strArrays);
-			oleDbCommand.Connection = new OleDbConnection(str2);
+			string dataFileName = @"C:\Users\lhann\OneDrive\Documents\Software\ORB_DATABASE.xlsx";
+			string dsn = string.Concat("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=", dataFileName, ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1\"");
+			oleDbCommand.CommandText = string.Concat("Select * From [", str, "$] where st = '", state, "'");
+			oleDbCommand.Connection = new OleDbConnection(dsn);
 			oleDbDataAdapter.SelectCommand = oleDbCommand;
 			oleDbCommandBuilder.DataAdapter = oleDbDataAdapter;
 			oleDbDataAdapter.Fill(dataTable);

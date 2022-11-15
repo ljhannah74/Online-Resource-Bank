@@ -211,13 +211,11 @@ namespace ORB_DLL.Orb
 			OleDbDataAdapter oleDbDataAdapter = new OleDbDataAdapter();
 			OleDbCommandBuilder oleDbCommandBuilder = new OleDbCommandBuilder();
 			OleDbCommand oleDbCommand = new OleDbCommand();
-			string str = "T:\\ONLINE ABSTRACTING\\_ORB\\ORB_files-dontmoveordelete\\ORB_DATABASE.xls";
+			string dataFileName = @"C:\Users\lhann\OneDrive\Documents\Software\ORB_DATABASE.xlsx";
+			string dsn = string.Concat("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=", dataFileName, ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1\"");
 			string str1 = "misc";
-			oleDbCommand.CommandType = CommandType.TableDirect;
-			string str2 = string.Concat("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=", str, ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"");
-			string[] strArrays = new string[] { "Select * From [", str1, "$] where st = '", state, "'" };
-			oleDbCommand.CommandText = string.Concat(strArrays);
-			oleDbCommand.Connection = new OleDbConnection(str2);
+			oleDbCommand.CommandText = string.Concat("Select * From [", str1, "$] where st = '", state, "'");
+			oleDbCommand.Connection = new OleDbConnection(dsn);
 			oleDbDataAdapter.SelectCommand = oleDbCommand;
 			oleDbCommandBuilder.DataAdapter = oleDbDataAdapter;
 			oleDbDataAdapter.Fill(dataTable);
@@ -225,12 +223,8 @@ namespace ORB_DLL.Orb
 			num = 0;
 			if (dataTable.Rows.Count > 0)
 			{
-				this.Foreclosure_Notes = dataTable.Rows[num]["foreclosure_notes"].ToString();
-				this.Probate_Notes = dataTable.Rows[num]["probate_notes"].ToString();
 				this.Deed_Notes = dataTable.Rows[num]["deed_notes"].ToString();
 				this.Deed_Prep = dataTable.Rows[num]["deed_prep"].ToString();
-				this.Homestead_Notes = dataTable.Rows[num]["homestead_notes"].ToString();
-				this.Homestead = dataTable.Rows[num]["homestead"].ToString();
 				this.Policy_Notes = dataTable.Rows[num]["policy_notes"].ToString();
 				this.Attorney_Notes = dataTable.Rows[num]["atty_notes"].ToString();
 				this.Attorney_Close = dataTable.Rows[num]["atty_close"].ToString();
