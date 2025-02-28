@@ -2,15 +2,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyProduct("ORB_DLL")]
-[assembly: AssemblyTitle("ORB_DLL")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: CompilationRelaxations(8)]
 [assembly: ComVisible(false)]
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.Default | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
