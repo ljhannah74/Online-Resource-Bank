@@ -28,8 +28,8 @@
     <ProjectReference Include="ORB_DLL\ORB_DLL.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
-    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" />
+    <PackageReference Include="Microsoft.VisualBasic" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="frm_Edit.cs" />

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
+// TODO Although ClickOnce is supported on .NET 5+, apps do not have access to the System.Deployment.Application namespace. For more details see https://github.com/dotnet/deployment-tools/issues/27 and https://github.com/dotnet/deployment-tools/issues/53.
 using System.Deployment.Application;
 using System.Diagnostics;
 using System.Drawing;

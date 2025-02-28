@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageVersion Include="Microsoft.VisualBasic" Version="10.3.0" />
+  </ItemGroup>
+</Project>
