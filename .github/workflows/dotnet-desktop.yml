@@ -2,7 +2,7 @@ name: WinForms SQLite build
 on:
   pull_request:
   push:
-    branches: [main, feature/winforms-sqlite-lookups]
+    branches: [main, fix/sqlite-solution-build]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,8 +14,11 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: Build WinForms application
-        run: dotnet build web_links_ORB.csproj --configuration Release
+      - name: Build Visual Studio solution in Debug and Release
+        run: |
+          dotnet build web_links_ORB.sln --configuration Debug
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet build web_links_ORB.sln --configuration Release
       - name: Test SQLite data layer
         run: dotnet test ORB.Data.Tests/ORB.Data.Tests.csproj --configuration Release
       - name: Generate fictional SQLite database
