@@ -53,4 +53,8 @@
     <EmbeddedResource Remove="frm_Edit.resx" />
     <EmbeddedResource Remove="ORB_DLL\Resources.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ORB.Data/**/*.cs;ORB.Data.Tests/**/*.cs;ORB.Data.Demo/**/*.cs" />
+    <EmbeddedResource Remove="ORB.Data/**;ORB.Data.Tests/**;ORB.Data.Demo/**" />
+  </ItemGroup>
 </Project>
