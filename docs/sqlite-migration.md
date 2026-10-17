@@ -4,7 +4,7 @@
 
 The active WinForms application now uses ORB.Data for state/county/resource lookups. Its project explicitly compiles Program.cs and SqliteResourceForm.cs and references ORB.Data; no Excel, ACE or legacy ORB_DLL dependency is required for this screen. Historical sources are preserved but excluded from this build.
 
-The database contains Jurisdictions (state/county) and ResourceLinks (category, name, URL, notes, fee notes). State/county comparisons are case insensitive. Queries are parameterized and foreign keys reject orphan resources. The application reads existing databases and initializes an empty database only when its default app-data file does not exist. It does not seed or import on startup.
+The database contains Jurisdictions (state/county) and ResourceLinks (category, name, URL, notes, fee notes). State/county comparisons are case insensitive. Queries are parameterized and foreign keys reject orphan resources. The application reads existing databases and initializes an empty database only when its default app-data file does not exist. New default databases are seeded from the bundled Census geography snapshot. Existing databases are seeded only through the Add U.S. counties button; no workbook import occurs. See [geography data](geography-data.md) for coverage and preservation behavior.
 
 Use the README commands to generate the optional fictional demo and launch the desktop. The generator refuses to overwrite files. Database failures are displayed with reload/open-database recovery options; they are not converted to successful empty results.
 

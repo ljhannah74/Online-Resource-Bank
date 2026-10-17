@@ -2,7 +2,7 @@ name: WinForms SQLite build
 on:
   pull_request:
   push:
-    branches: [main, fix/sqlite-solution-build]
+    branches: [main, feature/us-county-seed]
   workflow_dispatch:
 permissions:
   contents: read

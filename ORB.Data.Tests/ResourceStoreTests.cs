@@ -93,6 +93,60 @@ public sealed class ResourceStoreTests : IDisposable
         Assert.Equal(new[] { "AA", "ZZ" }, store.GetStates());
     }
 
+    [Fact]
+    public void NationalSeedCoversAllStatesAndCountyEquivalents()
+    {
+        var store = NewStore();
+        Assert.Equal(3222, store.SeedUsJurisdictions());
+        var states = store.GetStates();
+        Assert.Equal(52, states.Count); // 50 states, D.C. and Puerto Rico.
+        Assert.Equal(3222, states.Sum(state => store.GetJurisdictions(state).Count));
+        Assert.Equal(67, store.GetJurisdictions("PA").Count);
+        Assert.Contains(store.GetJurisdictions("PA"), c => c.County == "Washington County");
+        Assert.Equal(254, store.GetJurisdictions("TX").Count);
+        Assert.Equal(9, store.GetJurisdictions("CT").Count);
+        Assert.All(store.GetJurisdictions("CT"), c => Assert.EndsWith("Planning Region", c.County));
+        Assert.Contains(store.GetJurisdictions("LA"), c => c.County == "Orleans Parish");
+        Assert.Contains(store.GetJurisdictions("AK"), c => c.County.Contains("Borough"));
+        Assert.Contains(store.GetJurisdictions("VA"), c => c.County == "Richmond city");
+        Assert.Single(store.GetJurisdictions("DC"));
+        Assert.Equal(78, store.GetJurisdictions("PR").Count);
+        Assert.All(store.GetJurisdictions("PA"), c => Assert.Empty(store.GetResources(c.Id)));
+    }
+
+    [Fact]
+    public void RepeatedSeedPreservesIdsCustomCountiesAndResourceLinks()
+    {
+        var store = NewStore();
+        long id = store.GetOrAddJurisdiction("PA", "Washington County");
+        long custom = store.GetOrAddJurisdiction("DEMO", "My custom county");
+        long resourceId = store.AddResource(id, "Land", "Existing resource", "https://example.com");
+        Assert.Equal(3221, store.SeedUsJurisdictions());
+        Assert.Equal(0, store.SeedUsJurisdictions());
+        Assert.Equal(id, store.GetOrAddJurisdiction("PA", "Washington County"));
+        Assert.Equal(custom, Assert.Single(store.GetJurisdictions("DEMO")).Id);
+        Assert.Equal(resourceId, Assert.Single(store.GetResources(id)).Id);
+    }
+
+    [Fact]
+    public void FailedSeedRollsBackAllInsertedRows()
+    {
+        var store = NewStore();
+        using (var connection = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = DatabasePath, Pooling = false }.ToString()))
+        {
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = """
+                CREATE TRIGGER InterruptSeed BEFORE INSERT ON Jurisdictions
+                WHEN NEW.State = 'PA'
+                BEGIN SELECT RAISE(ABORT, 'Simulated seed failure'); END;
+                """;
+            command.ExecuteNonQuery();
+        }
+        Assert.Throws<SqliteException>(() => store.SeedUsJurisdictions());
+        Assert.Empty(store.GetStates());
+    }
+
     public void Dispose()
     {
         if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true);

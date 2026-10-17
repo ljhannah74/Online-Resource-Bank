@@ -7,7 +7,7 @@ public sealed record ResourceLink(long Id, long JurisdictionId, string Category,
     string Name, string Url, string Notes, string FeeNotes);
 
 /// <summary>File-backed SQLite lookups. Call Initialize before using a new database.</summary>
-public sealed class ResourceStore
+public sealed partial class ResourceStore
 {
     private readonly string connectionString;
 
