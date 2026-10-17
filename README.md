@@ -9,6 +9,7 @@ A C# WinForms application for finding title-research resources by state and coun
 - Read research notes and fee information.
 - Open a selected HTTP/HTTPS link in the default browser.
 - Open another ORB SQLite database or reload changes made outside the app.
+- Populate all 50 states, D.C. and Puerto Rico with 3,222 Census counties/county equivalents using the bundled offline seed.
 - Clear previous results when selections change and display database errors.
 
 **This migration milestone is read-only.** The original forms and lookup classes remain in the repository, but are excluded from the active application build. Editing, tax-office detail, statutes, workbook statistics and other historical features are not yet migrated. Their presence in source does not mean they are available in the new screen. No legacy workbook import is included.
@@ -24,7 +25,7 @@ dotnet run --project web_links_ORB.csproj -- --database "$env:LOCALAPPDATA/Onlin
 
 The generator refuses to overwrite an existing file. Use a new filename if the demo already exists. It contains only a fictional county and two example.com links; no real research data or credentials.
 
-Running without arguments creates an empty database at `%LOCALAPPDATA%/OnlineResourceBank/resources.db`. Use **Open database** to select the generated demo. The application never automatically imports or seeds real data.
+Running without arguments creates and seeds a database at `%LOCALAPPDATA%/OnlineResourceBank/resources.db`. Use **Open database** to select the generated demo. New default databases receive the bundled Census geography list. Existing databases (including the demo) are changed only when you click **Add U.S. counties**; this preserves their existing resource links. No workbook or account data is imported. See [geographic data coverage and provenance](docs/geography-data.md).
 
 ```powershell
 dotnet build web_links_ORB.csproj --configuration Release
@@ -54,7 +55,8 @@ See [migration notes](docs/sqlite-migration.md) for limitations and next steps.
 3. Select each resource; check its notes and fee text.
 4. Open a link; it should use the default browser and example.com.
 5. Reload or open another database; confirm old resource details are cleared.
-6. Run without arguments; the empty database should show a helpful message rather than an error.
+6. Run without arguments to create a seeded default database, or click **Add U.S. counties** in an existing database. Select PA and confirm 67 counties, including Washington County. Counties without resource links display an empty-state message.
+7. Click **Add U.S. counties** again; it should report zero new rows and keep existing links.
 
 CI exercises the WinForms controls and selection events on Windows. Visual appearance and opening the user's browser still require a manual Windows check.
 
