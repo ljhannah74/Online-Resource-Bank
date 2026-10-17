@@ -23,8 +23,20 @@ public partial class Form1 : Form
         store = new ResourceStore(path);
         Font = new Font("Microsoft Sans Serif", 8.25f);
         InitializeComponent();
-        SplitContainer1.Panel2.AutoScroll = true;
-        foreach (TabPage tab in TabControl1.TabPages) tab.AutoScroll = true;
+        var resourcePanel = new Panel { Name = "OriginalResourceViewport", Dock = DockStyle.Fill, AutoScroll = true,
+            BackColor = SplitContainer1.Panel2.BackColor };
+        var originalGroups = SplitContainer1.Panel2.Controls.Cast<Control>().ToArray();
+        SplitContainer1.Panel2.Controls.Clear();
+        foreach (var group in originalGroups) resourcePanel.Controls.Add(group);
+        resourcePanel.AutoScrollMinSize = new Size(originalGroups.Max(c => c.Right) + 8, originalGroups.Max(c => c.Bottom) + 8);
+        SplitContainer1.Panel2.Controls.Add(resourcePanel);
+        foreach (TabPage tab in TabControl1.TabPages)
+        {
+            tab.AutoScroll = true;
+            if (tab.Controls.Count > 0)
+                tab.AutoScrollMinSize = new Size(tab.Controls.Cast<Control>().Max(c => c.Right) + 8,
+                    tab.Controls.Cast<Control>().Max(c => c.Bottom) + 8);
+        }
         Controls.Add(lbl_NotFound);
         CollectControls(this);
         LinkLabelAssessor.LinkClicked += OriginalLinkClicked;
