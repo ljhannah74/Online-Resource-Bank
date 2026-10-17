@@ -5,4 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup><PackageReference Include="Microsoft.Data.Sqlite" /></ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data/us-counties-2026.tsv" LogicalName="Orb.Data.UsCounties2026" />
+  </ItemGroup>
 </Project>
