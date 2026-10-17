@@ -77,7 +77,7 @@ public sealed class ResourceStore
     {
         using var connection = Open();
         using var command = connection.CreateCommand();
-        command.CommandText = "SELECT DISTINCT State FROM Jurisdictions ORDER BY State;";
+        command.CommandText = "SELECT DISTINCT UPPER(State) AS State FROM Jurisdictions ORDER BY State;";
         using var reader = command.ExecuteReader();
         var results = new List<string>();
         while (reader.Read()) results.Add(reader.GetString(0));
