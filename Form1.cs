@@ -272,6 +272,13 @@ public partial class Form1 : Form
         switch (control.Name)
         {
             case "ButtonExit": Close(); break;
+            case "cbox_StatsStates":
+            case "cbox_StatsTaxCounties": StatisticsFilterChanged(sender, e); break;
+            case "pbxExport":
+                string export = string.Join(Environment.NewLine + Environment.NewLine, Enumerable.Range(1, 5)
+                    .Select(i => controls.GetValueOrDefault("txtTaxOffice" + i)?.Text ?? ""));
+                if (!string.IsNullOrWhiteSpace(export)) Clipboard.SetText(export);
+                break;
             case "Button_Search": Guard(Search); break;
             case "ButtonReset": Guard(() => { ComboBoxState.SelectedIndex = -1; ComboBoxState.Text = ""; ComboBoxCounty.DataSource = null; ClearResults(); }); break;
             case "Button_EditORB": Guard(EditDetails); break;
@@ -318,7 +325,23 @@ public partial class Form1 : Form
 
     private void OriginalHover(object? sender, EventArgs e) { if (sender is Control c) c.Cursor = Cursors.Hand; }
     private void OriginalLeave(object? sender, EventArgs e) { if (sender is Control c) c.Cursor = Cursors.Default; }
-    private void StatisticsFilterChanged(object? sender, EventArgs e) => Guard(RefreshStatistics);
+    private void StatisticsFilterChanged(object? sender, EventArgs e) => Guard(() =>
+    {
+        if (sender is Control control && control.Name == "cbox_StatsStates")
+        {
+            loading = true;
+            try
+            {
+                cbox_StatsTaxCounties.Items.Clear();
+                cbox_StatsTaxCounties.Text = "";
+                if (cbox_StatsStates.Text.Length > 0)
+                    cbox_StatsTaxCounties.Items.AddRange(store.GetJurisdictions(cbox_StatsStates.Text)
+                        .Select(c => c.County).Cast<object>().ToArray());
+            }
+            finally { loading = false; }
+        }
+        RefreshStatistics();
+    });
     private void AdditionalLinkChanged(object? sender, EventArgs e)
     {
         if (AdditionalWebsites.TryGetValue(cbxAddtlLinks.Text, out var url)) OpenWebsite(url);
@@ -332,6 +355,7 @@ public partial class Form1 : Form
         var state = cbox_StatsStates.Text.Length > 0 ? cbox_StatsStates.Text : ComboBoxState.Text;
         if (state.Length == 0) return;
         var counties = store.GetJurisdictions(state);
+        if (cbox_StatsTaxCounties.Text.Length > 0) counties = counties.Where(c => c.County == cbox_StatsTaxCounties.Text).ToArray();
         var withLinks = counties.Where(c => store.GetResources(c.Id).Count > 0).ToArray();
         txt_StatsCounties.Text = string.Join(Environment.NewLine, withLinks.Select(c => c.State + " - " + c.County));
         lbl_CoOnlineStats.Text = "Counties with resource links: " + withLinks.Length;
@@ -357,6 +381,15 @@ public partial class Form1 : Form
         store.AddTaxOffice(new(0, county.Id, "Demo tax authority", "County", "Fictional payee", "", "", "https://example.com/tax", "Fictional tax office notes", ""));
         LoadTaxFilters();
         Search();
+        OriginalClick(pbxExport, EventArgs.Empty);
+        if (!Clipboard.GetText().Contains("Fictional tax office notes"))
+            throw new InvalidOperationException("Original tax export did not copy office details.");
+        cbox_StatsStates.Text = "DEMO";
+        OriginalClick(cbox_StatsStates, EventArgs.Empty);
+        if (cbox_StatsTaxCounties.Items.Count != 1)
+            throw new InvalidOperationException("Original statistics selector did not load counties.");
+        if (!AdditionalWebsites.ContainsKey("Old Republic"))
+            throw new InvalidOperationException("Original additional-link option was not mapped.");
         if (!txtTaxOffice1.Text.Contains("Fictional tax office notes"))
             throw new InvalidOperationException("Original tax office panel was not populated.");
         store.SaveResearchDetails("County", county.Id.ToString(), new Dictionary<string, string> { ["copy_source"] = "Original-layout smoke check" });
