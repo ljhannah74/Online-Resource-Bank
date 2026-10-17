@@ -11,6 +11,12 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="SqliteResourceForm.cs" />
+    <Compile Include="Form1.cs" />
+    <Compile Include="Form1.Designer.cs" />
+    <Compile Include="Form1.Layout.cs" />
+    <Compile Include="Form1.Bindings.cs" />
+    <Compile Include="OriginalResources.cs" />
+    <Compile Include="ResearchDetailsEditor.cs" />
     <ProjectReference Include="ORB.Data/ORB.Data.csproj" />
   </ItemGroup>
 </Project>

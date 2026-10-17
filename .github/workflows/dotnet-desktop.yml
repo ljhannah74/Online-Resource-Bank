@@ -2,7 +2,7 @@ name: WinForms SQLite build
 on:
   pull_request:
   push:
-    branches: [main, feature/us-county-seed]
+    branches: [main, feature/restore-original-orb-layout]
   workflow_dispatch:
 permissions:
   contents: read
@@ -25,3 +25,9 @@ jobs:
         run: dotnet run --project ORB.Data.Demo/ORB.Data.Demo.csproj --configuration Release -- "${{ runner.temp }}/orb-ui-demo.db"
       - name: Exercise WinForms state, county, resource and details bindings
         run: dotnet run --project web_links_ORB.csproj --configuration Release --no-build -- --smoke-test "${{ runner.temp }}/orb-ui-demo.db"
+      - name: Preserve original form screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-orb-screen
+          path: ${{ runner.temp }}/orb-original-smoke.png
+          if-no-files-found: error

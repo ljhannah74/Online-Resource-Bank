@@ -24,10 +24,10 @@ internal static class Program
         }
         try
         {
-            using var form = new SqliteResourceForm(path, createIfMissing: args.Length == 0);
+            using var form = new Form1(path, createIfMissing: args.Length == 0);
             if (smoke)
             {
-                form.VerifyDemoWorkflow();
+                form.VerifyOriginalWorkflow();
                 return 0;
             }
             Application.Run(form);
@@ -35,6 +35,7 @@ internal static class Program
         }
         catch (Exception exception)
         {
+            if (smoke) Console.Error.WriteLine(exception);
             if (!smoke) MessageBox.Show(exception.Message, "Unable to start Online Resource Bank",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return 1;
