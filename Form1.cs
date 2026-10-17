@@ -6,6 +6,7 @@ namespace WindowsApplication1;
 
 public partial class Form1 : Form
 {
+    private readonly Label lbl_NotFound = new() { Dock = DockStyle.Bottom, Height = 24, ForeColor = Color.Firebrick };
     private ResourceStore store;
     private string databasePath;
     private bool loading = true;
@@ -21,6 +22,7 @@ public partial class Form1 : Form
         databasePath = path;
         store = new ResourceStore(path);
         InitializeComponent();
+        Controls.Add(lbl_NotFound);
         CollectControls(this);
         LinkLabelAssessor.LinkClicked += OriginalLinkClicked;
         LinkLabelPlats.LinkClicked += OriginalLinkClicked;
