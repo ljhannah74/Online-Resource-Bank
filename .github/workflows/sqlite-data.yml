@@ -1,0 +1,31 @@
+name: SQLite data checks
+on:
+  pull_request:
+  push:
+    branches: [main, feature/sqlite-data-foundation]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sqlite:
+    name: SQLite (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Test SQLite persistence and lookups
+        run: dotnet test ORB.Data.Tests/ORB.Data.Tests.csproj --configuration Release --logger trx
+      - name: Create fictional demo database
+        run: dotnet run --project ORB.Data.Demo/ORB.Data.Demo.csproj --configuration Release -- "${{ runner.temp }}/orb-demo.db"
+      - name: Verify existing demo database cannot be overwritten
+        shell: pwsh
+        run: |
+          dotnet run --project ORB.Data.Demo/ORB.Data.Demo.csproj --configuration Release -- "${{ runner.temp }}/orb-demo.db"
+          if ($LASTEXITCODE -ne 1) { throw "Expected overwrite refusal" }
+          exit 0
