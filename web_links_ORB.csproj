@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
+    <RootNamespace>WindowsApplication1</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <EnableDefaultItems>false</EnableDefaultItems>
     <ImplicitUsings>enable</ImplicitUsings>
