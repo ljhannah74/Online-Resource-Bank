@@ -21,4 +21,4 @@ The dedicated Windows workflow builds the application, tests SQLite and runs `--
 - Port other historical features only after their requirements are reviewed.
 - Capture current screenshots after a manual Windows visual check.
 
-The old root solution and ORB_DLL project are historical references. Build `web_links_ORB.csproj` directly. Preserving old sources does not guarantee those legacy projects compile.
+The root `web_links_ORB.sln` contains only the active SQLite application, data library, demo and tests. Open it in Visual Studio and set `web_links_ORB` as the startup project. The standalone ORB_DLL project is retained as historical source; it is excluded from the active solution because its old Visual Basic/framework dependencies have not been migrated. CI builds the root solution in Debug and Release.
