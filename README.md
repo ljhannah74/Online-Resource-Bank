@@ -31,7 +31,7 @@ dotnet build web_links_ORB.csproj --configuration Release
 dotnet test ORB.Data.Tests/ORB.Data.Tests.csproj --configuration Release
 ```
 
-The data library and its tests run on Linux too; the desktop application requires Windows. Build the named projects above; the historical solution and ORB_DLL project are retained for reference and are not the supported build entry points.
+The data library and its tests run on Linux too; the desktop application requires Windows. Open `web_links_ORB.sln` in Visual Studio and set `web_links_ORB` as the startup project. The solution contains the desktop application, SQLite library, demo generator and tests. The legacy ORB_DLL project remains in source but is excluded from this solution. Both Debug and Release solution builds are checked in CI.
 
 ## Structure
 
