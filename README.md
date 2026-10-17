@@ -8,7 +8,11 @@ This project connects my title-research background with desktop application deve
 
 **Legacy application undergoing cleanup and modernization.** The current source has .NET 8 project targets, but still contains older framework dependencies and workstation-specific paths. A fresh-clone build and Windows runtime have not been verified. This is not currently a turnkey download.
 
-The original data workbook is intentionally excluded from the cleaned source because it contains populated credential-related fields. A sanitized sample dataset is a prerequisite for a reproducible public demo.
+The original data workbook is intentionally excluded from the cleaned source because it contains populated credential-related fields. A fictional SQLite demo is now available for the standalone data layer; the desktop screens are not yet connected to it.
+
+### SQLite migration in progress
+
+`ORB.Data` provides SQLite county/resource lookups with parameterized queries and foreign keys. `ORB.Data.Demo` generates a new database with fictional example.com links. `ORB.Data.Tests` and the dedicated SQLite workflow exercise persistence and validation on Windows and Linux. See [SQLite setup and migration scope](docs/sqlite-migration.md) for runnable commands. These checks cover the new data layer only; the legacy desktop application still uses Excel.
 
 ## Business purpose and features
 

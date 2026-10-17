@@ -402,3 +402,12 @@ FodyWeavers.xsd
 # Local legacy ORB data can contain account credentials
 ORB_DATABASE.xls
 ORB_DATABASE.xlsx
+
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
