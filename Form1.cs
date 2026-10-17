@@ -186,7 +186,7 @@ public partial class Form1 : Form
         }
     }
 
-    private static string LinkField(string category) => category.Trim().ToLowerInvariant() switch
+    internal static string LinkField(string category) => category.Trim().ToLowerInvariant() switch
     {
         "land" or "land records" => "land_url", "tax" or "taxes" => "tax_url",
         "court" or "courts" => "court_url", "assessor" => "assessor_url", "probate" => "probate_url",
@@ -355,6 +355,10 @@ public partial class Form1 : Form
         Search();
         if (LabelCopy_source.Text != "Original-layout smoke check" || txtSOL_notes.Text != "Fictional test notes")
             throw new InvalidOperationException("Detailed research fields did not round-trip.");
+        using (var editor = new ResearchDetailsEditor(store, county)) editor.VerifyCountyEdit();
+        Search();
+        if (LabelCopy_source.Text != "Edited through original editor" || !LinkLabelCounty.Enabled)
+            throw new InvalidOperationException("Editing county metadata lost default resource links.");
         ComboBoxState.Text = "PA";
         if (ComboBoxCounty.Items.Count != 0) throw new InvalidOperationException("Previous counties survived an empty state.");
         if (LinkLabelCounty.Enabled || txtComments.Text.Length != 0) throw new InvalidOperationException("Stale results after changing state.");
