@@ -1,56 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>WindowsApplication1</RootNamespace>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="UniversalRateCalc">
-      <HintPath>.\web_links_ORBReferences\UniversalRateCalc.exe</HintPath>
-    </Reference>
-    <Reference Include="Interop.Excel">
-      <HintPath>.\web_links_ORBReferences\Interop.Excel.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Class_ResetReadouts.cs">
-      <AutoGen>false</AutoGen>
-      <DesignTimeSharedInput>false</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="ORB_DLL\ORB_DLL.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Office.Interop.Excel" />
-    <PackageReference Include="Microsoft.VisualBasic" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="frm_Edit.cs" />
-    <Compile Remove="frm_Edit.Designer.cs" />
-    <Compile Remove="ORB_DLL\My\MyApplication.cs" />
-    <Compile Remove="ORB_DLL\My\MyComputer.cs" />
-    <Compile Remove="ORB_DLL\My\MyProject.cs" />
-    <Compile Remove="ORB_DLL\My\MySettings.cs" />
-    <Compile Remove="ORB_DLL\My\MySettingsProperty.cs" />
-    <Compile Remove="ORB_DLL\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" />
-    <Compile Remove="ORB_DLL\Orb\Edit_Resource.cs" />
-    <Compile Remove="ORB_DLL\Orb\F2_Resource_Lookup.cs" />
-    <Compile Remove="ORB_DLL\Orb\Online_Resource.cs" />
-    <Compile Remove="ORB_DLL\Orb\orb_misc.cs" />
-    <Compile Remove="ORB_DLL\Orb\Resource_Lookup.cs" />
-    <Compile Remove="ORB_DLL\Orb\Statutes_Lookup.cs" />
-    <Compile Remove="ORB_DLL\Orb\Tax_Lookup1.cs" />
-    <Compile Remove="ORB_DLL\Orb\Tax_Lookup2.cs" />
-    <Compile Remove="ORB_DLL\Properties\AssemblyInfo.cs" />
-    <Compile Remove="ORB_DLL\Resources.Designer.cs" />
-    <EmbeddedResource Remove="frm_Edit.resx" />
-    <EmbeddedResource Remove="ORB_DLL\Resources.resx" />
+    <Compile Include="Program.cs" />
+    <Compile Include="SqliteResourceForm.cs" />
+    <ProjectReference Include="ORB.Data/ORB.Data.csproj" />
   </ItemGroup>
 </Project>

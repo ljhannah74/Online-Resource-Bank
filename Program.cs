@@ -1,19 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
-namespace WindowsApplication1
+namespace WindowsApplication1;
+
+internal static class Program
 {
-	internal class Program
-	{
-		[STAThread]
-		public static void Main()
-		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
-		}
-	}
+    [STAThread]
+    public static int Main(string[] args)
+    {
+        ApplicationConfiguration.Initialize();
+        bool smoke = args.Length == 2 && args[0] == "--smoke-test";
+        if (args.Length != 0 && !(args.Length == 2 && args[0] == "--database") && !smoke)
+            return 2;
+
+        string path = args.Length == 2 ? Path.GetFullPath(args[1]) :
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "OnlineResourceBank", "resources.db");
+        if (args.Length == 2 && !File.Exists(path))
+        {
+            if (!smoke) MessageBox.Show("The specified database file does not exist.", "Online Resource Bank");
+            return 1;
+        }
+        try
+        {
+            using var form = new SqliteResourceForm(path, createIfMissing: args.Length == 0);
+            if (smoke)
+            {
+                form.VerifyDemoWorkflow();
+                return 0;
+            }
+            Application.Run(form);
+            return 0;
+        }
+        catch (Exception exception)
+        {
+            if (!smoke) MessageBox.Show(exception.Message, "Unable to start Online Resource Bank",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return 1;
+        }
+    }
 }
