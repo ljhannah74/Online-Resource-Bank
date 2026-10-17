@@ -35,6 +35,7 @@ internal static class Program
         }
         catch (Exception exception)
         {
+            if (smoke) Console.Error.WriteLine(exception);
             if (!smoke) MessageBox.Show(exception.Message, "Unable to start Online Resource Bank",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return 1;
