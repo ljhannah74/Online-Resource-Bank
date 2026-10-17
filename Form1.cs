@@ -146,6 +146,7 @@ public partial class Form1 : Form
         foreach (string name in CountyLinks.Keys.Concat(StateLinks.Keys))
             if (controls.TryGetValue(name, out var control)) { control.Tag = null; control.Enabled = false; }
         lbl_NotFound.Visible = false;
+        lbl_Free.Text = "";
         for (int i = 1; i <= 5; i++)
         {
             SetText("txtTaxOffice" + i, "");
@@ -338,7 +339,17 @@ public partial class Form1 : Form
         Search();
         if (!LinkLabelCounty.Enabled || !LinkLabelTax.Enabled || !txtComments.Text.Contains("Fictional"))
             throw new InvalidOperationException("Original resource controls were not populated from SQLite.");
+        using (var screenshot = new Bitmap(Width, Height))
+        {
+            DrawToBitmap(screenshot, new Rectangle(0, 0, Width, Height));
+            screenshot.Save(Path.Combine(Environment.GetEnvironmentVariable("RUNNER_TEMP") ?? Path.GetTempPath(), "orb-original-smoke.png"), System.Drawing.Imaging.ImageFormat.Png);
+        }
         var county = SelectedCounty ?? throw new InvalidOperationException("No demo county selected.");
+        store.AddTaxOffice(new(0, county.Id, "Demo tax authority", "County", "Fictional payee", "", "", "https://example.com/tax", "Fictional tax office notes", ""));
+        LoadTaxFilters();
+        Search();
+        if (!txtTaxOffice1.Text.Contains("Fictional tax office notes"))
+            throw new InvalidOperationException("Original tax office panel was not populated.");
         store.SaveResearchDetails("County", county.Id.ToString(), new Dictionary<string, string> { ["copy_source"] = "Original-layout smoke check" });
         store.SaveResearchDetails("Statutes", "DEMO", new Dictionary<string, string> { ["SOL_notes"] = "Fictional test notes" });
         Search();
