@@ -21,7 +21,10 @@ public partial class Form1 : Form
     {
         databasePath = path;
         store = new ResourceStore(path);
+        Font = new Font("Microsoft Sans Serif", 8.25f);
         InitializeComponent();
+        SplitContainer1.Panel2.AutoScroll = true;
+        foreach (TabPage tab in TabControl1.TabPages) tab.AutoScroll = true;
         Controls.Add(lbl_NotFound);
         CollectControls(this);
         LinkLabelAssessor.LinkClicked += OriginalLinkClicked;
@@ -39,6 +42,12 @@ public partial class Form1 : Form
                 pair.Value.Enabled = false;
             }
         }
+        Label85.Text = "";
+        Label87.Text = "";
+        Label93.Text = "";
+        foreach (var control in controls.Values)
+            if (control.Text is "*" or "#" or "lbl" || System.Text.RegularExpressions.Regex.IsMatch(control.Text, "^Label[0-9]+$"))
+                control.Text = "";
         Label_user.Text = "Username";
         Label_pwd.Text = "Password";
         Label56.Text = "Online Resource Bank — SQLite";
