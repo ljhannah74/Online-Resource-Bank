@@ -1,93 +1,65 @@
 # Online Resource Bank
 
-A C# Windows Forms application for organizing the online resources used in title research. It brings county recorders, assessors, tax authorities, court records, and related research references into a state/county lookup workflow.
+A C# WinForms application for finding title-research resources by state and county. The migrated lookup screen uses SQLite and runs without Excel, ACE, network-drive paths or private account data.
 
-This project connects my title-research background with desktop application development. My newer web portfolio projects are [ClientDesk](https://github.com/ljhannah74/ClientDesk) and [Employee Management System](https://github.com/ljhannah74/EmployeeManagementSystem).
+## Current functionality
 
-## Project status
+- Select a state and county from the SQLite database.
+- Browse resource names, categories and website links.
+- Read research notes and fee information.
+- Open a selected HTTP/HTTPS link in the default browser.
+- Open another ORB SQLite database or reload changes made outside the app.
+- Clear previous results when selections change and display database errors.
 
-**Legacy application undergoing cleanup and modernization.** The current source has .NET 8 project targets, but still contains older framework dependencies and workstation-specific paths. A fresh-clone build and Windows runtime have not been verified. This is not currently a turnkey download.
+**This migration milestone is read-only.** The original forms and lookup classes remain in the repository, but are excluded from the active application build. Editing, tax-office detail, statutes, workbook statistics and other historical features are not yet migrated. Their presence in source does not mean they are available in the new screen. No legacy workbook import is included.
 
-The original data workbook is intentionally excluded from the cleaned source because it contains populated credential-related fields. A sanitized sample dataset is a prerequisite for a reproducible public demo.
+## Run on Windows
 
-## Business purpose and features
-
-Title researchers need to locate recording, tax, assessment, and court resources across many jurisdictions. Online Resource Bank organizes these references in one desktop interface.
-
-The source includes:
-- State and county selection with resource lookup.
-- Land-record, court, assessor, tax, and related website references.
-- Research notes, document availability, subscription, and fee metadata.
-- Additional tax, statute, and state-reference lookups.
-- Legacy forms for editing and maintaining resource information.
-
-The legacy data model also includes username/password fields. These are not a secure credential-storage design and should not be used for live credentials.
-
-## Historical screenshots
-
-These show an earlier application version; they are not evidence of a verified build of the current .NET 8 source.
-
-### Resource lookup
-![Historical Online Resource Bank main screen](https://user-images.githubusercontent.com/70963125/202032139-24e2c40d-181e-4298-90ed-796bc73fe0c0.jpg)
-
-### Search results
-![Historical Online Resource Bank search results](https://user-images.githubusercontent.com/70963125/202032143-39688c70-9309-4377-abd5-3c2dba7125e0.jpg)
-
-## Technology and structure
-
-| Area | Implementation |
-| --- | --- |
-| Desktop UI | C#, Windows Forms |
-| Application project | `web_links_ORB.csproj`, targeting `net8.0-windows` |
-| Lookup library | `ORB_DLL/ORB_DLL.csproj`, targeting `net8.0` |
-| Data access | ADO.NET/OleDb with Excel workbooks |
-| Legacy integration | Excel COM interop and ClickOnce-related code |
-| Dependency versions | Central package management in `Directory.Packages.props` |
-
-- `Form1.cs` and its designer/resources: main application interface.
-- `ORB_DLL/Orb/`: resource models, lookup classes, and editing forms.
-- `Program.cs`: Windows Forms entry point.
-- `web_links_ORB.sln`: root solution.
-- `.github/workflows/dotnet-desktop.yml`: existing desktop workflow template; see limitations below.
-
-Designer `.cs` and `.resx` files are application source assets and remain tracked. Build output, caches, and restored package binaries are not source assets.
-
-## Development prerequisites
-
-Use Windows and Visual Studio with the **.NET desktop development** workload and .NET 8 SDK. OleDb workbook access additionally needs the appropriate Microsoft Access Database Engine/ACE provider, with architecture matching the application process. Legacy Jet, Excel interop, and .NET Framework deployment code need review before the application can be considered modernized.
-
-Start by inspecting the solution:
+Install the .NET 8 SDK (or Visual Studio with .NET desktop development). From the repository root, create a fictional demo database:
 
 ```powershell
-git clone https://github.com/ljhannah74/Online-Resource-Bank.git
-cd Online-Resource-Bank
-dotnet restore .\web_links_ORB.sln
-dotnet build .\web_links_ORB.sln --configuration Release
+dotnet run --project ORB.Data.Demo/ORB.Data.Demo.csproj -- "$env:LOCALAPPDATA/OnlineResourceBank/orb-demo.db"
+dotnet run --project web_links_ORB.csproj -- --database "$env:LOCALAPPDATA/OnlineResourceBank/orb-demo.db"
 ```
 
-These are diagnostic development commands, not a claim that a fresh clone builds successfully today.
+The generator refuses to overwrite an existing file. Use a new filename if the demo already exists. It contains only a fictional county and two example.com links; no real research data or credentials.
 
-### Known setup blockers
+Running without arguments creates an empty database at `%LOCALAPPDATA%/OnlineResourceBank/resources.db`. Use **Open database** to select the generated demo. The application never automatically imports or seeds real data.
 
-1. **Missing local references:** the main project points to `web_links_ORBReferences/UniversalRateCalc.exe` and `Interop.Excel.dll`, which are not included. Determine which references are still needed and replace or remove them through a separate build repair.
-2. **Framework migration:** `System.Deployment.Application` and older generated Visual Basic application code need compatibility review against the current targets. OleDb package references also need resolution.
-3. **Data paths and formats:** lookup classes use `Data/ORB_DATABASE.xlsx`, while other code uses older `.xls` files and hard-coded `T:` drive paths. These need a configurable, consistent data location.
-4. **Sample data:** the legacy workbook is not distributed with the cleaned project. Supply only an approved sanitized dataset; the app expects worksheets such as `orb`, `taxes`, `statutes`, `misc`, and `other_logins`. Individual lookup classes define the required columns. A safe generated example is planned.
-5. **Workflow template:** the existing desktop workflow contains placeholder test/packaging paths and certificate configuration. It does not yet provide a verified build, test, or installer pipeline.
+```powershell
+dotnet build web_links_ORB.csproj --configuration Release
+dotnet test ORB.Data.Tests/ORB.Data.Tests.csproj --configuration Release
+```
 
-Do not work around missing references by committing workstation binaries or real account data.
+The data library and its tests run on Linux too; the desktop application requires Windows. Build the named projects above; the historical solution and ORB_DLL project are retained for reference and are not the supported build entry points.
 
-## Repository cleanup
+## Structure
 
-This cleanup removes tracked `bin/`, `obj/`, restored package binaries, and copies of the legacy workbook from the proposed branch. The existing Visual Studio ignore rules are retained, with an explicit exclusion for the local ORB workbook.
+| Path | Purpose |
+| --- | --- |
+| Program.cs, SqliteResourceForm.cs | Active WinForms entry point and lookup screen |
+| ORB.Data | SQLite schema, parameterized queries and typed records |
+| ORB.Data.Demo | Fictional database generator with overwrite protection |
+| ORB.Data.Tests | SQLite integration tests using temporary files |
+| Form1.*, ORB_DLL, other historical forms | Preserved legacy source, excluded from the active application |
+| .github/workflows/dotnet-desktop.yml | Windows build and actual WinForms binding smoke check |
+| .github/workflows/sqlite-data.yml | Data-layer checks on Windows and Linux |
 
-Deleting a workbook from the current tree does not delete earlier Git versions. Previously published credentials must be reviewed and rotated where valid; repository-history cleanup is separate from this PR.
+See [migration notes](docs/sqlite-migration.md) for limitations and next steps.
 
-## Next improvements
+## Manual check
 
-1. Replace the legacy workbook with a small synthetic dataset and document its schema.
-2. Repair the Windows build and remove obsolete or missing references.
-3. Replace hard-coded paths and consolidate workbook access.
-4. Parameterize lookup queries and improve error handling/resource disposal.
-5. Add focused lookup tests and replace the placeholder workflow with a verified Windows build.
-6. Capture new screenshots using fictional data.
+1. Run the app with the generated demo.
+2. Confirm DEMO and Example County (fictional) are selected and two resource rows appear.
+3. Select each resource; check its notes and fee text.
+4. Open a link; it should use the default browser and example.com.
+5. Reload or open another database; confirm old resource details are cleared.
+6. Run without arguments; the empty database should show a helpful message rather than an error.
+
+CI exercises the WinForms controls and selection events on Windows. Visual appearance and opening the user's browser still require a manual Windows check.
+
+## Data handling
+
+Local database files, build output and original ORB workbooks are ignored. The new schema has no username/password fields. Previously published workbook data remains a separate repository-history concern; deleting files from the current tree does not remove earlier Git versions.
+
+My web portfolio projects are [ClientDesk](https://github.com/ljhannah74/ClientDesk) and [Employee Management System](https://github.com/ljhannah74/EmployeeManagementSystem).
