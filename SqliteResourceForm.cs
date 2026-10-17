@@ -20,6 +20,7 @@ internal sealed class SqliteResourceForm : Form
     private readonly Label status = new() { Dock = DockStyle.Fill, AutoSize = true, Padding = new Padding(6) };
     private readonly TextBox database = new() { Dock = DockStyle.Fill, ReadOnly = true };
     private readonly Button openLink = new() { Text = "Open selected link", AutoSize = true, Enabled = false };
+    private readonly Button seedCounties = new() { Text = "Add U.S. counties", AutoSize = true, Enabled = false };
     private ResourceStore? store;
     private string databasePath;
     private bool loading;
@@ -40,9 +41,10 @@ internal sealed class SqliteResourceForm : Form
         layout.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
         layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-        var fileRow = new TableLayoutPanel { Dock = DockStyle.Top, AutoSize = true, ColumnCount = 4 };
+        var fileRow = new TableLayoutPanel { Dock = DockStyle.Top, AutoSize = true, ColumnCount = 5 };
         fileRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         fileRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        fileRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         fileRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         fileRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         var browse = new Button { Text = "Open database…", AutoSize = true };
@@ -51,6 +53,7 @@ internal sealed class SqliteResourceForm : Form
         fileRow.Controls.Add(database, 1, 0);
         fileRow.Controls.Add(browse, 2, 0);
         fileRow.Controls.Add(reload, 3, 0);
+        fileRow.Controls.Add(seedCounties, 4, 0);
         var filters = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(0, 8, 0, 8) };
         filters.Controls.AddRange([new Label { Text = "State", AutoSize = true, Padding = new Padding(0, 6, 0, 0) }, states,
             new Label { Text = "County", AutoSize = true, Padding = new Padding(8, 6, 0, 0) }, counties, openLink]);
@@ -70,6 +73,13 @@ internal sealed class SqliteResourceForm : Form
         resources.SelectionChanged += (_, _) => ShowDetails();
         openLink.Click += (_, _) => OpenSelectedLink();
         resources.CellDoubleClick += (_, e) => { if (e.RowIndex >= 0) OpenSelectedLink(); };
+        seedCounties.Click += (_, _) => Guard(() =>
+        {
+            if (store is null) throw new InvalidOperationException("Open a valid ORB database first.");
+            int added = store.SeedUsJurisdictions();
+            LoadDatabase(databasePath, false);
+            status.Text = $"Added {added:N0} counties/county equivalents. Existing resources were preserved. Select a state and county.";
+        });
         reload.Click += (_, _) => Guard(() => LoadDatabase(databasePath, false));
         browse.Click += (_, _) =>
         {
@@ -97,6 +107,7 @@ internal sealed class SqliteResourceForm : Form
         try
         {
             store = null;
+            seedCounties.Enabled = false;
             databasePath = path;
             database.Text = path;
             states.DataSource = null;
@@ -105,9 +116,14 @@ internal sealed class SqliteResourceForm : Form
             if (!File.Exists(path) && !createIfMissing)
                 throw new FileNotFoundException("Database file not found.", path);
             var candidate = new ResourceStore(path);
-            if (!File.Exists(path)) candidate.Initialize();
+            if (!File.Exists(path))
+            {
+                candidate.Initialize();
+                candidate.SeedUsJurisdictions();
+            }
             var availableStates = candidate.GetStates();
             store = candidate;
+            seedCounties.Enabled = true;
             states.DataSource = availableStates.ToList();
         }
         finally { loading = false; }
@@ -135,7 +151,7 @@ internal sealed class SqliteResourceForm : Form
         ClearResources();
         if (store is null || counties.SelectedItem is not Jurisdiction county)
         {
-            status.Text = "No counties available. Open a populated ORB SQLite database; see the README for the fictional demo.";
+            status.Text = "No counties available. Use Add U.S. counties or open another ORB SQLite database.";
             return;
         }
         var links = store.GetResources(county.Id);
@@ -190,6 +206,15 @@ internal sealed class SqliteResourceForm : Form
             throw new InvalidOperationException("Clearing the state left stale resource details.");
         states.SelectedIndex = 0;
         if (resources.Rows.Count != 2) throw new InvalidOperationException("Reselecting the state failed.");
+        seedCounties.PerformClick();
+        if (states.Items.Count != 53) throw new InvalidOperationException("National seed did not populate all states plus the demo.");
+        states.SelectedItem = "PA";
+        if (counties.Items.Count != 67 || resources.Rows.Count != 0 || openLink.Enabled)
+            throw new InvalidOperationException("Pennsylvania county binding or empty resource state failed.");
+        seedCounties.PerformClick();
+        if (!status.Text.StartsWith("Added 0 ")) throw new InvalidOperationException("Repeated seed inserted duplicates.");
+        states.SelectedItem = "DEMO";
+        if (resources.Rows.Count != 2) throw new InvalidOperationException("Seeding lost existing demo resources.");
         Close();
     }
 }
