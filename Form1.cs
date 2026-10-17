@@ -315,7 +315,7 @@ public partial class Form1 : Form
     private void RefreshStatistics()
     {
         var states = store.GetStates();
-        int total = states.Sum(state => store.GetJurisdictions(state).Count);
+        int total = states.Sum(stateCode => store.GetJurisdictions(stateCode).Count);
         SetText("lbl_OrbStats", total.ToString());
         var state = cbox_StatsStates.Text.Length > 0 ? cbox_StatsStates.Text : ComboBoxState.Text;
         if (state.Length == 0) return;
